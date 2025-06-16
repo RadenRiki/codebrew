@@ -1,3 +1,21 @@
+<?php
+// Include the connection file
+include 'connection.php';
+session_start(); // Needed to access $_SESSION
+
+// Fetch all users from the database
+$sql = "SELECT * FROM user";
+$result = $conn->query($sql);
+
+// Store data in $user array
+$user = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $user[] = $row;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -750,7 +768,22 @@
           <li><a href="#">Dashboard</a></li>
         </ul>
       </nav>
-      <button class="btn">Daftar / Masuk</button>
+      <div class="action-buttons">
+        <?php if (isset($_SESSION['username'])): ?>
+            <!-- Tampilkan ikon profil dan nama pengguna jika login -->
+            <div class="profile-menu">
+                <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
+                <img src="images/profile.png" alt="Profile Icon" class="profile-icon">
+                <div class="dropdown-menu">
+                    <a href="profile.php">Profil</a>
+                    <a href="logout.php">Keluar</a>
+                </div>
+            </div>
+        <?php else: ?>
+            <!-- Tampilkan teks "Daftar" jika belum login -->
+            <button href="register.php" class="btn">Daftar / Masuk</button>
+        <?php endif; ?>
+    </div>
     </header>
 
     <!-- Hero Section -->
