@@ -129,6 +129,7 @@ CREATE TABLE `user` (
   `username` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
+  `confirmPassword` varchar(255) DEFAULT NULL,
   `is_premium` tinyint(1) DEFAULT NULL,
   `xp_total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

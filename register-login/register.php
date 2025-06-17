@@ -1,41 +1,59 @@
 <?php
 // Include the connection file
-include 'connection.php';
+include '../connection.php';
+
+$notif = ''; // siapkan variabel notifikasi
 
 // Handle form submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = mysqli_real_escape_string($conn, $_POST["username"]);
     $email = mysqli_real_escape_string($conn, $_POST["email"]);
     $password = $_POST["password"];
-    $konfirmasi_password = $_POST["konfirmasi_password"];
+    $confirmPassword = $_POST["confirmPassword"];
 
-    // Check if passwords match
-    if ($password !== $konfirmasi_password) {
-        echo "<script>alert('Password dan konfirmasi tidak cocok!');</script>";
-    } else {
-        // Check if email or username already exists
+    // Cek inputan gak boleh kosong
+    if (empty($username) || empty($email) || empty($password) || empty($confirmPassword)) {
+        $notif = '⚠️ Semua field harus diisi!';
+    }
+    // Cek format email
+    elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $notif = '⚠️ Format email tidak valid!';
+    }
+    // Cek password sama atau nggak
+    elseif ($password !== $confirmPassword) {
+        $notif = '⚠️ Password dan konfirmasi tidak cocok!';
+    }
+    // Cek apakah username/email sudah dipakai
+    else {
         $check_query = "SELECT * FROM user WHERE email = '$email' OR username = '$username'";
         $check_result = mysqli_query($conn, $check_query);
 
-        if (mysqli_num_rows($check_result) > 0) {
-            echo "<script>alert('Email atau username sudah digunakan.');</script>";
+        if (!$check_result) {
+            $notif = '⚠️ Terjadi kesalahan database!';
+        } elseif (mysqli_num_rows($check_result) > 0) {
+            $existing_user = mysqli_fetch_assoc($check_result);
+            if ($existing_user['email'] == $email) {
+                $notif = '⚠️ Email sudah terdaftar!';
+            } else {
+                $notif = '⚠️ Username sudah digunakan!';
+            }
         } else {
-            // Hash the password
+            // Hash password dan insert data
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            // Insert into database
             $insert_query = "INSERT INTO user (username, email, password, is_premium, xp_total) 
                              VALUES ('$username', '$email', '$hashed_password', 0, 0)";
+
             if (mysqli_query($conn, $insert_query)) {
-                echo "<script>alert('Registrasi berhasil!'); window.location.href = 'login.php';</script>";
+                echo "<script>alert('✅ Registrasi berhasil! Silakan login.'); window.location.href = '../register-login/login.php';</script>";
+                exit();
             } else {
-                echo "<script>alert('Terjadi kesalahan saat registrasi.');</script>";
+                $notif = '⚠️ Terjadi kesalahan saat registrasi: ' . mysqli_error($conn);
             }
         }
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="id">
@@ -52,13 +70,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="stars" id="stars"></div>
     
     <!-- Static star assets -->
-    <img class="star-assets star1" src="/assets/—Pngtree—white light star twinkle light_7487663 1.png" alt="" />
-    <img class="star-assets star2" src="/assets/—Pngtree—white light star twinkle light_7487663 2.png" alt="" />
-    <img class="star-assets star3" src="/assets/—Pngtree—white light star twinkle light_7487663 3.png" alt="" />
-    <img class="star-assets star4" src="/assets/—Pngtree—white light star twinkle light_7487663 4.png" alt="" />
-    <img class="star-assets star5" src="/assets/—Pngtree—white light star twinkle light_7487663 5.png" alt="" />
-    <img class="star-assets star6" src="/assets/—Pngtree—white light star twinkle light_7487663 6.png" alt="" />
-    <img class="star-assets star7" src="/assets/—Pngtree—white light star twinkle light_7487663 7.png" alt="" />
+    <img class="star-assets star1" src="../assets/—Pngtree—white light star twinkle light_7487663 1.png" alt="" />
+    <img class="star-assets star2" src="../assets/—Pngtree—white light star twinkle light_7487663 2.png" alt="" />
+    <img class="star-assets star3" src="../assets/—Pngtree—white light star twinkle light_7487663 3.png" alt="" />
+    <img class="star-assets star4" src="../assets/—Pngtree—white light star twinkle light_7487663 4.png" alt="" />
+    <img class="star-assets star5" src="../assets/—Pngtree—white light star twinkle light_7487663 5.png" alt="" />
+    <img class="star-assets star6" src="../assets/—Pngtree—white light star twinkle light_7487663 6.png" alt="" />
+    <img class="star-assets star7" src="../assets/—Pngtree—white light star twinkle light_7487663 7.png" alt="" />
 
     <!-- Background blur elements -->
     <div class="blur-bg blur-1"></div>
@@ -69,7 +87,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="auth-container">
         <!-- Logo -->
         <div class="logo-container">
-            <img src="/assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo" class="logo">
+            <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo" class="logo">
         </div>
 
         <!-- Auth Form -->
@@ -80,11 +98,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Social Login Buttons -->
             <div class="social-buttons">
                 <button class="social-btn google-btn">
-                    <img src="/assets/google-icon.png" alt="Google" class="social-icon">
+                    <img src="../assets/google-icon.png" alt="Google" class="social-icon">
                     <span>Lanjutkan dengan Google</span>
                 </button>
                 <button class="social-btn facebook-btn">
-                    <img src="/assets/facebook-icon.png" alt="Facebook" class="social-icon">
+                    <img src="../assets/facebook-icon.png" alt="Facebook" class="social-icon">
                     <span>Lanjutkan dengan Facebook</span>
                 </button>
             </div>
@@ -97,10 +115,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
 
             <!-- Registration Form -->
-            <form class="register-form" id="registerForm">
+            <form class="register-form" id="registerForm" method="POST" onsubmit="return validateForm()">                <div class="form-group">
                 <div class="form-group">
-                    <label for="fullName">Nama Lengkap</label>
-                    <input type="text" id="fullName" name="fullName" placeholder="Masukkan nama lengkap Anda" required>
+                    <label for="username">Nama Lengkap</label>
+                    <input type="text" id="username" name="username" placeholder="Masukkan nama lengkap Anda" required>
                 </div>
 
                 <div class="form-group">
@@ -141,11 +159,77 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <!-- Login Link -->
             <div class="auth-switch">
-                <p>Sudah punya akun? <a href="login.html" class="switch-link">Masuk di sini</a></p>
+                <p>Sudah punya akun? <a href="../register-login/login.php" class="switch-link">Masuk di sini</a></p>
             </div>
         </div>
     </div>
 
     <script src="auth.js"></script>
+
+    <?php
+        if (!empty($notif)) {
+            echo "<script>alert('" . addslashes($notif) . "');</script>";
+        }
+    ?>
+
+    <script>
+    // Toggle password visibility
+    function togglePassword(inputId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(inputId + '-eye');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+
+    // Validate form before submission
+    function validateForm() {
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        const terms = document.getElementById('terms').checked;
+
+        // Check empty fields
+        if (!username || !email || !password || !confirmPassword) {
+            alert('⚠️ Semua field harus diisi!');
+            return false;
+        }
+
+        // Check username length
+        if (username.length < 3) {
+            alert('⚠️ Username minimal 3 karakter!');
+            return false;
+        }
+
+        // Check email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert('⚠️ Format email tidak valid!');
+            return false;
+        }
+
+        // Check password match
+        if (password !== confirmPassword) {
+            alert('⚠️ Password dan konfirmasi tidak cocok!');
+            return false;
+        }
+
+        // Check terms agreement
+        if (!terms) {
+            alert('⚠️ Anda harus menyetujui Syarat & Ketentuan!');
+            return false;
+        }
+
+        return true;
+    }
+    </script>
 </body>
 </html>
