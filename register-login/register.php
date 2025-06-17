@@ -1,3 +1,42 @@
+<?php
+// Include the connection file
+include 'connection.php';
+
+// Handle form submission
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $username = mysqli_real_escape_string($conn, $_POST["username"]);
+    $email = mysqli_real_escape_string($conn, $_POST["email"]);
+    $password = $_POST["password"];
+    $konfirmasi_password = $_POST["konfirmasi_password"];
+
+    // Check if passwords match
+    if ($password !== $konfirmasi_password) {
+        echo "<script>alert('Password dan konfirmasi tidak cocok!');</script>";
+    } else {
+        // Check if email or username already exists
+        $check_query = "SELECT * FROM user WHERE email = '$email' OR username = '$username'";
+        $check_result = mysqli_query($conn, $check_query);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            echo "<script>alert('Email atau username sudah digunakan.');</script>";
+        } else {
+            // Hash the password
+            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+            // Insert into database
+            $insert_query = "INSERT INTO user (username, email, password, is_premium, xp_total) 
+                             VALUES ('$username', '$email', '$hashed_password', 0, 0)";
+            if (mysqli_query($conn, $insert_query)) {
+                echo "<script>alert('Registrasi berhasil!'); window.location.href = 'login.php';</script>";
+            } else {
+                echo "<script>alert('Terjadi kesalahan saat registrasi.');</script>";
+            }
+        }
+    }
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>

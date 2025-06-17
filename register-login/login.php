@@ -1,3 +1,45 @@
+<?php
+
+// Include the connection file
+include 'connection.php';
+
+// Check if the form is submitted
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Get the form data
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Prepare the SQL statement
+    $stmt = $conn->prepare("SELECT * FROM user WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+
+    // Get the result
+    $result = $stmt->get_result();
+
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        // Verify the password
+        if (password_verify($password, $user['password'])) {
+            // Login successful
+            session_start();
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['username'] = $user['username'];
+
+            header("Location: index.php");
+            exit();
+        } else {
+            echo "Password salah!";
+        }
+    } else {
+        echo "Username tidak ditemukan!";
+    }
+
+    $stmt->close();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
