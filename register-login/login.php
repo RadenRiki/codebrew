@@ -108,25 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <h1 class="auth-title">Selamat Datang Kembali!</h1>
             <p class="auth-subtitle">Lanjutkan petualangan coding-mu di CodeBrew</p>
 
-            <!-- Social Login Buttons -->
-            <div class="social-buttons">
-                <button class="social-btn google-btn">
-                    <img src="../assets/google-icon.png" alt="Google" class="social-icon">
-                    <span>Lanjutkan dengan Google</span>
-                </button>
-                <button class="social-btn facebook-btn">
-                    <img src="../assets/facebook-icon.png" alt="Facebook" class="social-icon">
-                    <span>Lanjutkan dengan Facebook</span>
-                </button>
-            </div>
-
-            <!-- Divider -->
-            <div class="divider">
-                <div class="divider-line"></div>
-                <span class="divider-text">ATAU</span>
-                <div class="divider-line"></div>
-            </div>
-
             <!-- Login Form -->
             <form class="login-form" id="loginForm" method="POST" onsubmit="return validateLoginForm()">
                 <div class="form-group">
@@ -144,13 +125,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
 
-                <div class="form-options">
-                    <label class="checkbox-label remember-me">
-                        <input type="checkbox" id="rememberMe" name="rememberMe">
-                        <span class="checkmark"></span>
-                        Ingat saya
-                    </label>
-                    <a href="#" class="forgot-password">Lupa kata sandi?</a>
+                 <!-- Divider -->
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">ATAU</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="social-buttons">
+                    <button class="social-btn google-btn">
+                        <img src="../assets/google-icon.png" alt="Google" class="social-icon">
+                        <span>Lanjutkan dengan Google</span>
+                    </button>
+                    <button class="social-btn facebook-btn">
+                        <img src="../assets/facebook-icon.png" alt="Facebook" class="social-icon">
+                        <span>Lanjutkan dengan Facebook</span>
+                    </button>
                 </div>
 
                 <button type="submit" class="auth-btn">Masuk</button>

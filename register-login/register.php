@@ -95,34 +95,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1 class="auth-title">Daftar Sekarang</h1>
             <p class="auth-subtitle">Mulai petualangan coding-mu bersama CodeBrew!</p>
 
-            <!-- Social Login Buttons -->
-            <div class="social-buttons">
-                <button class="social-btn google-btn">
-                    <img src="../assets/google-icon.png" alt="Google" class="social-icon">
-                    <span>Lanjutkan dengan Google</span>
-                </button>
-                <button class="social-btn facebook-btn">
-                    <img src="../assets/facebook-icon.png" alt="Facebook" class="social-icon">
-                    <span>Lanjutkan dengan Facebook</span>
-                </button>
-            </div>
-
-            <!-- Divider -->
-            <div class="divider">
-                <div class="divider-line"></div>
-                <span class="divider-text">ATAU</span>
-                <div class="divider-line"></div>
-            </div>
-
             <!-- Registration Form -->
-            <form class="register-form" id="registerForm" method="POST" onsubmit="return validateForm()">                <div class="form-group">
+            <form class="register-form" id="registerForm" method="POST" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="username">Nama Lengkap</label>
                     <input type="text" id="username" name="username" placeholder="Masukkan nama lengkap Anda" required>
                 </div>
 
                 <div class="form-group">
-                    <label for="email">E-Mail</label>
+                    <label for="email">Email</label>
                     <input type="email" id="email" name="email" placeholder="Masukkan e-mail Anda" required>
                 </div>
 
@@ -146,12 +127,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
 
-                <div class="form-group checkbox-group">
-                    <label class="checkbox-label">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <span class="checkmark"></span>
-                        Saya setuju dengan <a href="#" class="terms-link">Syarat & Ketentuan</a> dan <a href="#" class="terms-link">Kebijakan Privasi</a>
-                    </label>
+                <!-- Divider -->
+                <div class="divider">
+                    <div class="divider-line"></div>
+                    <span class="divider-text">ATAU</span>
+                    <div class="divider-line"></div>
+                </div>
+
+                <!-- Social Login Buttons -->
+                <div class="social-buttons">
+                    <button class="social-btn google-btn">
+                        <img src="../assets/google-icon.png" alt="Google" class="social-icon">
+                        <span>Lanjutkan dengan Google</span>
+                    </button>
+                    <button class="social-btn facebook-btn">
+                        <img src="../assets/facebook-icon.png" alt="Facebook" class="social-icon">
+                        <span>Lanjutkan dengan Facebook</span>
+                    </button>
                 </div>
 
                 <button type="submit" class="auth-btn">Daftar Sekarang</button>
@@ -165,12 +157,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script src="auth.js"></script>
-
-    <?php
-        if (!empty($notif)) {
-            echo "<script>alert('" . addslashes($notif) . "');</script>";
-        }
-    ?>
 
     <script>
     // Toggle password visibility
@@ -222,14 +208,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             return false;
         }
 
-        // Check terms agreement
-        if (!terms) {
-            alert('⚠️ Anda harus menyetujui Syarat & Ketentuan!');
+        if (password !== confirmPassword) {
+            alert('⚠️ Password dan konfirmasi tidak cocok!');
+            document.getElementById('password').style.borderColor = 'red';
+            document.getElementById('confirmPassword').style.borderColor = 'red';
             return false;
+        } else {
+            document.getElementById('password').style.borderColor = '';
+            document.getElementById('confirmPassword').style.borderColor = '';
         }
-
-        return true;
     }
     </script>
+
+    <?php
+        if (!empty($notif)) {
+            echo "<script>alert('" . addslashes($notif) . "');</script>";
+        }
+    ?>
 </body>
 </html>
