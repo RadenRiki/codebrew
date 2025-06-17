@@ -1,21 +1,3 @@
-<?php
-// Include the connection file
-include 'connection.php';
-session_start(); // Needed to access $_SESSION
-
-// Fetch all users from the database
-$sql = "SELECT * FROM user";
-$result = $conn->query($sql);
-
-// Store data in $user array
-$user = [];
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $user[] = $row;
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -768,22 +750,9 @@ if ($result->num_rows > 0) {
           <li><a href="#">Dashboard</a></li>
         </ul>
       </nav>
-      <div class="action-buttons">
-        <?php if (isset($_SESSION['username'])): ?>
-            <!-- Tampilkan ikon profil dan nama pengguna jika login -->
-            <div class="profile-menu">
-                <span><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <img src="images/profile.png" alt="Profile Icon" class="profile-icon">
-                <div class="dropdown-menu">
-                    <a href="profile.php">Profil</a>
-                    <a href="logout.php">Keluar</a>
-                </div>
-            </div>
-        <?php else: ?>
-            <!-- Tampilkan teks "Daftar" jika belum login -->
-            <button href="register.php" class="btn">Daftar / Masuk</button>
-        <?php endif; ?>
-    </div>
+      <a href="/register-login/login.html">
+        <button class="btn">Daftar / Masuk </button>
+      </a>
     </header>
 
     <!-- Hero Section -->
@@ -793,7 +762,7 @@ if ($result->num_rows > 0) {
         Coding-Mu dari Sini!
       </h1>
       <p>Selamat datang di dunia pemrograman, tempat di mana setiap baris kode adalah langkah baru menuju kreativitas tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa digital masa depan!</p>
-      <a href="#" class="cta">Klik disini untuk memulai!</a>
+      <a href="/register-login/login.html" class="cta">Klik disini untuk memulai!</a>
     </section>
 
     <!-- Features Section -->
@@ -1003,20 +972,6 @@ if ($result->num_rows > 0) {
 
         starsContainer.appendChild(star);
       }
-
-      // Button animation
-      const ctaBtn = document.querySelector(".cta");
-      ctaBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-
-        this.textContent = "Memulai Petualangan...";
-        this.style.pointerEvents = "none";
-
-        setTimeout(() => {
-          this.innerHTML = 'Petualangan Dimulai! <i class="fas fa-arrow-right"></i>';
-          this.style.background = "linear-gradient(90deg, #ff84e8, #a367dc)";
-        }, 1500);
-      });
 
       // Quiz buttons
       const quizBtns = document.querySelectorAll(".quiz-btn");
