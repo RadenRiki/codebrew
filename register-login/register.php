@@ -209,7 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="auth-subtitle">Mulai petualangan coding-mu bersama CodeBrew!</p>
 
             <!-- Registration Form -->
-            <form class="register-form" id="registerForm">
+            <form class="register-form" id="registerForm" method="POST" action="" onsubmit="return validateForm()">
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" placeholder="Masukkan username Anda" required>
