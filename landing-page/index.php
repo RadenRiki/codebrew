@@ -51,7 +51,7 @@ if ($result->num_rows > 0) {
           <ul>
             <li><a href="#">Beranda</a></li>
             <li><a href="#">Belajar</a></li>
-            <li><a href="#">Ranking</a></li>
+            <li><a href="../ranking.php">Ranking</a></li>
             <li><a href="#">Dashboard</a></li>
           </ul>
         </nav>
