@@ -5,7 +5,7 @@ session_start();
 
 // Redirect if already logged in
 if (isset($_SESSION['user_id'])) {
-    header("Location: ../landing-page/index.php");
+    header("Location: ../homepage/index.php");
     exit();
 }
 
@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         // Alert sukses dan redirect
                         echo "<script>
                             alert('✅ Login berhasil! Selamat datang, " . htmlspecialchars($user['username']) . "!');
-                            window.location.href = '../landing-page/index.php';
+                            window.location.href = '../homepage/index.php';
                         </script>";
                         exit();
                     } else {
