@@ -45,7 +45,7 @@ if ($result->num_rows > 0) {
     <!-- Header -->
     <header>
       <div class="logo">
-        <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
+        <img src="../assets/Cuplikan_layar_2025-04-16_160306-removebg-preview 1.png" class="logo">
       </div>
         <nav>
           <ul>

@@ -103,7 +103,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
 
                 <div class="form-group">
-                    <label for="email">Email</label>
+                    <label for="email">E-mail</label>
                     <input type="email" id="email" name="email" placeholder="Masukkan e-mail Anda" required>
                 </div>
 

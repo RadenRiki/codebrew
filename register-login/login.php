@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <!-- Login Form -->
             <form class="login-form" id="loginForm" method="POST" onsubmit="return validateLoginForm()">
                 <div class="form-group">
-                    <label for="loginEmail">E-Mail</label>
+                    <label for="loginEmail">E-mail</label>
                     <input type="email" id="loginEmail" name="email" placeholder="Masukkan e-mail Anda" required>
                 </div>
 
