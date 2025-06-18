@@ -41,9 +41,9 @@ mysqli_close($conn);
       </div>
         <nav>
           <ul>
-            <li><a href="#">Beranda</a></li>
+            <li><a href="index.php">Beranda</a></li>
             <li><a href="#">Belajar</a></li>
-            <li><a href="#">Ranking</a></li>
+            <li><a href="ranking.php">Ranking</a></li>
             <li><a href="#">Dashboard</a></li>
           </ul>
         </nav>
