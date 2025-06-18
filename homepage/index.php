@@ -1,3 +1,13 @@
+
+<?php
+  session_start();
+  // Pastikan user sudah login (homepage hanya bisa diakses setelah login)
+  if (!isset($_SESSION['username'])) {
+    header('Location: login.php');
+    exit;
+  }
+  $user = htmlspecialchars($_SESSION['username']);
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -9,12 +19,11 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="index.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
 </head>
 
 <body>
+
     <!-- Background stars -->
     <div class="stars" id="stars"></div>
 
@@ -26,7 +35,6 @@
     <img class="star-assets star5" src="../assets/—Pngtree—white light star twinkle light_7487663 5.png" alt="" />
     <img class="star-assets star6" src="../assets/—Pngtree—white light star twinkle light_7487663 6.png" alt="" />
     <img class="star-assets star7" src="../assets/—Pngtree—white light star twinkle light_7487663 7.png" alt="" />
-    
     <header>
         <!-- Logo -->
         <a href="index.php" class="logo">
@@ -43,26 +51,10 @@
             </ul>
         </nav>
 
-        <!-- Profile button with dropdown -->
+        <!-- Ganti Daftar/Masuk jadi profil -->
         <div class="profile-menu">
-            <div class="profile-btn" id="profileBtn">
-                <i class="fas fa-user avatar"></i>
-            </div>
-            <div class="profile-dropdown" id="profileDropdown">
-                <a href="profile.php" class="dropdown-item">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Profil</span>
-                </a>
-                <a href="settings.php" class="dropdown-item">
-                    <i class="fas fa-cog"></i>
-                    <span>Pengaturan</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="logout.php" class="dropdown-item logout-item">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
+            <span class="greeting">Halo, <?= $user ?>!</span>
+            <a href="logout.php" class="logout-btn">Logout</a>
         </div>
     </header>
 
@@ -74,7 +66,11 @@
         </h1>
         <p>Selamat datang di dunia pemrograman, tempat di mana setiap baris kode adalah langkah baru menuju kreativitas
             tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa digital masa depan!</p>
+        <?php if (isset($_SESSION['username'])): ?>
         <a href="#languages-section" class="cta" id="scroll-to-quiz">Ayo mulai mengerjakan kuis!</a>
+        <?php else: ?>
+        <!-- <a href="../register-login/login.php" class="cta">Klik di sini untuk memulai!</a> -->
+        <?php endif; ?>
     </section>
 
     <!-- Features Section -->
@@ -265,44 +261,26 @@
         <div class="copyright">Copyright ©️ Wasabi 2025</div>
     </footer>
 
-    <!-- JavaScript for Functionality -->
+    <!-- JavaScript for Smooth Scrolling -->
     <script>
-        // Profile dropdown functionality
+        // Smooth scrolling functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const profileBtn = document.getElementById('profileBtn');
-            const profileDropdown = document.getElementById('profileDropdown');
-            
-            // Toggle dropdown when clicking profile button
-            profileBtn.addEventListener('click', function(e) {
-                profileDropdown.classList.toggle('show');
-                e.stopPropagation();
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
-                    profileDropdown.classList.remove('show');
-                }
-            });
-
-            // Stars animation
-            createStars();
-            
-            // Smooth scrolling functionality
             const scrollButton = document.getElementById('scroll-to-quiz');
             
             if (scrollButton) {
                 scrollButton.addEventListener('click', function(e) {
-                    e.preventDefault();
+                    e.preventDefault(); // Prevent default link behavior
                     
                     const targetSection = document.getElementById('languages-section');
                     
                     if (targetSection) {
+                        // Smooth scroll to the languages section
                         targetSection.scrollIntoView({
                             behavior: 'smooth',
                             block: 'start'
                         });
                         
+                        // Optional: Add a subtle highlight effect after scrolling
                         setTimeout(() => {
                             targetSection.style.transition = 'all 0.3s ease';
                             targetSection.style.transform = 'scale(1.02)';
@@ -314,50 +292,34 @@
                     }
                 });
             }
-
-            // Quiz buttons functionality
-            const quizButtons = document.querySelectorAll('.quiz-btn');
-            quizButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const languageTitle = this.closest('.language-card').querySelector('.language-title').textContent;
-                    alert(`Quiz untuk ${languageTitle} akan segera dimulai!`);
-                    // Here you would redirect to the specific quiz page
-                });
-            });
         });
 
-        // Create animated stars in the background
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 150;
-
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
+        // Enhanced smooth scrolling with offset for fixed headers (if needed)
+        function smoothScrollToSection(targetId, offset = 0) {
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+                const targetPosition = targetElement.offsetTop - headerHeight - offset;
                 
-                // Random position
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                
-                // Random size
-                const size = Math.random() * 3;
-                
-                // Random duration
-                const duration = 3 + Math.random() * 7;
-                
-                // Random delay
-                const delay = Math.random() * 5;
-                
-                star.style.left = `${posX}%`;
-                star.style.top = `${posY}%`;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.setProperty('--duration', `${duration}s`);
-                star.style.animationDelay = `${delay}s`;
-                
-                starsContainer.appendChild(star);
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             }
         }
+
+        // Alternative method using CSS scroll-behavior (already works with anchor links)
+        // Add this CSS to your index.css file for enhanced smooth scrolling:
+        /*
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .languages {
+            scroll-margin-top: 80px; // Adjust based on your header height
+        }
+        */
     </script>
 </body>
 
