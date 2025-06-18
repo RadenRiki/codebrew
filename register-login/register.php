@@ -61,6 +61,119 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daftar - CodeBrew</title>
+    <style>
+        footer {
+    flex-shrink: 0;
+    padding: 3rem 5% 2rem;
+    background: var(--darker);
+    margin-top: 3rem;
+    position: relative;
+    z-index: 1;
+    color: var(--light-purple);
+    font-size: 0.9rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    max-width: 1000px;
+    margin: 0 auto 2rem;
+}
+
+.footer-col h3 {
+    font-size: 1.2rem;
+    margin-bottom: 1.2rem;
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.footer-col ul li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-col ul li a {
+    color: var(--light-purple);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-col ul li a:hover {
+    color: var(--light);
+    text-decoration: underline;
+}
+
+.footer-col.pintar .pintar-badge {
+    display: inline-block;
+    background: var(--gradient);
+    color: var(--light);
+    padding: 0.6rem 1.2rem;
+    border-radius: 1.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.footer-col.pintar .pintar-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(163, 103, 220, 0.3);
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(93, 46, 142, 0.3);
+    color: var(--light-purple);
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    footer {
+        padding: 2rem 5% 1.5rem;
+        margin-top: 2rem;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .footer-col h3 {
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    footer {
+        padding: 1.5rem 1rem;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 1rem;
+    }
+    
+    .footer-col.pintar .pintar-badge {
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+    }
+}
+</style>
+    </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="auth.css">
@@ -155,6 +268,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-content">
+        <div class="footer-col">
+          <h3>COMPANY</h3>
+          <ul>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Pricing</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h3>LANGUAGE</h3>
+          <ul>
+            <li><a href="#">HTML</a></li>
+            <li><a href="#">CSS</a></li>
+            <li><a href="#">JavaScript</a></li>
+            <li><a href="#">Python</a></li>
+            <li><a href="#">PHP</a></li>
+            <li><a href="#">MySQL</a></li>
+          </ul>
+        </div>
+        <div class="footer-col pintar">
+          <h3>PINTAR</h3>
+          <div class="pintar-badge">Gabung di sini</div>
+        </div>
+      </div>
+      <div class="copyright">Copyright ©️ Wasabi 2025</div>
+    </footer>
 
     <script src="auth.js"></script>
 
