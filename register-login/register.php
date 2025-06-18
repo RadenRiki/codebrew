@@ -96,10 +96,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <p class="auth-subtitle">Mulai petualangan coding-mu bersama CodeBrew!</p>
 
             <!-- Registration Form -->
-            <form class="register-form" id="registerForm" method="POST" onsubmit="return validateForm()">
+            <form class="register-form" id="registerForm">
                 <div class="form-group">
-                    <label for="username">Nama Lengkap</label>
-                    <input type="text" id="username" name="username" placeholder="Masukkan nama lengkap Anda" required>
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Masukkan username Anda" required>
                 </div>
 
                 <div class="form-group">
