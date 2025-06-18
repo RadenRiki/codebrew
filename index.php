@@ -1,6 +1,6 @@
 <?php
 // Include the connection file
-include '../connection.php';
+include 'connection.php';
 session_start(); // Needed to access $_SESSION
 $notif = isset($_GET['notif']) ? $_GET['notif'] : '';
 
@@ -25,7 +25,7 @@ if ($result->num_rows > 0) {
     <title>CodeBrew</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="landing-page/index.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
 
