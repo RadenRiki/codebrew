@@ -38,21 +38,27 @@
     <img class="star-assets star7" src="../assets/—Pngtree—white light star twinkle light_7487663 7.png" alt="" />
     
     <header>
-        <!-- Logo -->
-        <a href="index.php" class="logo">
-            <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
-        </a>
+    <!-- Logo -->
+    <a href="index.php" class="logo">
+        <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
+    </a>
 
-        <!-- Navigasi -->
-        <nav>
-            <ul>
-                <li><a href="index.php" class="active">Beranda</a></li>
-                <li><a href="belajar.php">Belajar</a></li>
-                <li><a href="ranking.php">Ranking</a></li>
-                <li><a href="dashboard.php">Dashboard</a></li>
-            </ul>
-        </nav>
+    <!-- Navigasi -->
+    <nav>
+        <ul>
+            <li><a href="index.php" class="active">Beranda</a></li>
+            <li><a href="belajar.php">Belajar</a></li>
+            <li><a href="ranking.php">Ranking</a></li>
+            <li><a href="dashboard.php">Dashboard</a></li>
+        </ul>
+    </nav>
 
+    <!-- User greeting and profile button -->
+    <div class="user-profile-container">
+        <?php if (isset($_SESSION['username'])): ?>
+            <span class="greeting">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+        <?php endif; ?>
+        
         <!-- Profile button with dropdown -->
         <div class="profile-menu">
             <div class="profile-btn" id="profileBtn">
@@ -69,32 +75,27 @@
                 </a>
                 <div class="dropdown-divider"></div>
                 <a href="../register-login/logout.php" class="dropdown-item logout-item">
-    <i class="fas fa-sign-out-alt"></i>
-    <span>Logout</span>
-</a>
-
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
             </div>
         </div>
-    </header>
+    </div>
+</header>
+
 
     <!-- Hero Section -->
-    <section class="hero">
-        <h1>
-            Mulai Petualangan <br />
-            Coding-Mu dari Sini!
-        </h1>
-        <p>Selamat datang di dunia pemrograman, tempat di mana setiap baris kode adalah langkah baru menuju kreativitas
-    tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa digital masa depan!</p>
+<section class="hero">
+    <h1>
+        Mulai Petualangan <br />
+        Coding-Mu dari Sini!
+    </h1>
+    <p>Selamat datang di dunia pemrograman, tempat di mana setiap baris kode adalah langkah baru menuju kreativitas
+tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa digital masa depan!</p>
 
-<?php if (isset($_SESSION['username'])): ?>
-    <h3 class="welcome-user">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h3>
     <a href="#languages-section" class="cta" id="scroll-to-quiz">Ayo mulai mengerjakan kuis!</a>
-<?php else: ?>
-    <a href="../register-login/login.php" class="cta">Klik di sini untuk memulai!</a>
-<?php endif; ?>
+</section>
 
-        <!-- <a href="#languages-section" class="cta" id="scroll-to-quiz">Ayo mulai mengerjakan kuis!</a> -->
-    </section>
 
     <!-- Features Section -->
     <section class="features">

@@ -810,3 +810,28 @@ footer {
         font-size: 1.5rem;
     }
 }
+
+/* User greeting and profile container */
+.user-profile-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.greeting {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--light);
+    white-space: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .greeting {
+        display: none; /* Hide greeting on mobile */
+    }
+    
+    .user-profile-container {
+        gap: 5px;
+    }
+}
