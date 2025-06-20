@@ -48,7 +48,7 @@
         <ul>
             <li><a href="index.php" class="active">Beranda</a></li>
             <li><a href="belajar.php">Belajar</a></li>
-            <li><a href="ranking.php">Ranking</a></li>
+            <li><a href="../ranking.php">Ranking</a></li>
             <li><a href="dashboard.php">Dashboard</a></li>
         </ul>
     </nav>
@@ -57,8 +57,6 @@
     <div class="user-profile-container">
         <?php if (isset($_SESSION['username'])): ?>
             <span class="greeting">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
-        <?php endif; ?>
-        
         <!-- Profile button with dropdown -->
         <div class="profile-menu">
             <div class="profile-btn" id="profileBtn">
@@ -79,6 +77,11 @@
                     <span>Logout</span>
                 </a>
             </div>
+        <?php else: ?>
+            <a href="../register-login/login.php">
+              <button class="btn">Daftar / Masuk </button>
+            </a>
+        <?php endif; ?>
         </div>
     </div>
 </header>
