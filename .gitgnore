@@ -1,3 +1,5 @@
-# Jangan commit config berisi kredensial
-/homepage/config.php
+# ignore environment file
 .env
+
+# ignore legacy config
+/homepage/config.php
