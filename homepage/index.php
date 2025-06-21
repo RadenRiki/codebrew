@@ -710,7 +710,7 @@ tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa d
         confirmButtonText: 'Upgrade Sekarang!',
         cancelButtonText: 'Nanti Saja'
       }).then(result => {
-        if (result.isConfirmed) window.location.href = 'premium.php';
+        if (result.isConfirmed) window.location.href = '../payment/premium.php';
       });
     });
   }
