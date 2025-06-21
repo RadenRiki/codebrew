@@ -255,6 +255,10 @@
             font-weight: bold;
         }
 
+        .hero p {
+            font-weight: 300;
+        }
+
         .section-title  {
             font-weight: bold;
         }
