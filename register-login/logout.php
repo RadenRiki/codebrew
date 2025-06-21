@@ -17,6 +17,6 @@ if (ini_get("session.use_cookies")) {
 session_destroy();
 
 // Redirect ke beranda dengan notifikasi
-header("Location: ../landing-page/index.php?notif=" . urlencode("Logout berhasil!"));
+header("Location: ../register-login/login.php?notif=" . urlencode("Logout berhasil!"));
 exit;
 ?>

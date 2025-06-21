@@ -1,0 +1,3 @@
+# Jangan commit config berisi kredensial
+/homepage/config.php
+.env
