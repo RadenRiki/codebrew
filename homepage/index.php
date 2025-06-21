@@ -1,12 +1,24 @@
 <?php
-  session_start();
-  // Pastikan user sudah login (homepage hanya bisa diakses setelah login)
-  if (!isset($_SESSION['username'])) {
+session_start();
+// Pastikan user sudah login
+if (!isset($_SESSION['username'])) {
     header('Location: login.php');
     exit;
-  }
-  $user = htmlspecialchars($_SESSION['username']);
+}
+
+// Tambahkan ini untuk cek status premium
+require_once '../connection.php';
+$user = htmlspecialchars($_SESSION['username']);
+
+// Query untuk cek status premium
+$stmt = $conn->prepare("SELECT is_premium FROM user WHERE username = ?");
+$stmt->bind_param("s", $_SESSION['username']);
+$stmt->execute();
+$result = $stmt->get_result();
+$user_data = $result->fetch_assoc();
+$is_premium = $user_data['is_premium'] ?? 0;
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -270,21 +282,39 @@
             <li><a href="belajar.php">Belajar</a></li>
             <li><a href="ranking.php">Ranking</a></li>
             <li><a href="dashboard.php">Dashboard</a></li>
+            <?php if ($is_premium): ?>
+                <li><span class="premium-badge-nav">PREMIUM</span></li>
+            <?php endif; ?>
         </ul>
     </nav>
 
     <!-- User greeting and profile button -->
     <div class="user-profile-container">
         <?php if (isset($_SESSION['username'])): ?>
-            <span class="greeting">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+            <span class="greeting">
+                Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                <?php if ($is_premium): ?>
+                    <span class="premium-indicator">⭐</span>
+                <?php endif; ?>
+            </span>
         <?php endif; ?>
         
         <!-- Profile button with dropdown -->
         <div class="profile-menu">
-            <div class="profile-btn" id="profileBtn">
+            <div class="profile-btn <?php echo $is_premium ? 'premium-profile' : ''; ?>" id="profileBtn">
                 <i class="fas fa-user avatar"></i>
+                <?php if ($is_premium): ?>
+                    <div class="premium-crown">👑</div>
+                <?php endif; ?>
             </div>
             <div class="profile-dropdown" id="profileDropdown">
+                <?php if ($is_premium): ?>
+                    <div class="premium-status">
+                        <i class="fas fa-crown"></i>
+                        <span>Status Premium</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                <?php endif; ?>
                 <a href="profile.php" class="dropdown-item">
                     <i class="fas fa-user-circle"></i>
                     <span>Profil</span>
@@ -302,6 +332,7 @@
         </div>
     </div>
 </header>
+
 
 
     <!-- Hero Section -->
@@ -417,11 +448,11 @@ tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa d
 </section>
 
 <!-- Premium Section -->
+<?php if (!$is_premium): ?>
 <section class="premium">
     <div class="premium-container">
-        <h2 class="premium-title">Jadilah bagian dari komunitas yang lebih mendalam dengan <span
-                class="pintar-badge">PINTAR</span></h2>
-
+        <h2 class="premium-title">Jadilah bagian dari komunitas yang lebih mendalam dengan <span class="pintar-badge">PINTAR</span></h2>
+        
         <div class="premium-main-features">
             <div class="main-feature left">
                 <div class="feature-header">
@@ -470,6 +501,34 @@ tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa d
         <button class="premium-cta">Mulai dengan fitur PINTAR !</button>
     </div>
 </section>
+<?php else: ?>
+<!-- Premium User Welcome Section -->
+<section class="premium-welcome">
+    <div class="premium-welcome-container">
+        <div class="premium-crown-icon">👑</div>
+        <h2 class="premium-welcome-title">Selamat datang, Member <span class="pintar-badge">PINTAR</span>!</h2>
+        <p class="premium-welcome-desc">Kamu sekarang memiliki akses penuh ke semua fitur premium CodeBrew</p>
+        
+        <div class="premium-benefits">
+            <div class="benefit-item">
+                <i class="fas fa-unlock"></i>
+                <span>Level Lanjutan Terbuka</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard Analytics</span>
+            </div>
+            <div class="benefit-item">
+                <i class="fas fa-trophy"></i>
+                <span>Skor Maksimal</span>
+            </div>
+        </div>
+        
+        <a href="dashboard.php" class="premium-dashboard-btn">Lihat Dashboard Premium</a>
+    </div>
+</section>
+<?php endif; ?>
+
 
 <!-- Footer -->
 <footer>

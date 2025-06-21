@@ -835,3 +835,166 @@ footer {
         gap: 5px;
     }
 }
+
+/* Premium Navigation Badge */
+.premium-badge-nav {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a0b2e;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    animation: premiumGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes premiumGlow {
+    from {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* Premium Profile Button */
+.premium-profile {
+    background: linear-gradient(45deg, #ffd700, #ff84e8);
+    border: 2px solid #ffd700;
+    position: relative;
+}
+
+.premium-crown {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 16px;
+    background: #ffd700;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--light);
+}
+
+/* Premium Indicator in Greeting */
+.premium-indicator {
+    color: #ffd700;
+    margin-left: 5px;
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Premium Status in Dropdown */
+.premium-status {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    color: #ffd700;
+    font-weight: 600;
+    gap: 10px;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.premium-status i {
+    color: #ffd700;
+}
+
+/* Premium Welcome Section */
+.premium-welcome {
+    padding: 5rem 5%;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.1), rgba(255, 132, 232, 0.1));
+    position: relative;
+}
+
+.premium-welcome-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    background: rgba(26, 11, 46, 0.8);
+    backdrop-filter: blur(20px);
+    border-radius: 25px;
+    border: 2px solid #ffd700;
+    padding: 3rem 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-crown-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+}
+
+.premium-welcome-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.premium-welcome-desc {
+    color: var(--light-purple);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.premium-benefits {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.benefit-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffd700;
+    font-weight: 600;
+}
+
+.benefit-item i {
+    font-size: 1.2rem;
+}
+
+.premium-dashboard-btn {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a0b2e;
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s;
+    display: inline-block;
+}
+
+.premium-dashboard-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+}
+
+/* Responsive Premium Styles */
+@media (max-width: 768px) {
+    .premium-badge-nav {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.6rem;
+    }
+    
+    .premium-benefits {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .premium-welcome-title {
+        font-size: 2rem;
+    }
+}
