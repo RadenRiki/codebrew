@@ -1,22 +1,46 @@
 <?php
 session_start();
-// Redirect to login if not logged in
+
+// Redirect ke login jika belum login
 if (!isset($_SESSION['username'])) {
     header('Location: login.php');
     exit;
 }
-$user = htmlspecialchars($_SESSION['username']);
 
-// Get the selected payment method from the previous page
+// Koneksi database
+require_once '../connection.php';  // pastikan di connection.php ada: $conn = new mysqli(...);
+
+// Ambil data user dari session
+$userId = intval($_SESSION['user_id']);
+$user   = htmlspecialchars($_SESSION['username']);
+
+// Ambil metode & jumlah pembayaran (dikirim via GET dari halaman sebelumnya)
 $paymentMethod = isset($_GET['method']) ? htmlspecialchars($_GET['method']) : '';
+$amount        = isset($_GET['amount']) ? floatval($_GET['amount']) : 0.00;
 
-// Generate payment details
-$qrCode = 'https://api.qrserver.com/v1/create-qr-code/?data=' . uniqid('QRIS-', true);
+// Generate order number dan detail payment
+$orderNumber    = 'PINTAR-' . strtoupper(uniqid());
+$qrCodeURL      = 'https://api.qrserver.com/v1/create-qr-code/?data=' . urlencode($orderNumber);
 $virtualAccount = 'VA-' . rand(1000000000, 9999999999);
-$gopayNumber = '0812-' . rand(1000, 9999) . '-' . rand(1000, 9999);
-$ovoNumber = '0812-' . rand(1000, 9999) . '-' . rand(1000, 9999);
-$orderNumber = 'PINTAR-' . rand(1000, 9999) . '-' . date('Ymd');
-$expiryTime = date('H:i', strtotime('+30 minutes'));
+$ovoNumber      = '0812-3456-7890';  // nomor OVO tujuan
+$gopayNumber = '0812-3456-7890';
+
+// set expiry time 30 menit dari sekarang
+$expiryTimestamp = time() + 30 * 60;
+$expiryTime      = date('H:i:s', $expiryTimestamp);
+
+// Simpan record payment dengan status 'pending'
+$stmt = $conn->prepare("
+    INSERT INTO payments
+      (user_id, order_number, payment_method, amount, payment_status)
+    VALUES
+      (?,        ?,            ?,              ?,      'pending')
+");
+$stmt->bind_param("issd", $userId, $orderNumber, $paymentMethod, $amount);
+if (!$stmt->execute()) {
+    die("Error inserting payment: " . $stmt->error);
+}
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -211,7 +235,7 @@ $expiryTime = date('H:i', strtotime('+30 minutes'));
             
             <?php if ($paymentMethod == 'qris'): ?>
                 <div class="qr-code">
-                    <img src="<?php echo $qrCode; ?>" alt="QRIS Code">
+                    <img src="<?php echo $qrCodeURL; ?>" alt="QRIS Code">
                 </div>
                 <p style="margin-top: -10px; color: rgba(255,255,255,0.7);">Arahkan kamera Anda ke QR Code di atas</p>
             <?php elseif ($paymentMethod == 'gopay'): ?>
@@ -248,62 +272,99 @@ $expiryTime = date('H:i', strtotime('+30 minutes'));
     </div>
 
     <script>
-        // Countdown timer (30 minutes)
-        let minutes = 29;
-        let seconds = 59;
-        const countdownElement = document.getElementById('countdown');
-        
-        function updateTimer() {
-            countdownElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-            
-            if (seconds === 0) {
-                if (minutes === 0) {
-                    clearInterval(timerInterval);
-                    showTimeExpired();
-                    return;
-                }
-                minutes--;
-                seconds = 59;
-            } else {
-                seconds--;
-            }
-        }
-        
-        function showTimeExpired() {
-            Swal.fire({
-                title: 'Waktu Pembayaran Habis!',
-                text: 'Silakan memulai proses pembayaran kembali.',
-                icon: 'warning',
-                confirmButtonColor: '#cf7dff',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.history.back();
-            });
-        }
-        
-        const timerInterval = setInterval(updateTimer, 1000);
-        updateTimer(); // Initial call to display immediately
+    // Countdown timer (30 minutes)
+    let minutes = 29;
+    let seconds = 59;
+    const countdownElement = document.getElementById('countdown');
 
-        // Check payment status
-        document.getElementById('checkStatus').addEventListener('click', () => {
-            clearInterval(timerInterval);
+    function updateTimer() {
+      countdownElement.textContent =
+        `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+
+      if (seconds === 0) {
+        if (minutes === 0) {
+          clearInterval(timerInterval);
+          showTimeExpired();
+          return;
+        }
+        minutes--;
+        seconds = 59;
+      } else {
+        seconds--;
+      }
+    }
+
+    function showTimeExpired() {
+      Swal.fire({
+        title: 'Waktu Pembayaran Habis!',
+        text: 'Silakan memulai proses pembayaran kembali.',
+        icon: 'warning',
+        confirmButtonColor: '#cf7dff',
+        confirmButtonText: 'OK'
+      }).then(() => {
+        window.history.back();
+      });
+    }
+
+    const timerInterval = setInterval(updateTimer, 1000);
+    updateTimer(); // tampilkan segera
+
+    // Check payment status
+    document.getElementById('checkStatus').addEventListener('click', () => {
+      clearInterval(timerInterval);
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", "update_user_status.php", true);
+      xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          let res;
+          try {
+            res = JSON.parse(xhr.responseText);
+          } catch (e) {
+            console.error("Invalid JSON:", xhr.responseText);
+            return;
+          }
+          if (res.success) {
             Swal.fire({
-                title: 'Selamat Pembayaran Berhasil!',
-                html: `
-                    <div style="text-align:left; margin:20px 0;">
-                        <p><strong>No. Pesanan:</strong> <?php echo $orderNumber; ?></p>
-                        <p><strong>Produk:</strong> PINTAR Premium</p>
-                        <p><strong>Status:</strong> <span style="color:#7dffaa;">Aktif</span></p>
-                    </div>
-                    <p>Terima kasih telah berlangganan PINTAR Premium!</p>
-                `,
-                icon: 'success',
-                confirmButtonColor: '#cf7dff',
-                confirmButtonText: 'Masuk ke Dashboard'
+              title: 'Pembayaran Berhasil!',
+              html: `
+                <div style="text-align:left; margin:20px 0;">
+                  <p><strong>No. Pesanan:</strong> <?php echo $orderNumber; ?></p>
+                  <p><strong>Produk:</strong> PINTAR Premium</p>
+                  <p><strong>Status:</strong> <span style="color:#7dffaa;">Aktif</span></p>
+                </div>
+                <p>Terima kasih telah berlangganan PINTAR Premium!</p>
+              `,
+              icon: 'success',
+              confirmButtonColor: '#cf7dff',
+              confirmButtonText: 'Masuk ke Dashboard'
             }).then(() => {
-                window.location.href = 'dashboard.php'; // Redirect to dashboard
+              window.location.href = '../homepage/index.php';
             });
-        });
-    </script>
+          } else {
+            Swal.fire({
+              title: 'Error!',
+              text: res.message || 'Terjadi kesalahan saat memperbarui status. Silakan coba lagi.',
+              icon: 'error',
+              confirmButtonColor: '#cf7dff'
+            });
+          }
+        } else {
+          Swal.fire({
+            title: 'Error Server!',
+            text: 'Tidak dapat menghubungi server. Status: ' + xhr.status,
+            icon: 'error',
+            confirmButtonColor: '#cf7dff'
+          });
+        }
+      };
+      // kirim user_id + order_number
+      xhr.send(
+        'user_id=' + encodeURIComponent('<?php echo $userId; ?>') +
+        '&order_number=' + encodeURIComponent('<?php echo $orderNumber; ?>')
+      );
+    });
+  </script>
 </body>
 </html>
