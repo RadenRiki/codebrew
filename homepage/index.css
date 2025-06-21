@@ -264,6 +264,7 @@ nav a:hover::after {
     max-width: 700px;
     margin-bottom: 2.5rem;
     line-height: 1.6;
+    font-weight: bold;
 }
 
 .cta {
@@ -473,6 +474,7 @@ nav a:hover::after {
     background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    font-weight: bold;
 }
 
 .language-desc {
@@ -631,11 +633,6 @@ nav a:hover::after {
 .premium-cta:hover {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
-}
-
-/*language page*/
-.language-img {
-    width: 100%;
 }
 
 /* Footer */

@@ -241,6 +241,34 @@
                 bottom: 70px;
             }
         }
+
+        /* languages */
+        .language-js {
+            padding-left: 5rem;
+        }
+
+        .language-title {
+            font-weight: bold;
+        }
+
+        .hero h1 {
+            font-weight: bold;
+        }
+
+        .section-title  {
+            font-weight: bold;
+        }
+
+        .feature-title {
+            font-weight: bold;
+        }
+
+        .feature-title2 {
+            font-size: 1.5rem;
+            font-weight: bold;           
+            margin-bottom: 1rem;
+            padding-top: 4rem;
+        }
     </style>
 </head>
 
@@ -333,7 +361,7 @@ tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa d
                 <div class="feature-icon">
                     <img src="../assets/4203236-removebg-preview 1.png" alt="Belajar Fleksibel" class="feature-img" />
                 </div>
-                <h3 class="feature-title">Tunjukkan seberapa jauh kamu berkembang</h3>
+                <h3 class="feature-title2">Tunjukkan seberapa jauh kamu berkembang</h3>
                 <p class="feature-desc">Sistem ranking bukan sekadar angka,tapi bukti progres belajarmu.</p>
             </div>
 
@@ -376,7 +404,7 @@ tanpa batas! Di sini, kamu akan memulai perjalanan seru untuk menguasai bahasa d
 
 <div class="language-card">
     <div class="language-icon">
-        <img src="../assets/th (1) 1.png" alt="js" />
+        <img src="../assets/th (1) 1.png" alt="js" class="language-js" />
     </div>
     <h3 class="language-title">JAVASCRIPT</h3>
     <p class="language-desc">Hidupkan web statis menjadi dinamis dengan JavaScript! Tambahkan logika dan
