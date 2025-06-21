@@ -1,0 +1,5 @@
+# ignore environment file
+.env
+
+# ignore legacy config
+/homepage/config.php
