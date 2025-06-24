@@ -254,7 +254,7 @@ $stmt->close();
                 </div>
                 <p style="color: rgba(255,255,255,0.7);">
                     <strong>Bank Mandiri</strong><br>
-                    A/n: PT CodeBrew Indonesia
+                    a.n. PT Wasabi Indonesia
                 </p>
             <?php endif; ?>
         </div>
