@@ -1,5 +1,4 @@
 <?php
-// Harus di baris pertama, tanpa spasi di atas
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
