@@ -1,87 +1,81 @@
 <?php
-  session_start();
-  // Ensure user is logged in
-  if (!isset($_SESSION['username'])) {
+session_start();
+
+// Redirect jika belum login
+if (!isset($_SESSION['username'])) {
     header('Location: login.php');
     exit;
-  }
+}
 
-  // Connect to database
-  $conn = mysqli_connect("localhost", "root", "root", "codebrew_db");
-  
-  // Check connection
-  if (!$conn) {
+// Koneksi ke database
+$conn = mysqli_connect("localhost", "root", "root", "codebrew_db");
+
+// Cek koneksi
+if (!$conn) {
     die("Connection failed: " . mysqli_connect_error());
-  }
+}
 
-  // Get user information from database
-  $username = $_SESSION['username'];
-  $sql = "SELECT * FROM users WHERE username = '$username'";
-  $result = mysqli_query($conn, $sql);
-  $user = mysqli_fetch_assoc($result);
+// Ambil data user dari tabel `user`
+$username = $_SESSION['username'];
+$sql = "SELECT * FROM user WHERE username = '$username'";
+$result = mysqli_query($conn, $sql);
+$user = mysqli_fetch_assoc($result);
+$user_id = $user['user_id']; // ID user dari tabel user
 
-  // Update profile if form is submitted
-  $success_message = "";
-  $error_message = "";
-  
-  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
+// Handle update profil
+$success_message = "";
+$error_message = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
     $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
     $bio = mysqli_real_escape_string($conn, $_POST['bio']);
-    
-    // Validate email
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      $error_message = "Format email tidak valid";
-    } else {
-      // Update user data
-      $update_sql = "UPDATE users SET full_name = '$full_name', email = '$email', bio = '$bio' WHERE username = '$username'";
-      
-      if (mysqli_query($conn, $update_sql)) {
-        $success_message = "Profil berhasil diperbarui!";
-        
-        // Refresh user data
-        $result = mysqli_query($conn, $sql);
-        $user = mysqli_fetch_assoc($result);
-      } else {
-        $error_message = "Error: " . mysqli_error($conn);
-      }
-    }
-  }
 
-  // Get user stats (assuming there's a quiz_attempts table)
-  $stats_sql = "SELECT 
-                  COUNT(*) as total_quizzes,
-                  SUM(CASE WHEN score >= 70 THEN 1 ELSE 0 END) as passed_quizzes,
-                  ROUND(AVG(score), 1) as avg_score,
-                  MAX(score) as high_score
-                FROM quiz_attempts 
-                WHERE user_id = (SELECT id FROM users WHERE username = '$username')";
-                
-  $stats_result = mysqli_query($conn, $stats_sql);
-  $stats = mysqli_fetch_assoc($stats_result);
-  
-  // If no quiz attempts yet, set default values
-  if (!$stats['total_quizzes']) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Format email tidak valid";
+    } else {
+        $update_sql = "UPDATE user SET full_name = '$full_name', email = '$email', bio = '$bio' WHERE id = '$user_id'";
+        if (mysqli_query($conn, $update_sql)) {
+            $success_message = "Profil berhasil diperbarui!";
+            $result = mysqli_query($conn, $sql);
+            $user = mysqli_fetch_assoc($result);
+        } else {
+            $error_message = "Error: " . mysqli_error($conn);
+        }
+    }
+}
+
+// Ambil statistik kuis
+$stats_sql = "SELECT 
+                COUNT(*) as total_quizzes,
+                SUM(CASE WHEN score >= 70 THEN 1 ELSE 0 END) as passed_quizzes,
+                ROUND(AVG(score), 1) as avg_score,
+                MAX(score) as high_score
+              FROM user_quiz 
+              WHERE user_id = '$user_id'";
+$stats_result = mysqli_query($conn, $stats_sql);
+$stats = mysqli_fetch_assoc($stats_result);
+
+if (!$stats['total_quizzes']) {
     $stats = [
-      'total_quizzes' => 0,
-      'passed_quizzes' => 0,
-      'avg_score' => 0,
-      'high_score' => 0
+        'total_quizzes' => 0,
+        'passed_quizzes' => 0,
+        'avg_score' => 0,
+        'high_score' => 0
     ];
-  }
-  
-  // Get recent quiz activity (last 5 attempts)
-  $recent_sql = "SELECT q.title as quiz_title, qa.score, qa.created_at
-                FROM quiz_attempts qa
-                JOIN quizzes q ON qa.quiz_id = q.id
-                WHERE qa.user_id = (SELECT id FROM users WHERE username = '$username')
-                ORDER BY qa.created_at DESC
-                LIMIT 5";
-                
-  $recent_result = mysqli_query($conn, $recent_sql);
-  
-  // Close connection
-  mysqli_close($conn);
+}
+
+// Ambil aktivitas kuis terakhir
+$recent_sql = "SELECT q.title as quiz_title, uq.score
+               FROM user_quiz uq
+               JOIN quiz q ON uq.quiz_id = q.quiz_id
+               WHERE uq.user_id = '$user_id'
+               LIMIT 5";
+
+
+$recent_result = mysqli_query($conn, $recent_sql);
+
+mysqli_close($conn);
 ?>
 <!DOCTYPE html>
 <html lang="id">
