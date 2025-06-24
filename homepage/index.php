@@ -314,10 +314,10 @@ $is_premium = $user_data['is_premium'] ?? 0;
         <!-- Navigasi -->
         <nav>
             <ul>
-                <li><a href="../index.php" class="active">Beranda</a></li>
-                <li><a href="../belajar.php">Belajar</a></li>
-                <li><a href="../ranking.php">Ranking</a></li>
-                <li><a href="../dashboard.php">Dashboard</a></li>
+                <li><a href="index.php" class="active">Beranda</a></li>
+                <li><a href="belajar.php">Belajar</a></li>
+                <li><a href="ranking.php">Ranking</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
                 <?php if ($is_premium): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
                 <?php endif; ?>
@@ -351,11 +351,11 @@ $is_premium = $user_data['is_premium'] ?? 0;
                         </div>
                         <div class="dropdown-divider"></div>
                     <?php endif; ?>
-                    <a href="../profile.php" class="dropdown-item">
+                    <a href="profile.php" class="dropdown-item">
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
-                    <a href="../settings.php" class="dropdown-item">
+                    <a href="settings.php" class="dropdown-item">
                         <i class="fas fa-cog"></i>
                         <span>Pengaturan</span>
                     </a>

@@ -138,7 +138,7 @@ mysqli_close($conn);
       <ul>
         <li><a href="index.php">Beranda</a></li>
         <li><a href="#">Belajar</a></li>
-        <li><a href="ranking.php">Ranking</a></li>
+        <li><a href="../ranking.php">Ranking</a></li>
         <li><a href="#">Dashboard</a></li>
       </ul>
     </nav>
