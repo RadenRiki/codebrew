@@ -1,3 +1,6 @@
+Akses ke landing page:
+/codebrew/landing-page/
+
 Kelompok Wasabi / 8
 
 1. 23523185 - Ikhsan Arifianto
