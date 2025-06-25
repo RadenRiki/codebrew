@@ -418,7 +418,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </a>
             </li>
             <li>
-                <a href="../logout.php">
+                <a href="../register-login/logout.php">
                     <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
                 </a>
             </li>
