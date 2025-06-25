@@ -4,8 +4,15 @@ include '../connection.php';
 session_start();
 
 // Redirect if already logged in
+// Periksa role juga, agar admin/manager tidak langsung redirect ke homepage user
 if (isset($_SESSION['user_id'])) {
-    header("Location: ../homepage/index.php");
+    if ($_SESSION['role'] === 'admin') {
+        header("Location: ../admin/materi_bank.php");
+    } elseif ($_SESSION['role'] === 'manager') {
+        header("Location: ../manager/dashboard.php");
+    } else {
+        header("Location: ../homepage/index.php");
+    }
     exit();
 }
 
@@ -26,7 +33,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $notif = "⚠️ Format email tidak valid!";
         } else {
             // Gunakan prepared statement untuk keamanan
-            $stmt = $conn->prepare("SELECT * FROM user WHERE email = ?");
+            // Tambahkan kolom 'role' dalam SELECT
+            $stmt = $conn->prepare("SELECT user_id, username, email, password, is_premium, xp_total, role FROM user WHERE email = ?");
             
             if ($stmt) {
                 $stmt->bind_param("s", $email);
@@ -44,12 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         $_SESSION['email'] = $user['email'];
                         $_SESSION['is_premium'] = $user['is_premium'];
                         $_SESSION['xp_total'] = $user['xp_total'];
-                        
-                        // Alert sukses dan redirect
-                        echo "<script>
-                            alert('✅ Login berhasil! Selamat datang, " . htmlspecialchars($user['username']) . "!');
-                            window.location.href = '../homepage/index.php';
-                        </script>";
+                        $_SESSION['role'] = $user['role']; // Simpan role di session
+
+                        // Alert sukses dan redirect berdasarkan role
+                        if ($user['role'] === 'admin') {
+                            echo "<script>
+                                alert('✅ Login berhasil! Selamat datang, Admin " . htmlspecialchars($user['username']) . "!');
+                                window.location.href = '../admin/materi_bank.php'; // Arahkan ke dashboard admin
+                            </script>";
+                        } elseif ($user['role'] === 'manager') {
+                            echo "<script>
+                                alert('✅ Login berhasil! Selamat datang, Manager " . htmlspecialchars($user['username']) . "!');
+                                window.location.href = '../manager/dashboard.php'; // Arahkan ke dashboard manager
+                            </script>";
+                        } else { // Default ke user biasa
+                            echo "<script>
+                                alert('✅ Login berhasil! Selamat datang, " . htmlspecialchars($user['username']) . "!');
+                                window.location.href = '../homepage/index.php';
+                            </script>";
+                        }
                         exit();
                     } else {
                         // Password salah
