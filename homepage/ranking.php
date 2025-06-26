@@ -188,31 +188,38 @@ mysqli_close($conn);
     </div>
   </header>
 
-  <section class="ranking">
-    <h1>Ranking</h1>
-    <table>
-      <thead>
-        <tr>
-          <th>Rank</th>
-          <th>Nama</th>
-          <th>XP Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php
-        $rank = 1;
-        while ($row = mysqli_fetch_assoc($ranking)) {
-          echo "<tr>";
-          echo "<td>" . $rank . "</td>";
-          echo "<td>" . $row['username'] . "</td>";
-          echo "<td>" . $row['xp_total'] . ' point' . "</td>";
-          echo "</tr>";
-          $rank++;
-        }
-        ?>
-      </tbody>
-    </table>
-  </section>
+    		<div class="ranking-parent">
+      			<div class="ranking2">Ranking</div>
+      			<div class="semakin-aktif-kamu">Semakin aktif kamu belajar, semakin tinggi posisimu. Naikkan peringkat dan buktikan kemampuanmu. Jawab lebih banyak kuis dan rebut posisi puncak!</div>
+    		</div>
+    		<div class="ranking-child3">
+    		</div>
+    		<div class="rectangle-parent">
+                  <section class="ranking">
+                    <table class="table table-primary table-borderless ">
+                    <thead>
+                        <tr>
+                        <th>Rank</th>
+                        <th>Nama</th>
+                        <th>XP Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $rank = 1;
+                        while ($row = mysqli_fetch_assoc($ranking)) {
+                        echo "<tr>";
+                        echo "<td>" . $rank . "</td>";
+                        echo "<td>" . $row['username'] . "</td>";
+                        echo "<td>" . $row['xp_total'] . ' point' . "</td>";
+                        echo "</tr>";
+                        $rank++;
+                        }
+                        ?>
+                    </tbody>
+                    </table>
+                </section>
+    		</div>
 
   <script>
     // Toggle dropdown
