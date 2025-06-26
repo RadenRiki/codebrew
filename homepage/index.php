@@ -35,6 +35,15 @@ $is_premium = $user_data['is_premium'] ?? 0;
 
     <!-- Custom Chatbot Styling -->
     <style>
+
+        nav a.active {
+            color: var(--light);
+        }
+
+        nav a.active::after {
+            width: 100%;
+        }
+        
         /* Chatbot Container */
         .chatbot-container {
             position: fixed;
@@ -316,6 +325,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
             <ul>
                 <li><a href="index.php" class="active">Beranda</a></li>
                 <li><a href="../bank_materi/belajar.php">Belajar</a></li>
+                <li><a href="kuis.php">Kuis</a></li>
                 <li><a href="ranking.php">Ranking</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <?php if ($is_premium): ?>

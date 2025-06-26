@@ -65,14 +65,15 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
     <!-- Custom CSS -->
     <style>
         :root {
-            --primary: #5D2E8E;
-            --secondary: #A367DC;
-            --accent: #FF7F50;
-            --dark: #1A1A2E;
-            --darker: #121225;
-            --light: #F5F5F7;
-            --light-purple: #D1C4E9;
+            --primary: #5d2e8e;
+            --primary-light: #a367dc;
+            --accent: #ff84e8;
+            --dark: #1a0b2e;
+            --darker: #0d071b;
+            --light: #ffffff;
+            --light-purple: #c9b6e4;
             --gradient: linear-gradient(135deg, #5D2E8E 0%, #A367DC 100%);
+            --gradient2: linear-gradient(90deg, var(--primary-light), var(--accent));
         }
         
         * {
@@ -87,47 +88,289 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             color: #333;
             min-height: 100vh;
         }
-        
-        /* Navbar Styles */
-        .navbar {
-            background-color: var(--darker);
-            padding: 0.8rem 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+        /* Animasi bintang */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
-        
-        .navbar-brand img {
-            height: 40px;
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) ease-in-out infinite;
+            opacity: 0;
         }
-        
-        .navbar-dark .navbar-nav .nav-link {
+
+        @keyframes twinkle {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(26, 11, 46, 0.8);
+            border-bottom: 1px solid rgba(93, 46, 142, 0.3);
+        }
+
+        .logo {
+            width: 35%;
+            padding-top: 0.5%;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
             color: var(--light-purple);
+            text-decoration: none;
             font-weight: 500;
-            padding: 0.5rem 1rem;
-            transition: all 0.3s;
+            transition: color 0.3s;
+            position: relative;
+            
         }
-        
-        .navbar-dark .navbar-nav .nav-link:hover,
-        .navbar-dark .navbar-nav .nav-link.active {
+
+        nav a:hover {
             color: var(--light);
         }
-        
-        .navbar-dark .navbar-nav .nav-link.premium {
-            color: var(--accent);
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient2);
+            transition: width 0.3s;
         }
-        
-        .navbar .profile-img {
-            width: 36px;
-            height: 36px;
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--light);
+        }
+
+        nav a.active::after {
+            width: 100%;
+        }
+
+        /* User Section */
+        .user-profile-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .greeting {
+            color: var(--light);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        .premium-indicator {
+            color: #FFD700;
+            margin-left: 0.5rem;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        /* Profile Menu */
+        .profile-menu {
+            position: relative;
+        }
+
+        .profile-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 2px solid var(--light);
+        }
+
+        .profile-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(163, 103, 220, 0.5);
+        }
+
+        .profile-btn .avatar {
+            font-size: 22px;
+            color: var(--light);
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--secondary);
+        }
+
+        .profile-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(26, 11, 46, 0.95);
+            border: 1px solid rgba(93, 46, 142, 0.5);
+            border-radius: 12px;
+            width: 200px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 0;
+            display: none;
+            z-index: 100;
+            animation: fadeInDown 0.3s ease;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(26, 11, 46, 0.95);
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(93, 46, 142, 0.5);
+            border-top: 1px solid rgba(93, 46, 142, 0.5);
+        }
+
+        .profile-dropdown.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            transition: background-color 0.2s;
+            gap: 10px;
+        }
+
+        .dropdown-item i {
+            font-size: 16px;
+            color: var(--light-purple);
+            width: 20px;
+        }
+
+        .dropdown-item:hover {
+            background-color: rgba(93, 46, 142, 0.3);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(93, 46, 142, 0.5);
+            margin: 0.5rem 0;
+        }
+
+        .logout-item {
+            color: #ff6a7a !important;
+        }
+
+        .logout-item i {
+            color: #ff6a7a !important;
+        }
+
+        /* Content area for demo */
+        .content {
+            padding: 2rem 5%;
+            text-align: center;
+        }
+
+        .content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem 3%;
+            }
+            
+            nav ul {
+                gap: 1.5rem;
+            }
+            
+            .greeting {
+                display: none;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            nav ul {
+                gap: 1rem;
+            }
+            
+            nav a {
+                font-size: 0.9rem;
+            }
         }
         
         /* Page Header */
         .page-header {
             background: var(--gradient);
             color: white;
-            padding: 2rem 0;
+            padding-top: 8rem;
+            padding-bottom: 2rem;
             margin-bottom: 2rem;
             position: relative;
             overflow: hidden;
@@ -485,58 +728,61 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="../homepage/index.php">
-                <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../homepage/index.php">Beranda</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" href="bank_materi.php">Materi</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../quiz/index.php">Kuis</a>
-                    </li>
-                    <?php if ($_SESSION['is_premium']): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="../dashboard/index.php">Dashboard</a>
-                    </li>
-                    <?php endif; ?>
-                    <li class="nav-item">
-                        <a class="nav-link premium" href="../premium/index.php">
-                            <i class="fas fa-crown"></i> Premium
-                        </a>
-                    </li>
-                </ul>
-                <div class="d-flex align-items-center">
-                    <div class="dropdown">
-                        <a class="nav-link dropdown-toggle text-white d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
-                            <?php if (isset($_SESSION['profile_pic']) && !empty($_SESSION['profile_pic'])): ?>
-                                <img src="<?php echo $_SESSION['profile_pic']; ?>" alt="Profile" class="profile-img me-2">
-                            <?php else: ?>
-                                <i class="fas fa-user-circle me-2" style="font-size: 1.5rem;"></i>
-                            <?php endif; ?>
-                            <span class="d-none d-md-block"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="../profile/index.php"><i class="fas fa-user me-2"></i> Profil</a></li>
-                            <li><a class="dropdown-item" href="../settings/index.php"><i class="fas fa-cog me-2"></i> Pengaturan</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt me-2"></i> Keluar</a></li>
-                        </ul>
-                    </div>
+    <!-- Stars animation background -->
+    <div class="stars" id="stars"></div>
+
+    <header>
+        <!-- Logo -->
+        <a href="../homepage/index.php" class="logo">
+            <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
+        </a>
+
+        <!-- Navigasi -->
+        <nav>
+            <ul>
+                <li><a href="../homepage/index.php">Beranda</a></li>
+                <li><a href="../bank_materi/belajar.php" class="active">Belajar</a></li>
+                <li><a href="ranking.php">Ranking</a></li>
+                <li><a href="dashboard.php">Dashboard</a></li>
+            </ul>
+        </nav>
+
+        <!-- User greeting and profile button -->
+        <div class="user-profile-container">
+            <!-- User greeting (demo data) -->
+            <span class="greeting">
+                Halo, John Doe!
+            </span>
+
+            <!-- Profile button with dropdown -->
+            <div class="profile-menu">
+                <div class="profile-btn premium-profile" id="profileBtn">
+                    <!-- You can switch between profile image or avatar icon -->
+                    <!-- <img src="path/to/profile.jpg" alt="Profile" class="profile-img"> -->
+                    <i class="fas fa-user avatar"></i>
+                </div>
+                
+                <div class="profile-dropdown" id="profileDropdown">            
+                    <a href="../profile/index.php" class="dropdown-item">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Profil</span>
+                    </a>
+                    
+                    <a href="../settings/index.php" class="dropdown-item">
+                        <i class="fas fa-cog"></i>
+                        <span>Pengaturan</span>
+                    </a>
+                    
+                    <div class="dropdown-divider"></div>
+                    
+                    <a href="../logout.php" class="dropdown-item logout-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
                 </div>
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Page Header -->
     <div class="page-header text-center">
@@ -746,5 +992,65 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Navbar -->
+    <script>
+        // Stars animation
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const numberOfStars = 100;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                
+                // Random size
+                const size = Math.random() * 3 + 1;
+                star.style.width = size + 'px';
+                star.style.height = size + 'px';
+                
+                // Random animation duration
+                const duration = Math.random() * 3 + 2;
+                star.style.setProperty('--duration', duration + 's');
+                
+                // Random delay
+                star.style.animationDelay = Math.random() * 5 + 's';
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create stars
+            createStars();
+
+            // Profile dropdown functionality
+            const profileBtn = document.getElementById('profileBtn');
+            const profileDropdown = document.getElementById('profileDropdown');
+            
+            if (profileBtn && profileDropdown) {
+                profileBtn.addEventListener('click', function(e) {
+                    profileDropdown.classList.toggle('show');
+                    e.stopPropagation();
+                });
+
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
+                        profileDropdown.classList.remove('show');
+                    }
+                });
+
+                // Prevent dropdown from closing when clicking inside
+                profileDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
