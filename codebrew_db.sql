@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:8889
--- Generation Time: Jun 21, 2025 at 04:51 AM
+-- Generation Time: Jun 25, 2025 at 08:10 AM
 -- Server version: 8.0.35
 -- PHP Version: 8.2.20
 
@@ -82,7 +82,32 @@ INSERT INTO `chat_messages` (`message_id`, `session_id`, `user_id`, `content`, `
 (28, 'chat_68562d222fdde', 34, 'apa kabar', 'user', '2025-06-21 10:55:17'),
 (29, 'chat_68562d222fdde', 34, 'Halo! Kabar baik, terima kasih! Siap membantu dengan pertanyaan coding kamu. Ada yang bisa saya bantu hari ini?', 'bot', '2025-06-21 10:55:19'),
 (30, 'chat_6856311eddeb3', 35, 'hai', 'user', '2025-06-21 11:12:16'),
-(31, 'chat_6856311eddeb3', 35, 'Hai! Saya CodeBrew Assistant, asisten AI yang siap membantu Anda dengan pertanyaan seputar coding, seperti HTML, CSS, JavaScript, Python, PHP, dan MySQL. Silakan bertanya!', 'bot', '2025-06-21 11:12:17');
+(31, 'chat_6856311eddeb3', 35, 'Hai! Saya CodeBrew Assistant, asisten AI yang siap membantu Anda dengan pertanyaan seputar coding, seperti HTML, CSS, JavaScript, Python, PHP, dan MySQL. Silakan bertanya!', 'bot', '2025-06-21 11:12:17'),
+(32, 'chat_68566a9552ddf', 37, 'dame eung grrr', 'user', '2025-06-21 15:17:32'),
+(33, 'chat_68566a9552ddf', 37, 'Haha, kayaknya kamu lagi latihan bahasa Korea atau Jepang nih! \"Dame eung grrr\" kurang lebih artinya \"Jangan seperti itu\" atau \"Tidak boleh seperti itu\". Kalau kamu butuh bantuan dengan kode atau pertanyaan seputar programming, saya siap membantu!', 'bot', '2025-06-21 15:17:33'),
+(34, 'chat_68566a9552ddf', 37, 'en que?', 'user', '2025-06-21 15:17:43'),
+(35, 'chat_68566a9552ddf', 37, 'Berdasarkan hasil pencarian dan analisis yang telah dilakukan, \"en que\" bisa diterjemahkan sebagai \"dalam apa\" atau \"di mana\". Namun, tanpa konteks yang lebih spesifik, sulit untuk memberikan jawaban yang lebih tepat.\n\nDalam bahasa Spanyol, \"en que\" adalah frasa yang digunakan untuk menanyakan tentang suatu keadaan atau situasi. Jadi, jika kamu bertanya \"en que?\", itu berarti kamu sedang bertanya \"dalam apa?\" atau \"di mana?\".\n\nContoh kalimat:\n- En que trabajas? (Dalam apa kamu bekerja?)\n- En que lugar vives? (Di mana kamu tinggal?)\n\nJadi, jawaban untuk pertanyaan \"en que?\" adalah \"dalam apa\" atau \"di mana\". Kalau kamu butuh bantuan lebih lanjut atau punya konteks yang lebih spesifik, saya siap membantu!', 'bot', '2025-06-21 15:17:50'),
+(36, 'chat_6858fef26febd', 33, 'halo', 'user', '2025-06-23 14:15:01'),
+(37, 'chat_6858fef26febd', 33, 'Halo! Selamat datang! Saya CodeBrew Assistant, asisten AI yang siap membantu kamu dengan pertanyaan seputar coding. Ada yang bisa saya bantu hari ini?', 'bot', '2025-06-23 14:15:02'),
+(38, 'chat_6858fef26febd', 33, 'siapakah anda?', 'user', '2025-06-23 14:15:05'),
+(39, 'chat_6858fef26febd', 33, 'Saya adalah CodeBrew Assistant, asisten AI yang dirancang khusus untuk membantu kamu dengan pertanyaan seputar coding, seperti HTML, CSS, JavaScript, Python, PHP, MySQL, dan lain-lain. Saya siap membantu kamu memecahkan masalah atau memberikan informasi yang kamu butuhkan.', 'bot', '2025-06-23 14:15:06'),
+(40, 'chat_6858fef26febd', 33, 'coding itu apa sih?', 'user', '2025-06-23 14:15:13'),
+(41, 'chat_6858fef26febd', 33, 'Coding adalah proses membuat instruksi yang dapat dibaca oleh komputer untuk melakukan tugas-tugas tertentu. Instruksi-instruksi ini ditulis dalam bahasa pemrograman seperti HTML, CSS, JavaScript, Python, PHP, MySQL, dan lain-lain.\n\nCoding digunakan untuk membuat berbagai jenis aplikasi, seperti:\n\n* Website\n* Aplikasi mobile\n* Game\n* Sistem operasi\n* Perangkat lunak\n\nDengan coding, kamu dapat membuat program yang dapat berinteraksi dengan pengguna, memproses data, dan melakukan tugas-tugas lainnya.', 'bot', '2025-06-23 14:15:14'),
+(42, 'chat_685a8a3f4ff7c', 33, 'kamu siapa', 'user', '2025-06-24 18:21:38'),
+(43, 'chat_685a8a3f4ff7c', 33, 'dame eung grr', 'user', '2025-06-24 18:21:48'),
+(44, 'chat_685a8a645ec8b', 37, 'hal0', 'user', '2025-06-24 18:22:14'),
+(45, 'chat_685a8b6941007', 37, 'hai', 'user', '2025-06-24 18:26:35'),
+(46, 'chat_685a8c6c98002', 33, 'hai', 'user', '2025-06-24 18:30:55'),
+(47, 'chat_685a8c861d671', 33, 'hai', 'user', '2025-06-24 18:31:22'),
+(48, 'chat_685a8d174cb32', 33, 'halo', 'user', '2025-06-24 18:33:45'),
+(49, 'chat_685a8d174cb32', 33, 'Halo! Selamat datang! Saya CodeBrew Assistant, asisten AI yang siap membantu kamu dengan pertanyaan seputar coding. Ada yang bisa saya bantu hari ini?', 'bot', '2025-06-24 18:33:46'),
+(50, 'chat_685a8d174cb32', 33, 'php itu apaan sih?', 'user', '2025-06-24 18:34:29'),
+(51, 'chat_685a8d174cb32', 33, 'PHP (Hypertext Preprocessor) adalah bahasa pemrograman yang digunakan untuk membuat aplikasi web dinamis. PHP adalah bahasa scripting yang berjalan di sisi server, artinya kode PHP dijalankan di server dan hasilnya dikirim ke browser.\n\nPHP sering digunakan untuk:\n\n* Membuat halaman web dinamis\n* Mengolah data dari database\n* Membuat aplikasi web interaktif\n* Mengintegrasikan dengan bahasa lain seperti HTML, CSS, dan JavaScript\n\nPHP sangat populer karena mudah digunakan, fleksibel, dan memiliki komunitas yang besar. Banyak framework dan library yang tersedia untuk PHP, seperti Laravel, CodeIgniter, dan Symfony.\n\nApakah kamu memiliki pertanyaan spesifik tentang PHP?', 'bot', '2025-06-24 18:34:30'),
+(52, 'chat_685a8d174cb32', 33, 'php termasuk laju atau lambat?', 'user', '2025-06-24 18:34:43'),
+(53, 'chat_685a8d174cb32', 33, 'PHP dapat memiliki performa yang bervariasi tergantung pada cara penggunaannya dan konfigurasi server. Namun, secara umum, PHP dapat dianggap sebagai bahasa pemrograman yang memiliki performa sedang.\n\nPHP memiliki beberapa kelebihan yang membuatnya tetap populer, seperti:\n\n* Mudah digunakan dan dipelajari\n* Integrasi yang baik dengan database MySQL\n* Banyak library dan framework yang tersedia\n\nNamun, PHP juga memiliki beberapa keterbatasan, seperti:\n\n* Performa yang tidak sebaik bahasa lain seperti Node.js atau Go\n* Konsumsi memori yang relatif tinggi\n\nUntuk meningkatkan performa PHP, ada beberapa cara yang dapat dilakukan, seperti:\n\n* Menggunakan opcode cache seperti APC atau OPcache\n* Menggunakan framework yang ringan dan efisien\n* Mengoptimalkan kode PHP\n\nDalam beberapa tahun terakhir, PHP telah mengalami perbaikan signifikan dalam hal performa, terutama dengan adanya PHP 7 dan PHP 8. Namun, jika kamu membutuhkan aplikasi yang sangat cepat dan skalabel, mungkin bahasa lain seperti Node.js atau Go lebih sesuai.\n\nApakah kamu memiliki pertanyaan lain tentang performa PHP?', 'bot', '2025-06-24 18:34:45'),
+(54, 'chat_685abbb1bd908', 33, 'apakah aku ganteng', 'user', '2025-06-24 21:52:38'),
+(55, 'chat_685abcef1281b', 37, 'halo', 'user', '2025-06-24 21:57:53'),
+(56, 'chat_685abcef1281b', 37, 'Halo! Selamat datang! Saya CodeBrew Assistant, asisten AI yang siap membantu kamu dengan pertanyaan seputar coding. Ada yang bisa saya bantu hari ini?', 'bot', '2025-06-24 21:57:54');
 
 -- --------------------------------------------------------
 
@@ -118,7 +143,17 @@ INSERT INTO `chat_sessions` (`session_id`, `user_id`, `start_time`, `end_time`) 
 ('chat_685612fb367e5', 1, '2025-06-21 09:03:39', NULL),
 ('chat_685617cf211a9', 1, '2025-06-21 09:24:15', NULL),
 ('chat_68562d222fdde', 1, '2025-06-21 10:55:14', NULL),
-('chat_6856311eddeb3', 1, '2025-06-21 11:12:14', NULL);
+('chat_6856311eddeb3', 1, '2025-06-21 11:12:14', NULL),
+('chat_68566a9552ddf', 1, '2025-06-21 15:17:25', NULL),
+('chat_6858fef26febd', 1, '2025-06-23 14:14:58', NULL),
+('chat_685a8a3f4ff7c', 1, '2025-06-24 18:21:35', NULL),
+('chat_685a8a645ec8b', 1, '2025-06-24 18:22:12', NULL),
+('chat_685a8b6941007', 1, '2025-06-24 18:26:33', NULL),
+('chat_685a8c6c98002', 1, '2025-06-24 18:30:52', NULL),
+('chat_685a8c861d671', 1, '2025-06-24 18:31:18', NULL),
+('chat_685a8d174cb32', 1, '2025-06-24 18:33:43', NULL),
+('chat_685abbb1bd908', 1, '2025-06-24 21:52:33', NULL),
+('chat_685abcef1281b', 1, '2025-06-24 21:57:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -166,6 +201,29 @@ CREATE TABLE `llm_model` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `materi_bank`
+--
+
+CREATE TABLE `materi_bank` (
+  `id` int NOT NULL,
+  `kategori` varchar(50) NOT NULL,
+  `judul` varchar(255) NOT NULL,
+  `url` text NOT NULL,
+  `admin_id` int DEFAULT NULL,
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `materi_bank`
+--
+
+INSERT INTO `materi_bank` (`id`, `kategori`, `judul`, `url`, `admin_id`, `created_at`, `updated_at`) VALUES
+(1, 'HTML', 'Pengenalan HTML', 'https://www.w3schools.com/html/html_intro.asp', 38, '2025-06-25 15:07:29', '2025-06-25 15:07:29');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `payments`
 --
 
@@ -208,7 +266,8 @@ INSERT INTO `payments` (`payment_id`, `user_id`, `order_number`, `payment_method
 (22, 35, 'PINTAR-6856347EDFB87', 'qris', 0.00, 'pending', '2025-06-21 04:26:38'),
 (23, 35, 'PINTAR-6856348036164', 'qris', 0.00, 'pending', '2025-06-21 04:26:40'),
 (24, 35, 'PINTAR-68563483BC32E', 'qris', 0.00, 'completed', '2025-06-21 04:26:43'),
-(25, 36, 'PINTAR-6856352514F71', 'qris', 0.00, 'completed', '2025-06-21 04:29:25');
+(25, 36, 'PINTAR-6856352514F71', 'qris', 0.00, 'completed', '2025-06-21 04:29:25'),
+(26, 37, 'PINTAR-68566A859CC17', 'qris', 0.00, 'completed', '2025-06-21 08:17:09');
 
 -- --------------------------------------------------------
 
@@ -265,50 +324,54 @@ CREATE TABLE `user` (
   `email` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `is_premium` tinyint(1) DEFAULT NULL,
-  `xp_total` int DEFAULT NULL
+  `xp_total` int DEFAULT NULL,
+  `role` varchar(20) COLLATE utf8mb4_general_ci DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `is_premium`, `xp_total`) VALUES
-(1, 'ikhsan', 'ikhsan987@example.com', '$2y$10$frhE86R1IJIi2TNqcZl7Yerv0o2XdiHRk6.W.9sgvznutc8Ba3Q8O', 0, 0),
-(2, 'adil', 'adil678@example.com', '$2y$10$ExxVsZgT7dVhw4pnqV3gQOKtGhiCV3oMbpw1G1OZ/6UVETx2jp1h6', 0, 0),
-(3, 'alif', 'alif101@example.com', '$2y$10$zAcR7V8vSRJPaD0MKOUHy.sV7vPOgn5RT28zInuUXQUe.kGfNeMfu', 0, 0),
-(4, 'bintang', 'bintang202@example.com', '$2y$10$kD0m5bb6Ebz7f9aZk8AG2ehKHiIib7RuQrrAkM1oWBo7kaUgXak32', 1, 50),
-(5, 'cindy', 'cindy303@example.com', '$2y$10$L3rZxQ0HyoNH9jcKk57Vfeh2skPb1VuKn3V57TMrxbRLlIYOwG7fC', 0, 120),
-(6, 'dika', 'dika404@example.com', '$2y$10$uIvXT6BZwGZdeyaRJx.CyOdZHyKzKCRVpKg78y7JpBy/NaqWaYz2u', 1, 70),
-(7, 'elsa', 'elsa505@example.com', '$2y$10$g5K/f0FB6C7lXB6PaNz9e.i9KeUyol6rbEk5uXQ8hv2OQ.y2EAtfW', 0, 15),
-(8, 'ferdi', 'ferdi606@example.com', '$2y$10$g3xxM1HUCcexYZqP8V0iP.lKYKp9nmHEos9KhYqQKyf3hCo9tGCYG', 1, 100),
-(9, 'gina', 'gina707@example.com', '$2y$10$IB4QtzExMFKNL9khfUY1lu0nd32bcZnW5pASaTbrR4zCW.6fHjE.q', 0, 40),
-(10, 'hadi', 'hadi808@example.com', '$2y$10$J3On/N9T8ZBkLgA7A/epdOtBdMldVqSvU3pM.mjEw.q2z6YVOi1VO', 1, 60),
-(11, 'intan', 'intan909@example.com', '$2y$10$zA9.ZYNY5d9ORn2MywBv2OTcPov9CrQyTIShppPzvjPP7yZxzOQuG', 0, 30),
-(12, 'jack', 'jack010@example.com', '$2y$10$Z54Tqb/dGB.ZZ9RCfqzHQeNHuOl7UghvAfRA0sZxB2T9Pz/UBG2Bi', 1, 80),
-(13, 'karen', 'karen111@example.com', '$2y$10$Z.kXkZxWTvntRAcmDAtFg.N0M.IGj9cRZghwEXynsLRKd8UQeNzK2', 0, 55),
-(14, 'lisa', 'lisa212@example.com', '$2y$10$B2t30TSXcSuqflSpXyyr..ZGvjg2cZSnM2PL6KH9Xy5CEoF1ccrpW', 0, 90),
-(15, 'miko', 'miko313@example.com', '$2y$10$gr8VqLUgUOjNQ6WUXS4Oa.OOwdLuN19jRISeBJcGJ8Mdc7J0zgbhe', 0, 110),
-(16, 'nina', 'nina414@example.com', '$2y$10$M.VNhmWmW8gQ8Bd/ZGP68eh9CmX9NLXUBITWxltrA3nA9aRYjw1aa', 1, 0),
-(17, 'okta', 'okta515@example.com', '$2y$10$yFt68mc9zvvVr2Rrbf.0u.fDbLk6dEyAyZwTzZPThY93NAAeaD8Ae', 0, 65),
-(18, 'putra', 'putra616@example.com', '$2y$10$AAN0jdzZhRxLHZBt1dGuKO2ySkO49duKLFwFGZfPF2qb1aqLD9wA.', 1, 20),
-(19, 'qiana', 'qiana717@example.com', '$2y$10$zDHL9K/1u7Y1Avz8Zj4pduWc7R/OvjW98YZ6qlYaRAUxnWrCq8K3e', 0, 35),
-(20, 'rafa', 'rafa818@example.com', '$2y$10$QGQ/x7rhNDnRMCRcAcxUeOBkKzMLb5LUYNgZCU2lH0QmDkGIfszM.', 1, 140),
-(21, 'salsa', 'salsa919@example.com', '$2y$10$tI7Q.JFu02IRBWYbqFykYexkqcbWWMP0Ai8NU1asxjOmKoZOp0mAy', 0, 10),
-(22, 'tari', 'tari020@example.com', '$2y$10$QovE37SFSHRAMmSlBLXWHeLR5gVG/qk5nXFTGhT8S2XHgUoTqvs0S', 1, 88),
-(23, 'udin', 'udin121@example.com', '$2y$10$TkU8RcE8lZnNQon1ZTu1ie5q6h2BkuvbKD5nK4EF9UED/dCZJdUEu', 0, 77),
-(24, 'viona', 'viona222@example.com', '$2y$10$3ItTXKRP51NRoKn6NmYoIel27J9BR74vTQaz9S6A2V6CnDps/FIZ2', 1, 45),
-(25, 'wahyu', 'wahyu323@example.com', '$2y$10$5NT41kP5VZREtvYgSmIzE.LXkFCH.wJS6mUI6UAZsmkVzzS11pjje', 0, 95),
-(26, 'xena', 'xena424@example.com', '$2y$10$ES5wX5CjBaP4Ph3QrFgKSeK4kGtrIzfy9UOVNsytAMnJgq2P20AzO', 1, 66),
-(27, 'yusuf', 'yusuf525@example.com', '$2y$10$VWoz.RVJpCSf4Cu3SLjw0OU4d30.mR7hJ80JPZkSAYtjq6aBPnIf2', 0, 60),
-(28, 'zara', 'zara626@example.com', '$2y$10$Z8UlIsuMH78yyo1IY7ZmA.5btynOqQ9AIjqS6L1AsLdRrQ3OAL7G6', 1, 33),
-(29, 'niko', 'niko727@example.com', '$2y$10$CH3QIRZ93LJ0pIoMkp1CNO8DCPuXyfjS8A5n51k9t/JcHqkM8DZWa', 0, 70),
-(30, 'lara', 'lara828@example.com', '$2y$10$tTqvCN.b5OdYKP9KnWGE8O5HGRIlvNaMd7U75Qp3ptPhRJ8cwtsXK', 1, 120),
-(31, 'reza', 'reza929@example.com', '$2y$10$ZxIrc5B1zCBfLbFHHjXjWuCVFxzmOBhXlPTp2KlZ8ZBquVjfyTJvC', 0, 105),
-(32, 'riki', '23@students.uii.ac.id', '$2y$10$SZ8nDt5tFo/Hqlr9Idb0Du7.PXLR3T7xgoJ/Bju5nhk9p2Mx1mC8y', 0, 0),
-(33, 'apa', 'apa@gmail.com', '$2y$10$1zZiVqZ0vjL0Zuar7oD9HOW7GEv.x5uII5.zzdinBoqhNIzrgjJHi', 0, 0),
-(34, 'rikii', 'rikii@gmail.com', '$2y$10$TV7viFiYPmb3VCYFz0tOeOMa6M43LaYJ7NXFXCVI8Q0jbosUY.Zme', 1, 0),
-(35, 'tes1', 'tes1@gmail.com', '$2y$10$FGvlDpNAqhTSYNZDlY9oeOH8f5phQj6Vqi3Us5b5u.AZu90n.eH7m', 1, 0),
-(36, 'tes2', 'tes2@gmail.com', '$2y$10$EGN1iDu8XTDALfqAJmkPI.uC3BymhRoOo/8ZgnnjghoAFoRieBKi.', 1, 0);
+INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `is_premium`, `xp_total`, `role`) VALUES
+(1, 'ikhsan', 'ikhsan987@example.com', '$2y$10$frhE86R1IJIi2TNqcZl7Yerv0o2XdiHRk6.W.9sgvznutc8Ba3Q8O', 0, 0, 'user'),
+(2, 'adil', 'adil678@example.com', '$2y$10$ExxVsZgT7dVhw4pnqV3gQOKtGhiCV3oMbpw1G1OZ/6UVETx2jp1h6', 0, 0, 'user'),
+(3, 'alif', 'alif101@example.com', '$2y$10$zAcR7V8vSRJPaD0MKOUHy.sV7vPOgn5RT28zInuUXQUe.kGfNeMfu', 0, 0, 'user'),
+(4, 'bintang', 'bintang202@example.com', '$2y$10$kD0m5bb6Ebz7f9aZk8AG2ehKHiIib7RuQrrAkM1oWBo7kaUgXak32', 1, 50, 'user'),
+(5, 'cindy', 'cindy303@example.com', '$2y$10$L3rZxQ0HyoNH9jcKk57Vfeh2skPb1VuKn3V57TMrxbRLlIYOwG7fC', 0, 120, 'user'),
+(6, 'dika', 'dika404@example.com', '$2y$10$uIvXT6BZwGZdeyaRJx.CyOdZHyKzKCRVpKg78y7JpBy/NaqWaYz2u', 1, 70, 'user'),
+(7, 'elsa', 'elsa505@example.com', '$2y$10$g5K/f0FB6C7lXB6PaNz9e.i9KeUyol6rbEk5uXQ8hv2OQ.y2EAtfW', 0, 15, 'user'),
+(8, 'ferdi', 'ferdi606@example.com', '$2y$10$g3xxM1HUCcexYZqP8V0iP.lKYKp9nmHEos9KhYqQKyf3hCo9tGCYG', 1, 100, 'user'),
+(9, 'gina', 'gina707@example.com', '$2y$10$IB4QtzExMFKNL9khfUY1lu0nd32bcZnW5pASaTbrR4zCW.6fHjE.q', 0, 40, 'user'),
+(10, 'hadi', 'hadi808@example.com', '$2y$10$J3On/N9T8ZBkLgA7A/epdOtBdMldVqSvU3pM.mjEw.q2z6YVOi1VO', 1, 60, 'user'),
+(11, 'intan', 'intan909@example.com', '$2y$10$zA9.ZYNY5d9ORn2MywBv2OTcPov9CrQyTIShppPzvjPP7yZxzOQuG', 0, 30, 'user'),
+(12, 'jack', 'jack010@example.com', '$2y$10$Z54Tqb/dGB.ZZ9RCfqzHQeNHuOl7UghvAfRA0sZxB2T9Pz/UBG2Bi', 1, 80, 'user'),
+(13, 'karen', 'karen111@example.com', '$2y$10$Z.kXkZxWTvntRAcmDAtFg.N0M.IGj9cRZghwEXynsLRKd8UQeNzK2', 0, 55, 'user'),
+(14, 'lisa', 'lisa212@example.com', '$2y$10$B2t30TSXcSuqflSpXyyr..ZGvjg2cZSnM2PL6KH9Xy5CEoF1ccrpW', 0, 90, 'user'),
+(15, 'miko', 'miko313@example.com', '$2y$10$gr8VqLUgUOjNQ6WUXS4Oa.OOwdLuN19jRISeBJcGJ8Mdc7J0zgbhe', 0, 110, 'user'),
+(16, 'nina', 'nina414@example.com', '$2y$10$M.VNhmWmW8gQ8Bd/ZGP68eh9CmX9NLXUBITWxltrA3nA9aRYjw1aa', 1, 0, 'user'),
+(17, 'okta', 'okta515@example.com', '$2y$10$yFt68mc9zvvVr2Rrbf.0u.fDbLk6dEyAyZwTzZPThY93NAAeaD8Ae', 0, 65, 'user'),
+(18, 'putra', 'putra616@example.com', '$2y$10$AAN0jdzZhRxLHZBt1dGuKO2ySkO49duKLFwFGZfPF2qb1aqLD9wA.', 1, 20, 'user'),
+(19, 'qiana', 'qiana717@example.com', '$2y$10$zDHL9K/1u7Y1Avz8Zj4pduWc7R/OvjW98YZ6qlYaRAUxnWrCq8K3e', 0, 35, 'user'),
+(20, 'rafa', 'rafa818@example.com', '$2y$10$QGQ/x7rhNDnRMCRcAcxUeOBkKzMLb5LUYNgZCU2lH0QmDkGIfszM.', 1, 140, 'user'),
+(21, 'salsa', 'salsa919@example.com', '$2y$10$tI7Q.JFu02IRBWYbqFykYexkqcbWWMP0Ai8NU1asxjOmKoZOp0mAy', 0, 10, 'user'),
+(22, 'tari', 'tari020@example.com', '$2y$10$QovE37SFSHRAMmSlBLXWHeLR5gVG/qk5nXFTGhT8S2XHgUoTqvs0S', 1, 88, 'user'),
+(23, 'udin', 'udin121@example.com', '$2y$10$TkU8RcE8lZnNQon1ZTu1ie5q6h2BkuvbKD5nK4EF9UED/dCZJdUEu', 0, 77, 'user'),
+(24, 'viona', 'viona222@example.com', '$2y$10$3ItTXKRP51NRoKn6NmYoIel27J9BR74vTQaz9S6A2V6CnDps/FIZ2', 1, 45, 'user'),
+(25, 'wahyu', 'wahyu323@example.com', '$2y$10$5NT41kP5VZREtvYgSmIzE.LXkFCH.wJS6mUI6UAZsmkVzzS11pjje', 0, 95, 'user'),
+(26, 'xena', 'xena424@example.com', '$2y$10$ES5wX5CjBaP4Ph3QrFgKSeK4kGtrIzfy9UOVNsytAMnJgq2P20AzO', 1, 66, 'user'),
+(27, 'yusuf', 'yusuf525@example.com', '$2y$10$VWoz.RVJpCSf4Cu3SLjw0OU4d30.mR7hJ80JPZkSAYtjq6aBPnIf2', 0, 60, 'user'),
+(28, 'zara', 'zara626@example.com', '$2y$10$Z8UlIsuMH78yyo1IY7ZmA.5btynOqQ9AIjqS6L1AsLdRrQ3OAL7G6', 1, 33, 'user'),
+(29, 'niko', 'niko727@example.com', '$2y$10$CH3QIRZ93LJ0pIoMkp1CNO8DCPuXyfjS8A5n51k9t/JcHqkM8DZWa', 0, 70, 'user'),
+(30, 'lara', 'lara828@example.com', '$2y$10$tTqvCN.b5OdYKP9KnWGE8O5HGRIlvNaMd7U75Qp3ptPhRJ8cwtsXK', 1, 120, 'user'),
+(31, 'reza', 'reza929@example.com', '$2y$10$ZxIrc5B1zCBfLbFHHjXjWuCVFxzmOBhXlPTp2KlZ8ZBquVjfyTJvC', 0, 105, 'user'),
+(32, 'riki', '23@students.uii.ac.id', '$2y$10$SZ8nDt5tFo/Hqlr9Idb0Du7.PXLR3T7xgoJ/Bju5nhk9p2Mx1mC8y', 0, 0, 'user'),
+(33, 'apa', 'apa@gmail.com', '$2y$10$1zZiVqZ0vjL0Zuar7oD9HOW7GEv.x5uII5.zzdinBoqhNIzrgjJHi', 0, 0, 'user'),
+(34, 'rikii', 'rikii@gmail.com', '$2y$10$TV7viFiYPmb3VCYFz0tOeOMa6M43LaYJ7NXFXCVI8Q0jbosUY.Zme', 1, 0, 'user'),
+(35, 'tes1', 'tes1@gmail.com', '$2y$10$FGvlDpNAqhTSYNZDlY9oeOH8f5phQj6Vqi3Us5b5u.AZu90n.eH7m', 1, 0, 'user'),
+(36, 'tes2', 'tes2@gmail.com', '$2y$10$EGN1iDu8XTDALfqAJmkPI.uC3BymhRoOo/8ZgnnjghoAFoRieBKi.', 1, 0, 'user'),
+(37, 'tes3', 'tes3@gmail.com', '$2y$10$9D6StVfEuQln/cQcCdOxxeVpjFZzzUMN.KiQkYrTo92krupwMr.VK', 1, 0, 'user'),
+(38, 'wasabi', 'wasabi@admin.com', '$2y$10$gnhbpjywPcTH7LbKwdVN7.udAW2c.wOXmgNCb2HoGlObyxJ.dEhwm', 0, 0, 'admin'),
+(39, 'wasabima', 'wasabi@manager.com', '$2y$10$1Ibv.tSN5xorGtRu1CIfD.kypzVvD7nmeueIKN9K9HwWmVjvbYlqu', 0, 0, 'manager');
 
 -- --------------------------------------------------------
 
@@ -399,6 +462,13 @@ ALTER TABLE `llm_model`
   ADD PRIMARY KEY (`model_id`);
 
 --
+-- Indexes for table `materi_bank`
+--
+ALTER TABLE `materi_bank`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `admin_id` (`admin_id`);
+
+--
 -- Indexes for table `payments`
 --
 ALTER TABLE `payments`
@@ -467,7 +537,7 @@ ALTER TABLE `category`
 -- AUTO_INCREMENT for table `chat_messages`
 --
 ALTER TABLE `chat_messages`
-  MODIFY `message_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `message_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `llm_generatedcontent`
@@ -488,10 +558,16 @@ ALTER TABLE `llm_model`
   MODIFY `model_id` int NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `materi_bank`
+--
+ALTER TABLE `materi_bank`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `question`
@@ -515,7 +591,7 @@ ALTER TABLE `recommendation`
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `user_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `useranswer`
@@ -558,6 +634,12 @@ ALTER TABLE `llm_generatedcontent`
 ALTER TABLE `llm_interactionlog`
   ADD CONSTRAINT `llm_interactionlog_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   ADD CONSTRAINT `llm_interactionlog_ibfk_2` FOREIGN KEY (`model_id`) REFERENCES `llm_model` (`model_id`);
+
+--
+-- Constraints for table `materi_bank`
+--
+ALTER TABLE `materi_bank`
+  ADD CONSTRAINT `materi_bank_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints for table `payments`
