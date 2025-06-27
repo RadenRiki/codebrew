@@ -751,7 +751,11 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
         <div class="user-profile-container">
             <!-- User greeting (demo data) -->
             <span class="greeting">
-                Halo, John Doe!
+                <?php if (isset($_SESSION['username'])): ?>
+                <span class="greeting">
+                    Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                </span>
+                <?php endif; ?>
             </span>
 
             <!-- Profile button with dropdown -->
@@ -763,7 +767,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                 </div>
                 
                 <div class="profile-dropdown" id="profileDropdown">            
-                    <a href="../profile/index.php" class="dropdown-item">
+                    <a href="../homepage/profile.php" class="dropdown-item">
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
