@@ -12,7 +12,6 @@ $orderNumber = $conn->real_escape_string($_POST['order_number']);
 // 1) Tandai payment sebagai completed
 $stmt = $conn->prepare("
     UPDATE payments
-    SET amount = '100.000'
     SET payment_status = 'completed'
     WHERE user_id = ? AND order_number = ?
 ");
