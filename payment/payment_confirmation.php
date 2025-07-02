@@ -333,6 +333,7 @@ $stmt->close();
                   <p><strong>No. Pesanan:</strong> <?php echo $orderNumber; ?></p>
                   <p><strong>Produk:</strong> PINTAR Premium</p>
                   <p><strong>Status:</strong> <span style="color:#7dffaa;">Aktif</span></p>
+                  <p><strong>Jumlah Pembayaran:</strong> 100.000 </p>
                 </div>
                 <p>Terima kasih telah berlangganan PINTAR Premium!</p>
               `,

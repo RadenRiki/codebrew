@@ -742,6 +742,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             <ul>
                 <li><a href="../homepage/index.php">Beranda</a></li>
                 <li><a href="../bank_materi/belajar.php" class="active">Belajar</a></li>
+                <li><a href="#">Kuis</a></li>
                 <li><a href="ranking.php">Ranking</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
             </ul>
