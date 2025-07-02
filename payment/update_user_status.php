@@ -4,21 +4,22 @@ if (!isset($_SESSION['username'])) {
     header('Location: login.php');
     exit;
 }
-require_once '../connection.php';        // pastikan ini define $conn = mysqli_connect(...)
+require_once '../connection.php';
 
 $userId      = intval($_POST['user_id']);
 $orderNumber = $conn->real_escape_string($_POST['order_number']);
+$amount      = 100000.00; // atau ambil dari POST jika dikirim
 
-// 1) Tandai payment sebagai completed
+// 1) Update payment dengan amount dan status completed
 $stmt = $conn->prepare("
     UPDATE payments
-    SET payment_status = 'completed'
+    SET payment_status = 'completed', amount = ?
     WHERE user_id = ? AND order_number = ?
 ");
-$stmt->bind_param("is", $userId, $orderNumber);
+$stmt->bind_param("dis", $amount, $userId, $orderNumber);
 if (!$stmt->execute()) {
     http_response_code(500);
-    echo "Error updating payment: ".$stmt->error;
+    echo json_encode(['success' => false, 'message' => 'Error updating payment: '.$stmt->error]);
     exit;
 }
 $stmt->close();
@@ -32,9 +33,10 @@ $stmt = $conn->prepare("
 $stmt->bind_param("i", $userId);
 if (!$stmt->execute()) {
     http_response_code(500);
-    echo "Error updating user: ".$stmt->error;
+    echo json_encode(['success' => false, 'message' => 'Error updating user: '.$stmt->error]);
     exit;
 }
 $stmt->close();
 
 echo json_encode(['success' => true]);
+?>
