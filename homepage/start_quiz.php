@@ -7,10 +7,16 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 require_once '../connection.php';
+// require_once 'groq_api.php'; // Include file groq_api.php
+require_once __DIR__ . '/openai_api.php';
+
+// // Debug - hapus setelah selesai
+// error_log('=== START QUIZ DEBUG ===');
+// error_log('GEMINI_API_KEY defined: ' . (defined('GEMINI_API_KEY') ? 'YES' : 'NO'));
+// error_log('GEMINI_API_KEY empty: ' . (empty(GEMINI_API_KEY) ? 'YES' : 'NO'));
 
 $user_id = $_SESSION['user_id'];
 
-// Ambil data user untuk cek status premium
 // Ambil data user untuk cek status premium
 $stmt_user = $conn->prepare("SELECT username, is_premium, xp_total FROM user WHERE user_id = ?");
 $stmt_user->bind_param("i", $user_id);
@@ -18,13 +24,13 @@ $stmt_user->execute();
 $result_user = $stmt_user->get_result();
 $user_data = $result_user->fetch_assoc();
 $is_premium_user = $user_data['is_premium'] ?? 0;
-$current_xp = $user_data['xp_total'] ?? 0; // Ganti xp menjadi xp_total
+$current_xp = $user_data['xp_total'] ?? 0;
 $stmt_user->close();
 
 $quiz_id = isset($_GET['quiz_id']) ? (int)$_GET['quiz_id'] : 0;
 
 if ($quiz_id === 0) {
-    header('Location: kuis.php'); // Redirect jika quiz_id tidak valid
+    header('Location: kuis.php');
     exit;
 }
 
@@ -54,7 +60,8 @@ $questions = [];
 $quiz_completed = false;
 $score_summary = [];
 $user_answers = [];
-$correct_answers_map = []; // Map untuk menyimpan jawaban benar dari DB
+$correct_answers_map = [];
+$explanations = []; // Array untuk menyimpan penjelasan
 
 // Proses submit kuis
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
@@ -63,7 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     $wrong_count = 0;
     $unanswered_count = 0;
     $total_points_earned = 0;
-    $points_per_question = 10; // Poin per soal benar
+    $points_per_question = 10;
 
     // Ambil semua pertanyaan dan jawaban benar dari database untuk kuis ini
     $stmt_all_questions = $conn->prepare("
@@ -91,9 +98,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     }
     $stmt_all_questions->close();
 
+    // Proses jawaban user dan generate penjelasan
     foreach ($questions_with_answers as $q_id => $q_data) {
         $user_selected_answer_id = isset($_POST['question_' . $q_id]) ? (int)$_POST['question_' . $q_id] : null;
-        $user_answers[$q_id] = $user_selected_answer_id; // Simpan jawaban user
+        $user_answers[$q_id] = $user_selected_answer_id;
 
         $is_correct_answer = false;
         if ($user_selected_answer_id !== null) {
@@ -110,6 +118,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         } else {
             $wrong_count++;
         }
+
+        // Generate penjelasan untuk setiap pertanyaan
+        if ($user_selected_answer_id !== null || isset($correct_answers_map[$q_id])) {
+            $correct_answer_text = '';
+            $user_answer_text = '';
+            
+            // Cari teks jawaban yang benar
+            foreach ($q_data['answers'] as $answer) {
+                if ($answer['answer_id'] == $correct_answers_map[$q_id]) {
+                    $correct_answer_text = $answer['answer_text'];
+                }
+                if ($user_selected_answer_id !== null && $answer['answer_id'] == $user_selected_answer_id) {
+                    $user_answer_text = $answer['answer_text'];
+                }
+            }
+            
+            // Panggil API Groq untuk mendapatkan penjelasan
+            $explanation = get_explanation_from_groq(
+                $q_data['question_text'],
+                $correct_answer_text,
+                $user_answer_text,
+                $is_correct_answer
+            );
+            
+            $explanations[$q_id] = $explanation;
+        }
     }
 
     $score_summary = [
@@ -121,7 +155,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     ];
 
     // Simpan nilai tertinggi
-    // Dapatkan nilai tertinggi sebelumnya untuk kuis ini oleh user ini
     $stmt_get_high_score = $conn->prepare("SELECT score FROM user_quiz_scores WHERE user_id = ? AND quiz_id = ?");
     $stmt_get_high_score->bind_param("ii", $user_id, $quiz_id);
     $stmt_get_high_score->execute();
@@ -133,7 +166,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     $stmt_get_high_score->close();
 
     if ($total_points_earned > $previous_high_score) {
-        // Update atau insert nilai tertinggi baru
         $stmt_update_score = $conn->prepare("
             INSERT INTO user_quiz_scores (user_id, quiz_id, score, completed_at)
             VALUES (?, ?, ?, NOW())
@@ -144,11 +176,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         $stmt_update_score->close();
     }
 
-    // Update XP user (placeholder)
-    // Ini akan diimplementasikan lebih lanjut untuk XP dan ranking
-   // Update XP user
-    $new_xp = $current_xp + $total_points_earned; // Ganti xp menjadi xp_total
-    $stmt_update_xp = $conn->prepare("UPDATE user SET xp_total = ? WHERE user_id = ?"); // Ganti xp menjadi xp_total
+    // Update XP user
+    $new_xp = $current_xp + $total_points_earned;
+    $stmt_update_xp = $conn->prepare("UPDATE user SET xp_total = ? WHERE user_id = ?");
     $stmt_update_xp->bind_param("ii", $new_xp, $user_id);
     $stmt_update_xp->execute();
     $stmt_update_xp->close();
@@ -207,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             background: linear-gradient(180deg, var(--darker), var(--dark));
             color: var(--light);
             min-height: 100vh;
-            padding-top: 100px; /* Adjust for fixed header */
+            padding-top: 100px;
         }
 
         .quiz-container {
@@ -280,7 +310,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
 
         .options-list input[type="radio"] {
             margin-right: 10px;
-            accent-color: var(--primary-light); /* Warna radio button */
+            accent-color: var(--primary-light);
         }
 
         .quiz-actions {
@@ -304,7 +334,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             box-shadow: 0 10px 20px rgba(163, 103, 220, 0.3);
         }
 
-        /* Quiz Result Summary */
         .quiz-summary {
             background: rgba(93, 46, 142, 0.3);
             border-radius: 10px;
@@ -617,8 +646,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
                         </ul>
                         <div class="explanation">
                             <strong>Penjelasan:</strong>
-                            <!-- Placeholder for Groq API explanation -->
-                            <p>Penjelasan untuk jawaban ini akan segera tersedia melalui AI.</p>
+                            <p><?php echo isset($explanations[$q_id]) ? nl2br(htmlspecialchars($explanations[$q_id])) : 'Penjelasan tidak tersedia.'; ?></p>
                         </div>
                     </div>
                 <?php endforeach; ?>
@@ -660,22 +688,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             <div class="footer-col">
                 <h3>COMPANY</h3>
                 <ul>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Help Center</a></li>
-                    <li><a href="#">Pricing</a></li>
-                </ul>
-            </div>
-
-            <div class="footer-col">
-                <h3>LANGUAGE</h3>
-                <ul>
-                    <li><a href="#">HTML</a></li>
-                    <li><a href="#">CSS</a></li>
-                    <li><a href="#">JavaScript</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">PHP</a></li>
-                    <li><a href="#">MySQL</a></li>
                 </ul>
             </div>
 
