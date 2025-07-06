@@ -317,11 +317,11 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
         <div class="content-header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <h1>Kelola Bank Materi</h1>
+                    <h1>Kelola Pengguna</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Bank Materi</li>
+                            <li class="breadcrumb-item active" aria-current="page">Pengguna</li>
                         </ol>
                     </nav>
                 </div>
