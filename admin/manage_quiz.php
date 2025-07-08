@@ -14,6 +14,29 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // Include database connection
 include_once '../connection.php';
 
+// Fungsi untuk menghitung ulang dan memperbarui total_questions di tabel quizzes
+function updateQuizTotalQuestions($conn, $quiz_id) {
+    // Pastikan quiz_id valid
+    if (!$quiz_id) {
+        return;
+    }
+
+    $total_questions = 0;
+
+    $stmt_count = $conn->prepare("SELECT COUNT(*) FROM questions WHERE quiz_id = ?");
+    $stmt_count->bind_param("i", $quiz_id);
+    $stmt_count->execute();
+    $stmt_count->bind_result($total_questions);
+    $stmt_count->fetch();
+    $stmt_count->close();
+
+    $stmt_update = $conn->prepare("UPDATE quizzes SET total_questions = ? WHERE quiz_id = ?");
+    $stmt_update->bind_param("ii", $total_questions, $quiz_id);
+    $stmt_update->execute();
+    $stmt_update->close();
+}
+
+
 // Inisialisasi variabel
 $quiz_id = $language = $topic = '';
 $question_id = $question_text = '';
@@ -116,11 +139,25 @@ if (isset($_POST['submit_quiz'])) {
 // Proses hapus pertanyaan
 if (isset($_GET['delete_question']) && !empty($_GET['delete_question'])) {
     $deleteId = $_GET['delete_question'];
+    
+    // Dapatkan quiz_id dari pertanyaan yang akan dihapus SEBELUM dihapus
+    $target_quiz_id = null;
+    $stmt_get_quiz_id = $conn->prepare("SELECT quiz_id FROM questions WHERE question_id = ?");
+    $stmt_get_quiz_id->bind_param("i", $deleteId);
+    $stmt_get_quiz_id->execute();
+    $stmt_get_quiz_id->bind_result($target_quiz_id);
+    $stmt_get_quiz_id->fetch();
+    $stmt_get_quiz_id->close();
+
     $deleteQuery = "DELETE FROM questions WHERE question_id = ?";
     $stmt = $conn->prepare($deleteQuery);
     $stmt->bind_param("i", $deleteId);
     
     if ($stmt->execute()) {
+        // Panggil fungsi untuk update total_questions setelah penghapusan
+        if ($target_quiz_id) { // Pastikan quiz_id ditemukan
+            updateQuizTotalQuestions($conn, $target_quiz_id);
+        }
         $alert = "Pertanyaan berhasil dihapus beserta jawabannya!";
         $alertType = "success";
     } else {
@@ -174,8 +211,8 @@ if (isset($_POST['submit_question'])) {
     if (empty($quiz_id) || empty($question_text)) {
         $alert = "Kuis dan teks pertanyaan harus diisi!";
         $alertType = "danger";
-    } else if (empty($answer_texts) || count($answer_texts) < 2) { // Minimal 2 jawaban
-        $alert = "Setidaknya harus ada dua pilihan jawaban!";
+    } else if (empty($answer_texts) || count(array_filter($answer_texts, 'trim')) < 2) { // Minimal 2 jawaban non-kosong
+        $alert = "Setidaknya harus ada dua pilihan jawaban yang tidak kosong!";
         $alertType = "danger";
     } else if (empty($correct_answers)) {
         $alert = "Setidaknya satu jawaban benar harus dipilih!";
@@ -223,6 +260,10 @@ if (isset($_POST['submit_question'])) {
             $stmtA->close();
 
             $conn->commit(); // Commit transaksi
+
+            // Panggil fungsi untuk update total_questions setelah penambahan/update pertanyaan
+            updateQuizTotalQuestions($conn, $quiz_id);
+
             $alert = "Pertanyaan dan jawaban berhasil " . ($isEditingQuestion ? "diupdate" : "ditambahkan") . "!";
             $alertType = "success";
             // Reset form
@@ -240,7 +281,7 @@ if (isset($_POST['submit_question'])) {
 
 // Fetch all quizzes for dropdowns and display
 $quizzes_data = [];
-$quizResult = $conn->query("SELECT quiz_id, language, topic, is_premium FROM quizzes ORDER BY language, topic");
+$quizResult = $conn->query("SELECT quiz_id, language, topic, is_premium, total_questions FROM quizzes ORDER BY language, topic");
 if ($quizResult) {
     while ($row = $quizResult->fetch_assoc()) {
         $quizzes_data[] = $row;
@@ -639,6 +680,7 @@ if ($questionResult) {
                                     <th>Bahasa</th>
                                     <th>Topik Kuis</th>
                                     <th>Tipe</th>
+                                    <th>Jumlah Soal</th> <!-- Kolom baru -->
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -666,6 +708,7 @@ if ($questionResult) {
                                             <?php echo ($quiz_row['is_premium'] ? 'Premium' : 'Gratis'); ?>
                                         </span>
                                     </td>
+                                    <td><?php echo htmlspecialchars($quiz_row['total_questions']); ?></td> <!-- Menampilkan jumlah soal -->
                                     <td>
                                         <div class="d-flex gap-1">
                                             <a href="manage_quiz.php?edit_quiz=<?php echo $quiz_row['quiz_id']; ?>" class="btn btn-sm btn-warning table-action-btn">
@@ -724,6 +767,7 @@ if ($questionResult) {
                             <?php foreach ($answers_for_question as $idx => $answer): ?>
                                 <div class="input-group mb-2 answer-item">
                                     <div class="input-group-text">
+                                        <!-- Value checkbox harus sesuai dengan index array answer_text -->
                                         <input class="form-check-input mt-0" type="checkbox" name="is_correct[]" value="<?php echo $idx; ?>" <?php echo $answer['is_correct'] ? 'checked' : ''; ?>>
                                     </div>
                                     <input type="text" class="form-control" name="answer_text[]" placeholder="Teks Jawaban <?php echo $idx + 1; ?>" value="<?php echo htmlspecialchars($answer['answer_text']); ?>" required>
@@ -843,7 +887,12 @@ if ($questionResult) {
             function updateAnswerPlaceholders() {
                 $('#answers-container .answer-item').each(function(index) {
                     $(this).find('input[type="text"]').attr('placeholder', 'Teks Jawaban ' + (index + 1));
-                    $(this).find('input[type="checkbox"]').val(index); // Update value for correct answer index
+                    // Update value for correct answer index. This is crucial for correct_answers[] to work.
+                    // If editing, the checkbox value might already be set from DB, so only update if it's a new field.
+                    if (!$(this).find('input[type="checkbox"]').data('original-value')) { // Check if it's an original loaded value
+                         $(this).find('input[type="checkbox"]').val(index);
+                    }
+                   
                     // Set required for first two answers
                     if (index < minAnswers) {
                         $(this).find('input[type="text"]').prop('required', true);
@@ -854,6 +903,13 @@ if ($questionResult) {
             }
 
             // Initial update for existing answers on edit
+            // Store original values for checkboxes if editing, to prevent re-indexing issues on initial load
+            $('#answers-container .answer-item').each(function(index) {
+                let checkbox = $(this).find('input[type="checkbox"]');
+                if (checkbox.is(':checked')) {
+                    checkbox.data('original-value', checkbox.val());
+                }
+            });
             updateAnswerPlaceholders();
 
             $('#add-answer-btn').on('click', function() {

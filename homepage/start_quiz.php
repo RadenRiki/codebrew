@@ -176,6 +176,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         $stmt_update_score->close();
     }
 
+    // Simpan setiap percobaan kuis ke tabel quiz_attempts
+    $stmt_save_attempt = $conn->prepare("
+        INSERT INTO quiz_attempts (user_id, quiz_id, score, total_questions, correct_answers)
+        VALUES (?, ?, ?, ?, ?)
+    ");
+    $stmt_save_attempt->bind_param(
+        "iiiii",
+        $user_id,
+        $quiz_id,
+        $total_points_earned, // Atau score_summary['points']
+        $score_summary['total_questions'],
+        $score_summary['correct']
+    );
+    $stmt_save_attempt->execute();
+    $stmt_save_attempt->close();
+
     // Update XP user
     $new_xp = $current_xp + $total_points_earned;
     $stmt_update_xp = $conn->prepare("UPDATE user SET xp_total = ? WHERE user_id = ?");
