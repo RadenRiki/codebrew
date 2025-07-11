@@ -478,6 +478,59 @@ if ($questionResult) {
             box-shadow: 0 5px 15px rgba(93, 46, 142, 0.3);
         }
         
+        /* button ceklis kuis premium */
+        .premium-check {
+            display: flex;
+            align-items: center;
+            border: 2px solid rgb(200, 218, 230); /* border abu-abu */
+            border-radius: 6px;
+            background-color: #f8f9fa;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .premium-check:hover {
+            background-color: #f0f4ff; /* hover lembut */
+        }
+
+        /* Saat checkbox dicentang: border & teks jadi biru */
+        .premium-check input[type="checkbox"]:checked + span {
+            color: #007bff; /* teks biru */
+        }
+
+        .premium-check:has(input[type="checkbox"]:checked) {
+            border-color: #007bff; /* border biru */
+        }
+
+        /* Saat checkbox dicentang, ubah border jadi biru */
+        .premium-check input[type="checkbox"]:checked + span {
+            border-color: #007bff;
+        }
+
+        .premium-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #007bff; 
+            margin-right: 8px;
+            cursor: pointer;
+        }
+
+        .premium-check span {
+            font-size: 1rem;
+            font-weight: 600;
+            color:rgb(77, 160, 212);
+            transition: all 0.3s ease;
+        }
+
+        .premium-note {
+            font-size: 0.9rem;
+            color: #555;
+            font-style: italic;
+            margin-top: 8px;
+            padding-bottom: 10px;
+        }
+        
         /* Table Styles */
         .table {
             border-radius: 8px;
@@ -646,9 +699,13 @@ if ($questionResult) {
                         </div>
                     </div>
                     
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="is_premium" name="is_premium" <?php echo (isset($is_premium) && $is_premium) ? 'checked' : ''; ?>>
-                        <label class="form-check-label" for="is_premium">Kuis Premium (Hanya untuk pengguna premium)</label>
+                    <label class="premium-check">
+                        <input type="checkbox" id="is_premium" name="is_premium" 
+                            <?php echo (isset($is_premium) && $is_premium) ? 'checked' : ''; ?>>
+                        <span>💡 Kuis Premium (Hanya untuk Pengguna Premium)</span>
+                    </label>
+                    <div class="premium-note">
+                        *Jika unggahan kuis ini premium, silakan ceklis tombol di atas.
                     </div>
 
                     <div class="d-flex gap-2">
@@ -788,7 +845,7 @@ if ($questionResult) {
                         <?php endif; ?>
                     </div>
                     <button type="button" id="add-answer-btn" class="btn btn-info btn-sm mb-3"><i class="fas fa-plus"></i> Tambah Pilihan Jawaban</button>
-                    <div class="form-text mb-3">Centang kotak di samping teks jawaban untuk menandai jawaban yang benar.</div>
+                    <div class="form-text mb-3">*Ceklis kotak di samping teks jawaban untuk menandai jawaban yang benar.</div>
 
                     <div class="d-flex gap-2">
                         <button type="submit" name="submit_question" class="btn btn-primary">
