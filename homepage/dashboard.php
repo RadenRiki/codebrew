@@ -677,7 +677,7 @@ new Chart(languageProgressCtx, {
             y: {
                 beginAtZero: true,
                 ticks: {
-                    color: 'var(--light-purple)'
+                    color: 'white'
                 },
                 grid: {
                     color: 'rgba(93, 46, 142, 0.2)'
@@ -685,7 +685,7 @@ new Chart(languageProgressCtx, {
             },
             x: {
                 ticks: {
-                    color: 'var(--light-purple)'
+                    color: 'white'
                 },
                 grid: {
                     color: 'rgba(93, 46, 142, 0.2)'
@@ -697,14 +697,14 @@ new Chart(languageProgressCtx, {
         plugins: {
             legend: {
                 labels: {
-                    color: 'var(--light)'
+                    color: 'white'
                 }
             },
             tooltip: {
                 backgroundColor: 'rgba(26, 11, 46, 0.9)',
-                titleColor: 'var(--light)',
-                bodyColor: 'var(--light-purple)',
-                borderColor: 'var(--primary-light)',
+                titleColor: 'white',
+                bodyColor: 'white',
+                borderColor: 'white',
                 borderWidth: 1
             }
         }
@@ -722,11 +722,11 @@ new Chart(languageProgressCtx, {
                         label: 'Skor Kuis',
                         data: <?php echo json_encode($score_chart_data); ?>,
                         fill: true,
-                        backgroundColor: 'rgba(255, 132, 232, 0.2)', // accent with transparency
-                        borderColor: 'var(--accent)',
+                        backgroundColor: 'rgba(155, 78, 141, 0.2)', // accent with transparency
+                        borderColor: 'rgb(184, 85, 165)',
                         tension: 0.3,
-                        pointBackgroundColor: 'var(--accent)',
-                        pointBorderColor: 'var(--light)',
+                        pointBackgroundColor: 'rgb(159, 90, 146)',
+                        pointBorderColor: 'rgb(199, 76, 176)',
                         pointRadius: 5,
                         pointHoverRadius: 7
                     }]
@@ -739,7 +739,7 @@ new Chart(languageProgressCtx, {
                             beginAtZero: true,
                             max: 100, // Assuming max score is 100
                             ticks: {
-                                color: 'var(--light-purple)'
+                                color: 'white'
                             },
                             grid: {
                                 color: 'rgba(93, 46, 142, 0.2)'
@@ -747,7 +747,7 @@ new Chart(languageProgressCtx, {
                         },
                         x: {
                             ticks: {
-                                color: 'var(--light-purple)'
+                                color: 'white'
                             },
                             grid: {
                                 color: 'rgba(93, 46, 142, 0.2)'
@@ -757,14 +757,14 @@ new Chart(languageProgressCtx, {
                     plugins: {
                         legend: {
                             labels: {
-                                color: 'var(--light)'
+                                color: 'white'
                             }
                         },
                         tooltip: {
                             backgroundColor: 'rgba(26, 11, 46, 0.9)',
-                            titleColor: 'var(--light)',
-                            bodyColor: 'var(--light-purple)',
-                            borderColor: 'var(--accent)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'white',
                             borderWidth: 1
                         }
                     }
