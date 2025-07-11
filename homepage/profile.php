@@ -17,35 +17,26 @@ if (!$conn) {
 
 // Ambil data user dari tabel `user`
 $username = $_SESSION['username'];
-// Menggunakan user_id sebagai primary key untuk update
-$sql = "SELECT user_id, username, email, is_premium, xp_total, role FROM user WHERE username = '$username'";
+$sql = "SELECT * FROM user WHERE username = '$username'";
 $result = mysqli_query($conn, $sql);
-
-// Pastikan user ditemukan
-if (mysqli_num_rows($result) == 0) {
-    // Jika user tidak ditemukan, redirect ke login
-    header('Location: login.php');
-    exit;
-}
-
 $user = mysqli_fetch_assoc($result);
-$user_id = $user['user_id'];
+$user_id = $user['user_id']; // ID user dari tabel user
 
 // Handle update profil
 $success_message = "";
 $error_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
+    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $bio = mysqli_real_escape_string($conn, $_POST['bio']);
 
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $error_message = "Format email tidak valid";
     } else {
-        // Update email saja karena tidak ada kolom full_name dan bio
-        $update_sql = "UPDATE user SET email = '$email' WHERE user_id = '$user_id'";
+        $update_sql = "UPDATE user SET full_name = '$full_name', email = '$email', bio = '$bio' WHERE id = '$user_id'";
         if (mysqli_query($conn, $update_sql)) {
             $success_message = "Profil berhasil diperbarui!";
-            // Refresh data user setelah update
             $result = mysqli_query($conn, $sql);
             $user = mysqli_fetch_assoc($result);
         } else {
@@ -54,47 +45,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
     }
 }
 
-// Ambil statistik kuis dari tabel quiz_attempts
-$stats_sql = "SELECT 
-                COUNT(*) as total_quizzes,
-                SUM(CASE WHEN score >= 70 THEN 1 ELSE 0 END) as passed_quizzes,
-                ROUND(AVG(score), 1) as avg_score,
-                MAX(score) as high_score
-              FROM quiz_attempts 
-              WHERE user_id = '$user_id'";
-$stats_result = mysqli_query($conn, $stats_sql);
-$stats = mysqli_fetch_assoc($stats_result);
-
-// Inisialisasi statistik jika tidak ada data
-if (!$stats || $stats['total_quizzes'] == 0) {
-    $stats = [
-        'total_quizzes' => 0,
-        'passed_quizzes' => 0,
-        'avg_score' => 0,
-        'high_score' => 0
-    ];
-}
-
-// Ambil aktivitas kuis terakhir dari quiz_attempts
-$recent_sql = "SELECT q.topic as quiz_title, qa.score, qa.attempt_date as created_at
-               FROM quiz_attempts qa
-               JOIN quizzes q ON qa.quiz_id = q.quiz_id
-               WHERE qa.user_id = '$user_id'
-               ORDER BY qa.attempt_date DESC
+// Ambil aktivitas kuis terakhir
+$recent_sql = "SELECT q.topic as quiz_title, uq.score, uq.completed_at
+               FROM user_quiz_scores uq
+               JOIN quizzes q ON uq.quiz_id = q.quiz_id
+               WHERE uq.user_id = '$user_id'
+               ORDER BY uq.completed_at DESC
                LIMIT 5";
 
-$recent_result = mysqli_query($conn, $recent_sql);
 
-// Ambil bahasa pemrograman yang sudah dipelajari (berdasarkan kuis yang diambil)
-$languages_sql = "SELECT DISTINCT q.language
-                  FROM quiz_attempts qa
-                  JOIN quizzes q ON qa.quiz_id = q.quiz_id
-                  WHERE qa.user_id = '$user_id'";
-$languages_result = mysqli_query($conn, $languages_sql);
-$learned_languages = [];
-while ($lang = mysqli_fetch_assoc($languages_result)) {
-    $learned_languages[] = $lang['language'];
-}
+$recent_result = mysqli_query($conn, $recent_sql);
 
 mysqli_close($conn);
 ?>
@@ -206,38 +166,6 @@ mysqli_close($conn);
         opacity: 1;
         transform: translateY(0);
       }
-    }
-    
-    .stats-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 3rem;
-    }
-    
-    .stat-card {
-      background: rgba(93, 46, 142, 0.2);
-      border-radius: 15px;
-      padding: 1.5rem;
-      text-align: center;
-      transition: transform 0.3s;
-    }
-    
-    .stat-card:hover {
-      transform: translateY(-5px);
-    }
-    
-    .stat-value {
-      font-size: 2.5rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-      background: var(--gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    
-    .stat-label {
-      color: var(--light-purple);
     }
     
     .recent-activity {
@@ -375,13 +303,13 @@ mysqli_close($conn);
   <div class="stars" id="stars"></div>
 
   <!-- Static star assets -->
-  <img class="star-assets star1" src="../assets/—Pngtree_white light star twinkle light_7487663 1.png" alt="" />
-  <img class="star-assets star2" src="../assets/—Pngtree_white light star twinkle light_7487663 2.png" alt="" />
-  <img class="star-assets star3" src="../assets/—Pngtree_white light star twinkle light_7487663 3.png" alt="" />
-  <img class="star-assets star4" src="../assets/—Pngtree_white light star twinkle light_7487663 4.png" alt="" />
-  <img class="star-assets star5" src="../assets/—Pngtree_white light star twinkle light_7487663 5.png" alt="" />
-  <img class="star-assets star6" src="../assets/—Pngtree_white light star twinkle light_7487663 6.png" alt="" />
-  <img class="star-assets star7" src="../assets/—Pngtree_white light star twinkle light_7487663 7.png" alt="" />
+  <img class="star-assets star1" src="../assets/—Pngtree—white light star twinkle light_7487663 1.png" alt="" />
+  <img class="star-assets star2" src="../assets/—Pngtree—white light star twinkle light_7487663 2.png" alt="" />
+  <img class="star-assets star3" src="../assets/—Pngtree—white light star twinkle light_7487663 3.png" alt="" />
+  <img class="star-assets star4" src="../assets/—Pngtree—white light star twinkle light_7487663 4.png" alt="" />
+  <img class="star-assets star5" src="../assets/—Pngtree—white light star twinkle light_7487663 5.png" alt="" />
+  <img class="star-assets star6" src="../assets/—Pngtree—white light star twinkle light_7487663 6.png" alt="" />
+  <img class="star-assets star7" src="../assets/—Pngtree—white light star twinkle light_7487663 7.png" alt="" />
 
   <!-- Header -->
   <header>
@@ -443,13 +371,8 @@ mysqli_close($conn);
         </div>
         <div class="profile-info">
           <h1 class="profile-name"><?php echo isset($user['full_name']) && !empty($user['full_name']) ? htmlspecialchars($user['full_name']) : htmlspecialchars($username); ?></h1>
-          <div class="profile-username">
-            @<?php echo htmlspecialchars($username); ?> 
-            <?php if (isset($user['is_premium']) && $user['is_premium']): ?>
-              <span class="badge badge-primary"><i class="fas fa-star"></i> PINTAR</span>
-            <?php endif; ?>
-          </div>
-          <p class="profile-bio"><?php echo isset($user['bio']) && !empty($user['bio']) ? htmlspecialchars($user['bio']) : 'Belum ada bio.'; ?></p>
+          <div class="profile-username">@<?php echo htmlspecialchars($username); ?> <?php echo isset($user['is_premium']) && $user['is_premium'] ? '<span class="badge badge-primary"><i class="fas fa-star"></i> PINTAR</span>' : ''; ?></div>
+          <p class="profile-bio"><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : 'Belum ada bio.'; ?></p>
         </div>
       </section>
 
@@ -473,28 +396,6 @@ mysqli_close($conn);
         </div>
       <?php endif; ?>
 
-      <!-- Profile Content - Overview -->
-      <div class="profile-content active" id="overview">
-        <!-- Stats -->
-        <div class="stats-container">
-          <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['total_quizzes']; ?></div>
-            <div class="stat-label">Total Kuis</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['passed_quizzes']; ?></div>
-            <div class="stat-label">Kuis Lulus</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['avg_score']; ?></div>
-            <div class="stat-label">Rata-rata Nilai</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-value"><?php echo $stats['high_score']; ?></div>
-            <div class="stat-label">Nilai Tertinggi</div>
-          </div>
-        </div>
-
         <!-- Recent Activity -->
         <div class="recent-activity">
           <h3 class="activity-title">Aktivitas Terbaru</h3>
@@ -504,7 +405,6 @@ mysqli_close($conn);
               <div class="activity-item">
                 <div>
                   <div class="activity-quiz"><?php echo htmlspecialchars($activity['quiz_title']); ?></div>
-                  <!-- Menampilkan tanggal aktivitas jika ada di database -->
                   <div class="activity-date"><?php echo date('d M Y H:i', strtotime($activity['created_at'])); ?></div>
                 </div>
                 <div class="activity-score"><?php echo $activity['score']; ?></div>
@@ -519,7 +419,6 @@ mysqli_close($conn);
         <div class="recent-activity">
           <h3 class="activity-title">Bahasa Pemrograman</h3>
           <div class="p-3">
-            <!-- Ini masih statis, bisa dibuat dinamis berdasarkan kuis yang diselesaikan -->
             <span class="badge">HTML</span>
             <span class="badge">CSS</span>
             <span class="badge">JavaScript</span>
@@ -564,7 +463,6 @@ mysqli_close($conn);
       <div class="profile-content" id="achievements">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Achievement Cards -->
-          <!-- Ini masih statis, perlu logika untuk menampilkan achievement yang sudah didapat -->
           <div class="stat-card flex items-center p-6">
             <div class="mr-4 text-4xl text-purple-500">
               <i class="fas fa-trophy"></i>
@@ -716,7 +614,7 @@ mysqli_close($conn);
           }).then((result) => {
             if (result.isConfirmed) {
               // Redirect to premium signup
-              window.location.href = 'premium.php'; // Anda perlu membuat halaman premium.php
+              window.location.href = 'premium.php';
             }
           });
         });
@@ -758,3 +656,4 @@ mysqli_close($conn);
   </script>
 </body>
 </html>
+
