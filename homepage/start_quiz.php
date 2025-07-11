@@ -520,70 +520,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     <img class="star-assets star6" src="../assets/—Pngtree—white light star twinkle light_7487663 6.png" alt="" />
     <img class="star-assets star7" src="../assets/—Pngtree—white light star twinkle light_7487663 7.png" alt="" />
 
-    <header>
-        <!-- Logo -->
-        <a href="index.php" class="logo">
-            <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
-        </a>
-
-        <!-- Navigasi -->
-        <nav>
-            <ul>
-                <li><a href="index.php">Beranda</a></li>
-                <li><a href="../bank_materi/belajar.php">Belajar</a></li>
-                <li><a href="kuis.php" class="active">Kuis</a></li>
-                <li><a href="ranking.php">Ranking</a></li>
-                <li><a href="dashboard.php">Dashboard</a></li>
-                <?php if ($is_premium_user): ?>
-                    <li><span class="premium-badge-nav">PREMIUM</span></li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-
-        <!-- User greeting and profile button -->
-        <div class="user-profile-container">
-            <?php if (isset($_SESSION['username'])): ?>
-                <span class="greeting">
-                    Halo, <?php echo htmlspecialchars($user_data['username']); ?>!
-                    <?php if ($is_premium_user): ?>
-                        <span class="premium-indicator">⭐</span>
-                    <?php endif; ?>
-                </span>
-            <?php endif; ?>
-
-            <!-- Profile button with dropdown -->
-            <div class="profile-menu">
-                <div class="profile-btn <?php echo $is_premium_user ? 'premium-profile' : ''; ?>" id="profileBtn">
-                    <i class="fas fa-user avatar"></i>
-                    <?php if ($is_premium_user): ?>
-                        <div class="premium-crown">👑</div>
-                    <?php endif; ?>
-                </div>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <?php if ($is_premium_user): ?>
-                        <div class="premium-status">
-                            <i class="fas fa-crown"></i>
-                            <span>Status Premium</span>
-                        </div>
-                        <div class="dropdown-divider"></div>
-                    <?php endif; ?>
-                    <a href="profile.php" class="dropdown-item">
-                        <i class="fas fa-user-circle"></i>
-                        <span>Profil</span>
-                    </a>
-                    <a href="settings.php" class="dropdown-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="../register-login/logout.php" class="dropdown-item logout-item">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </header>
 
     <main class="quiz-container">
         <div class="quiz-header">
@@ -697,24 +633,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             </form>
         <?php endif; ?>
     </main>
-
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3>COMPANY</h3>
-                <ul>
-                </ul>
-            </div>
-
-            <div class="footer-col pintar">
-                <h3>PINTAR</h3>
-                <div class="pintar-badge">Gabung di sini</div>
-            </div>
-        </div>
-
-        <div class="copyright">Copyright ©️ Wasabi 2025</div>
-    </footer>
 
     <!-- JavaScript for Functionality -->
     <script>
