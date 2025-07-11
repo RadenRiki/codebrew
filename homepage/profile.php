@@ -167,6 +167,39 @@ mysqli_close($conn);
         transform: translateY(0);
       }
     }
+
+      .stats-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .stat-card {
+      background: rgba(93, 46, 142, 0.2);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.3s;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-label {
+      color: var(--light-purple);
+    }
+    
     
     .recent-activity {
       background: rgba(93, 46, 142, 0.2);
@@ -377,11 +410,11 @@ mysqli_close($conn);
       </section>
 
       <!-- Profile Tabs -->
-      <div class="profile-tabs">
-        <div class="profile-tab active" data-tab="overview">Ringkasan</div>
-        <div class="profile-tab" data-tab="edit-profile">Edit Profil</div>
-        <div class="profile-tab" data-tab="achievements">Prestasi</div>
-      </div>
+<div class="profile-tabs">
+  <div class="profile-tab" data-tab="overview">Ringkasan</div>
+  <div class="profile-tab active" data-tab="edit-profile">Edit Profil</div>
+  <div class="profile-tab" data-tab="achievements">Prestasi</div>
+</div>
 
       <!-- Success or Error Messages -->
       <?php if (!empty($success_message)): ?>
@@ -395,117 +428,116 @@ mysqli_close($conn);
           <?php echo $error_message; ?>
         </div>
       <?php endif; ?>
+<!-- Profile Content - Overview -->
+<div class="profile-content active" id="overview">
 
-        <!-- Recent Activity -->
-        <div class="recent-activity">
-          <h3 class="activity-title">Aktivitas Terbaru</h3>
-          
-          <?php if (mysqli_num_rows($recent_result) > 0): ?>
-            <?php while ($activity = mysqli_fetch_assoc($recent_result)): ?>
-              <div class="activity-item">
-                <div>
-                  <div class="activity-quiz"><?php echo htmlspecialchars($activity['quiz_title']); ?></div>
-                  <div class="activity-date"><?php echo date('d M Y H:i', strtotime($activity['created_at'])); ?></div>
-                </div>
-                <div class="activity-score"><?php echo $activity['score']; ?></div>
-              </div>
-            <?php endwhile; ?>
-          <?php else: ?>
-            <p class="text-center text-gray-400 py-4">Belum ada aktivitas kuis. Mulai kuis pertamamu sekarang!</p>
-          <?php endif; ?>
-        </div>
-        
-        <!-- Skills -->
-        <div class="recent-activity">
-          <h3 class="activity-title">Bahasa Pemrograman</h3>
-          <div class="p-3">
-            <span class="badge">HTML</span>
-            <span class="badge">CSS</span>
-            <span class="badge">JavaScript</span>
-            <span class="badge">Python</span>
-            <span class="badge">PHP</span>
-            <span class="badge">SQL</span>
-          </div>
-        </div>
+  <!-- Recent Activity -->
+  <div class="recent-activity">
+    <h3 class="activity-title">Aktivitas Terbaru</h3>
 
-        <!-- Join Premium CTA -->
-        <?php if (!isset($user['is_premium']) || !$user['is_premium']): ?>
-          <div class="mt-8 text-center">
-            <p class="text-light-purple mb-4">Tingkatkan pengalaman belajarmu dengan fitur PINTAR!</p>
-            <button class="btn">Gabung PINTAR Sekarang</button>
+    <?php if (mysqli_num_rows($recent_result) > 0): ?>
+      <?php while ($activity = mysqli_fetch_assoc($recent_result)): ?>
+        <div class="activity-item">
+          <div>
+            <div class="activity-quiz"><?php echo htmlspecialchars($activity['quiz_title']); ?></div>
+            <div class="activity-date"><?php echo date('d M Y H:i', strtotime($activity['completed_at'])); ?></div>
           </div>
-        <?php endif; ?>
+          <div class="activity-score"><?php echo $activity['score']; ?></div>
+        </div>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <p class="text-center text-gray-400 py-4">Belum ada aktivitas kuis. Mulai kuis pertamamu sekarang!</p>
+    <?php endif; ?>
+  </div>
+
+  <!-- Skills -->
+  <div class="recent-activity">
+    <h3 class="activity-title">Bahasa Pemrograman</h3>
+    <div class="p-3">
+      <span class="badge">HTML</span>
+      <span class="badge">CSS</span>
+      <span class="badge">JavaScript</span>
+      <span class="badge">Python</span>
+      <span class="badge">PHP</span>
+      <span class="badge">SQL</span>
+    </div>
+  </div>
+
+  <!-- Premium CTA -->
+  <?php if (!isset($user['is_premium']) || !$user['is_premium']): ?>
+    <div class="mt-8 text-center">
+      <p class="text-light-purple mb-4">Tingkatkan pengalaman belajarmu dengan fitur PINTAR!</p>
+      <button class="btn">Gabung PINTAR Sekarang</button>
+    </div>
+  <?php endif; ?>
+
+</div>
+
+
+    <!-- Profile Content - Edit Profile -->
+<div class="profile-content" id="edit-profile">
+  <form class="edit-profile-form" method="POST" action="">
+    <div class="form-group">
+      <label class="form-label" for="full_name">Nama Lengkap</label>
+      <input class="form-input" type="text" id="full_name" name="full_name" value="<?php echo isset($user['full_name']) ? htmlspecialchars($user['full_name']) : ''; ?>" placeholder="Masukkan nama lengkap">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="email">Email</label>
+      <input class="form-input" type="email" id="email" name="email" value="<?php echo isset($user['email']) ? htmlspecialchars($user['email']) : ''; ?>" placeholder="Masukkan email">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="bio">Bio</label>
+      <textarea class="form-input form-textarea" id="bio" name="bio" placeholder="Ceritakan tentang dirimu..."><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : ''; ?></textarea>
+    </div>
+
+    <button type="submit" name="update_profile" class="form-submit">Simpan Perubahan</button>
+  </form>
+</div>
+
+<!-- Profile Content - Achievements -->
+<div class="profile-content" id="achievements">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <div class="stat-card flex items-center p-6">
+      <div class="mr-4 text-4xl text-purple-500">
+        <i class="fas fa-trophy"></i>
       </div>
-
-      <!-- Profile Content - Edit Profile -->
-      <div class="profile-content" id="edit-profile">
-        <form class="edit-profile-form" method="POST" action="">
-          <div class="form-group">
-            <label class="form-label" for="full_name">Nama Lengkap</label>
-            <input class="form-input" type="text" id="full_name" name="full_name" value="<?php echo isset($user['full_name']) ? htmlspecialchars($user['full_name']) : ''; ?>" placeholder="Masukkan nama lengkap">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" for="email">Email</label>
-            <input class="form-input" type="email" id="email" name="email" value="<?php echo isset($user['email']) ? htmlspecialchars($user['email']) : ''; ?>" placeholder="Masukkan email">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label" for="bio">Bio</label>
-            <textarea class="form-input form-textarea" id="bio" name="bio" placeholder="Ceritakan tentang dirimu..."><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : ''; ?></textarea>
-          </div>
-          
-          <button type="submit" name="update_profile" class="form-submit">Simpan Perubahan</button>
-        </form>
-      </div>
-
-      <!-- Profile Content - Achievements -->
-      <div class="profile-content" id="achievements">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <!-- Achievement Cards -->
-          <div class="stat-card flex items-center p-6">
-            <div class="mr-4 text-4xl text-purple-500">
-              <i class="fas fa-trophy"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-white mb-1">Pemula HTML</h3>
-              <p class="text-light-purple">Selesaikan kuis HTML pertamamu</p>
-            </div>
-          </div>
-          
-          <div class="stat-card flex items-center p-6 opacity-50">
-            <div class="mr-4 text-4xl text-purple-500">
-              <i class="fas fa-medal"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-white mb-1">Ninja CSS</h3>
-              <p class="text-light-purple">Dapatkan skor 100 di kuis CSS</p>
-            </div>
-          </div>
-          
-          <div class="stat-card flex items-center p-6 opacity-50">
-            <div class="mr-4 text-4xl text-purple-500">
-              <i class="fas fa-code"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-white mb-1">JavaScript Master</h3>
-              <p class="text-light-purple">Selesaikan semua kuis JavaScript</p>
-            </div>
-          </div>
-          
-          <div class="stat-card flex items-center p-6 opacity-50">
-            <div class="mr-4 text-4xl text-purple-500">
-              <i class="fas fa-fire"></i>
-            </div>
-            <div>
-              <h3 class="text-xl font-semibold text-white mb-1">Streak 7 Hari</h3>
-              <p class="text-light-purple">Menyelesaikan kuis 7 hari berturut-turut</p>
-            </div>
-          </div>
-        </div>
+      <div>
+        <h3 class="text-xl font-semibold text-white mb-1">Pemula HTML</h3>
+        <p class="text-light-purple">Selesaikan kuis HTML pertamamu</p>
       </div>
     </div>
-  </main>
+
+    <div class="stat-card flex items-center p-6 opacity-50">
+      <div class="mr-4 text-4xl text-purple-500">
+        <i class="fas fa-medal"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold text-white mb-1">Ninja CSS</h3>
+        <p class="text-light-purple">Dapatkan skor 100 di kuis CSS</p>
+      </div>
+    </div>
+
+    <div class="stat-card flex items-center p-6 opacity-50">
+      <div class="mr-4 text-4xl text-purple-500">
+        <i class="fas fa-code"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold text-white mb-1">JavaScript Master</h3>
+        <p class="text-light-purple">Selesaikan semua kuis JavaScript</p>
+      </div>
+    </div>
+
+    <div class="stat-card flex items-center p-6 opacity-50">
+      <div class="mr-4 text-4xl text-purple-500">
+        <i class="fas fa-fire"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-semibold text-white mb-1">Streak 7 Hari</h3>
+        <p class="text-light-purple">Menyelesaikan kuis 7 hari berturut-turut</p>
+      </div>
+</main>
 
   <!-- Footer -->
   <footer>
