@@ -698,24 +698,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         <?php endif; ?>
     </main>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-col">
-                <h3>COMPANY</h3>
-                <ul>
-                </ul>
-            </div>
-
-            <div class="footer-col pintar">
-                <h3>PINTAR</h3>
-                <div class="pintar-badge">Gabung di sini</div>
-            </div>
-        </div>
-
-        <div class="copyright">Copyright ©️ Wasabi 2025</div>
-    </footer>
-
     <!-- JavaScript for Functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
