@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     }
     $stmt_all_questions->close();
 
-    // Proses jawaban user dan generate penjelasan
+    // Proses jawaban user TANPA generate penjelasan
     foreach ($questions_with_answers as $q_id => $q_data) {
         $user_selected_answer_id = isset($_POST['question_' . $q_id]) ? (int)$_POST['question_' . $q_id] : null;
         $user_answers[$q_id] = $user_selected_answer_id;
@@ -117,32 +117,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             $unanswered_count++;
         } else {
             $wrong_count++;
-        }
-
-        // Generate penjelasan untuk setiap pertanyaan
-        if ($user_selected_answer_id !== null || isset($correct_answers_map[$q_id])) {
-            $correct_answer_text = '';
-            $user_answer_text = '';
-            
-            // Cari teks jawaban yang benar
-            foreach ($q_data['answers'] as $answer) {
-                if ($answer['answer_id'] == $correct_answers_map[$q_id]) {
-                    $correct_answer_text = $answer['answer_text'];
-                }
-                if ($user_selected_answer_id !== null && $answer['answer_id'] == $user_selected_answer_id) {
-                    $user_answer_text = $answer['answer_text'];
-                }
-            }
-            
-            // Panggil API Groq untuk mendapatkan penjelasan
-            $explanation = get_explanation_from_groq(
-                $q_data['question_text'],
-                $correct_answer_text,
-                $user_answer_text,
-                $is_correct_answer
-            );
-            
-            $explanations[$q_id] = $explanation;
         }
     }
 
@@ -185,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
         "iiiii",
         $user_id,
         $quiz_id,
-        $total_points_earned, // Atau score_summary['points']
+        $total_points_earned,
         $score_summary['total_questions'],
         $score_summary['correct']
     );
@@ -255,6 +229,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             min-height: 100vh;
             padding-top: 100px;
         }
+
+/* Tambahkan CSS ini di start_quiz.php dalam tag <style> */
+
+.explanation p {
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+/* Style untuk tag HTML dalam penjelasan */
+.explanation code {
+    background-color: rgba(163, 103, 220, 0.2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 0.9em;
+    color: #ff84e8;
+    border: 1px solid rgba(163, 103, 220, 0.3);
+    white-space: nowrap;
+}
+
+/* Pastikan list items tidak muncul */
+.explanation p {
+    list-style: none !important;
+}
+
+/* Animasi loading yang lebih smooth */
+.explanation .fa-spinner {
+    color: var(--primary-light);
+    margin-right: 8px;
+}
+
+/* Error state */
+.explanation .text-warning,
+.explanation .text-danger {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Reset any unintended list styling */
+.explanation ul,
+.explanation ol,
+.explanation li {
+    display: inline;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
         .quiz-container {
             max-width: 900px;
@@ -559,50 +580,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             </div>
 
             <!-- Review Soal -->
-            <div class="review-section">
-                <h3>Review Jawaban Anda</h3>
-                <?php foreach ($questions as $q_id => $q_data): 
-                    $user_ans_id = $user_answers[$q_id] ?? null;
-                    $correct_ans_id = $correct_answers_map[$q_id];
-                    
-                    $card_class = 'unanswered';
-                    if ($user_ans_id !== null) {
-                        $card_class = ($user_ans_id === $correct_ans_id) ? 'correct' : 'wrong';
+<div class="review-section">
+    <h3>Review Jawaban Anda</h3>
+    <?php foreach ($questions as $q_id => $q_data): 
+        $user_ans_id = $user_answers[$q_id] ?? null;
+        $correct_ans_id = $correct_answers_map[$q_id];
+        
+        $card_class = 'unanswered';
+        if ($user_ans_id !== null) {
+            $card_class = ($user_ans_id === $correct_ans_id) ? 'correct' : 'wrong';
+        }
+    ?>
+        <div class="review-question-card <?php echo $card_class; ?>">
+            <h4><?php echo htmlspecialchars($q_data['question_text']); ?></h4>
+            <ul class="review-options-list">
+                <?php foreach ($q_data['answers'] as $answer): 
+                    $li_class = '';
+                    $icon = '';
+                    if ($answer['answer_id'] === $correct_ans_id) {
+                        $li_class = 'correct-answer';
+                        $icon = '<i class="fas fa-check icon"></i>';
+                    }
+                    if ($user_ans_id !== null && $answer['answer_id'] === $user_ans_id) {
+                        if ($user_ans_id === $correct_ans_id) {
+                            $li_class = 'user-selected-correct';
+                            $icon = '<i class="fas fa-check icon"></i>';
+                        } else {
+                            $li_class = 'user-selected-wrong';
+                            $icon = '<i class="fas fa-times icon"></i>';
+                        }
                     }
                 ?>
-                    <div class="review-question-card <?php echo $card_class; ?>">
-                        <h4><?php echo htmlspecialchars($q_data['question_text']); ?></h4>
-                        <ul class="review-options-list">
-                            <?php foreach ($q_data['answers'] as $answer): 
-                                $li_class = '';
-                                $icon = '';
-                                if ($answer['answer_id'] === $correct_ans_id) {
-                                    $li_class = 'correct-answer';
-                                    $icon = '<i class="fas fa-check icon"></i>';
-                                }
-                                if ($user_ans_id !== null && $answer['answer_id'] === $user_ans_id) {
-                                    if ($user_ans_id === $correct_ans_id) {
-                                        $li_class = 'user-selected-correct';
-                                        $icon = '<i class="fas fa-check icon"></i>';
-                                    } else {
-                                        $li_class = 'user-selected-wrong';
-                                        $icon = '<i class="fas fa-times icon"></i>';
-                                    }
-                                }
-                            ?>
-                                <li class="<?php echo $li_class; ?>">
-                                    <?php echo htmlspecialchars($answer['answer_text']); ?>
-                                    <?php echo $icon; ?>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
-                        <div class="explanation">
-                            <strong>Penjelasan:</strong>
-                            <p><?php echo isset($explanations[$q_id]) ? nl2br(htmlspecialchars($explanations[$q_id])) : 'Penjelasan tidak tersedia.'; ?></p>
-                        </div>
-                    </div>
+                    <li class="<?php echo $li_class; ?>">
+                        <?php echo htmlspecialchars($answer['answer_text']); ?>
+                        <?php echo $icon; ?>
+                    </li>
                 <?php endforeach; ?>
+            </ul>
+            
+            <!-- Container untuk penjelasan dengan data attributes -->
+            <div class="explanation" 
+                 data-question-id="<?php echo $q_id; ?>"
+                 data-quiz-id="<?php echo $quiz_id; ?>"
+                 data-user-answer-id="<?php echo $user_ans_id; ?>">
+                <strong>Penjelasan:</strong>
+                <p><i class="fas fa-spinner fa-spin"></i> Memuat penjelasan...</p>
             </div>
+        </div>
+    <?php endforeach; ?>
+</div>
         <?php else: ?>
             <!-- Form Kuis -->
             <form method="POST" action="start_quiz.php?quiz_id=<?php echo $quiz_id; ?>">
@@ -636,6 +662,78 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
 
     <!-- JavaScript for Functionality -->
     <script>
+// Tambahkan di bagian JavaScript start_quiz.php setelah quiz selesai
+
+// Fungsi untuk load penjelasan secara asynchronous
+function loadExplanations() {
+    const explanationElements = document.querySelectorAll('.explanation');
+    
+    explanationElements.forEach((element, index) => {
+        const questionId = element.dataset.questionId;
+        const userAnswerId = element.dataset.userAnswerId || null;
+        const quizId = element.dataset.quizId;
+        
+        // Tampilkan loading spinner
+        element.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Memuat penjelasan...</p>';
+        
+        // Delay untuk menghindari overload
+        setTimeout(() => {
+            fetchExplanation(questionId, quizId, userAnswerId, element);
+        }, index * 500); // 500ms delay antar request
+    });
+}
+
+// Fungsi untuk fetch penjelasan dari server
+async function fetchExplanation(questionId, quizId, userAnswerId, element) {
+    try {
+        const formData = new FormData();
+        formData.append('question_id', questionId);
+        formData.append('quiz_id', quizId);
+        if (userAnswerId) {
+            formData.append('user_answer_id', userAnswerId);
+        }
+        
+        const response = await fetch('get_explanation_ajax.php', {
+            method: 'POST',
+            body: formData
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Explanation sudah di-escape di server side
+            // Tinggal wrap tag HTML dengan <code> untuk styling
+            let processedExplanation = data.explanation;
+            
+            // Deteksi dan format tag HTML yang sudah di-escape dengan <code>
+            processedExplanation = processedExplanation.replace(/&lt;(\/?[^&]+?)&gt;/g, '<code>&lt;$1&gt;</code>');
+            
+            element.innerHTML = `
+                <strong>Penjelasan:</strong>
+                <p>${processedExplanation}</p>
+            `;
+        } else {
+            element.innerHTML = `
+                <strong>Penjelasan:</strong>
+                <p class="text-warning">Penjelasan tidak dapat dimuat. ${data.message || ''}</p>
+            `;
+        }
+    } catch (error) {
+        console.error('Error fetching explanation:', error);
+        element.innerHTML = `
+            <strong>Penjelasan:</strong>
+            <p class="text-danger">Terjadi kesalahan saat memuat penjelasan.</p>
+        `;
+    }
+}
+
+// Auto-load explanations saat halaman hasil quiz ditampilkan
+document.addEventListener('DOMContentLoaded', function() {
+    <?php if ($quiz_completed): ?>
+        // Load penjelasan setelah halaman selesai render
+        setTimeout(loadExplanations, 1000);
+    <?php endif; ?>
+});
         document.addEventListener('DOMContentLoaded', function() {
             // === Profile dropdown ===
             const profileBtn = document.getElementById('profileBtn');

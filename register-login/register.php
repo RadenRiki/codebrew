@@ -38,10 +38,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $notif = '⚠️ Username sudah digunakan!';
             }
         } else {
-            // Hash password dan insert data
+            // Hash password dan insert data dengan tanggal bergabung
             $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-            $insert_query = "INSERT INTO user (username, email, password, is_premium, xp_total) 
-                             VALUES ('$username', '$email', '$hashed_password', 0, 0)";
+            $joined_date = date('Y-m-d H:i:s'); // Format datetime untuk MySQL
+            
+            // Update query untuk include joined_date
+            $insert_query = "INSERT INTO user (username, email, password, is_premium, xp_total, joined_date, role) 
+                             VALUES ('$username', '$email', '$hashed_password', 0, 0, '$joined_date', 'user')";
 
             if (mysqli_query($conn, $insert_query)) {
                 echo "<script>alert('✅ Registrasi berhasil! Silakan login.'); window.location.href = '../register-login/login.php';</script>";
@@ -53,7 +56,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="id">
@@ -325,7 +327,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         const email = document.getElementById('email').value.trim();
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
-        const terms = document.getElementById('terms').checked;
 
         // Check empty fields
         if (!username || !email || !password || !confirmPassword) {
@@ -349,11 +350,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Check password match
         if (password !== confirmPassword) {
             alert('⚠️ Password dan konfirmasi tidak cocok!');
-            return false;
-        }
-
-        if (password !== confirmPassword) {
-            alert('⚠️ Password dan konfirmasi tidak cocok!');
             document.getElementById('password').style.borderColor = 'red';
             document.getElementById('confirmPassword').style.borderColor = 'red';
             return false;
@@ -361,6 +357,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             document.getElementById('password').style.borderColor = '';
             document.getElementById('confirmPassword').style.borderColor = '';
         }
+
+        return true;
     }
     </script>
 

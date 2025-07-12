@@ -65,7 +65,8 @@ mysqli_close($conn);
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Profil Saya - CodeBrew</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <link rel="stylesheet" href="index.css">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -77,14 +78,14 @@ mysqli_close($conn);
       margin: 0 auto;
       padding: 2rem;
     }
-    
+
     .profile-header {
       display: flex;
       align-items: center;
       gap: 2rem;
       margin-bottom: 3rem;
     }
-    
+
     .profile-avatar {
       width: 120px;
       height: 120px;
@@ -98,7 +99,7 @@ mysqli_close($conn);
       box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
       border: 3px solid var(--light);
     }
-    
+
     .profile-name {
       font-size: 2.5rem;
       font-weight: 700;
@@ -107,24 +108,24 @@ mysqli_close($conn);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    
+
     .profile-username {
       color: var(--light-purple);
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
-    
+
     .profile-bio {
       color: var(--light);
       max-width: 600px;
     }
-    
+
     .profile-tabs {
       display: flex;
       margin-bottom: 2rem;
       border-bottom: 1px solid rgba(93, 46, 142, 0.3);
     }
-    
+
     .profile-tab {
       padding: 1rem 2rem;
       color: var(--light-purple);
@@ -132,11 +133,11 @@ mysqli_close($conn);
       position: relative;
       transition: color 0.3s;
     }
-    
+
     .profile-tab.active {
       color: var(--light);
     }
-    
+
     .profile-tab.active::after {
       content: '';
       position: absolute;
@@ -147,34 +148,35 @@ mysqli_close($conn);
       background: var(--gradient);
       border-radius: 3px 3px 0 0;
     }
-    
+
     .profile-content {
       display: none;
     }
-    
+
     .profile-content.active {
       display: block;
       animation: fadeIn 0.3s ease;
     }
-    
+
     @keyframes fadeIn {
       from {
         opacity: 0;
         transform: translateY(10px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-      .stats-container {
+    .stats-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1.5rem;
       margin-bottom: 3rem;
     }
-    
+
     .stat-card {
       background: rgba(93, 46, 142, 0.2);
       border-radius: 15px;
@@ -182,11 +184,11 @@ mysqli_close($conn);
       text-align: center;
       transition: transform 0.3s;
     }
-    
+
     .stat-card:hover {
       transform: translateY(-5px);
     }
-    
+
     .stat-value {
       font-size: 2.5rem;
       font-weight: 700;
@@ -195,41 +197,41 @@ mysqli_close($conn);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    
+
     .stat-label {
       color: var(--light-purple);
     }
-    
-    
+
+
     .recent-activity {
       background: rgba(93, 46, 142, 0.2);
       border-radius: 15px;
       padding: 1.5rem;
       margin-bottom: 3rem;
     }
-    
+
     .activity-title {
       font-size: 1.5rem;
       margin-bottom: 1.5rem;
       color: var(--light);
     }
-    
+
     .activity-item {
       display: flex;
       justify-content: space-between;
       padding: 1rem 0;
       border-bottom: 1px solid rgba(93, 46, 142, 0.3);
     }
-    
+
     .activity-item:last-child {
       border-bottom: none;
     }
-    
+
     .activity-quiz {
       color: var(--light);
       font-weight: 500;
     }
-    
+
     .activity-score {
       background: var(--gradient);
       padding: 0.3rem 1rem;
@@ -237,28 +239,28 @@ mysqli_close($conn);
       color: var(--light);
       font-weight: 600;
     }
-    
+
     .activity-date {
       color: var(--light-purple);
       font-size: 0.9rem;
     }
-    
+
     .edit-profile-form {
       background: rgba(93, 46, 142, 0.2);
       border-radius: 15px;
       padding: 2rem;
     }
-    
+
     .form-group {
       margin-bottom: 1.5rem;
     }
-    
+
     .form-label {
       display: block;
       margin-bottom: 0.5rem;
       color: var(--light);
     }
-    
+
     .form-input {
       width: 100%;
       padding: 0.8rem 1rem;
@@ -268,17 +270,17 @@ mysqli_close($conn);
       color: var(--light);
       transition: border-color 0.3s;
     }
-    
+
     .form-input:focus {
       outline: none;
       border-color: var(--primary-light);
     }
-    
+
     .form-textarea {
       min-height: 120px;
       resize: vertical;
     }
-    
+
     .form-submit {
       background: var(--gradient);
       color: var(--light);
@@ -289,7 +291,7 @@ mysqli_close($conn);
       cursor: pointer;
       transition: transform 0.3s, box-shadow 0.3s;
     }
-    
+
     .form-submit:hover {
       transform: translateY(-3px);
       box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
@@ -323,7 +325,7 @@ mysqli_close($conn);
       color: var(--light-purple);
       font-size: 0.9rem;
     }
-    
+
     .badge-primary {
       background: var(--gradient);
       color: var(--light);
@@ -348,7 +350,7 @@ mysqli_close($conn);
   <header>
     <!-- Logo -->
     <a href="index.php" class="logo">
-        <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
+      <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
     </a>
 
     <!-- Navigasi -->
@@ -364,9 +366,9 @@ mysqli_close($conn);
     <!-- User greeting and profile button -->
     <div class="user-profile-container">
       <?php if (isset($_SESSION['username'])): ?>
-        <span class="greeting">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+      <span class="greeting">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
       <?php endif; ?>
-      
+
       <!-- Profile button with dropdown -->
       <div class="profile-menu">
         <div class="profile-btn" id="profileBtn">
@@ -403,141 +405,150 @@ mysqli_close($conn);
           ?>
         </div>
         <div class="profile-info">
-          <h1 class="profile-name"><?php echo isset($user['full_name']) && !empty($user['full_name']) ? htmlspecialchars($user['full_name']) : htmlspecialchars($username); ?></h1>
-          <div class="profile-username">@<?php echo htmlspecialchars($username); ?> <?php echo isset($user['is_premium']) && $user['is_premium'] ? '<span class="badge badge-primary"><i class="fas fa-star"></i> PINTAR</span>' : ''; ?></div>
-          <p class="profile-bio"><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : 'Belum ada bio.'; ?></p>
+          <h1 class="profile-name">
+            <?php echo isset($user['full_name']) && !empty($user['full_name']) ? htmlspecialchars($user['full_name']) : htmlspecialchars($username); ?>
+          </h1>
+          <div class="profile-username">@<?php echo htmlspecialchars($username); ?>
+            <?php echo isset($user['is_premium']) && $user['is_premium'] ? '<span class="badge badge-primary"><i class="fas fa-star"></i> PINTAR</span>' : ''; ?>
+          </div>
+          <p class="profile-bio"><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : 'Belum ada bio.'; ?>
+          </p>
         </div>
       </section>
 
       <!-- Profile Tabs -->
-<div class="profile-tabs">
-  <div class="profile-tab" data-tab="overview">Ringkasan</div>
-  <div class="profile-tab active" data-tab="edit-profile">Edit Profil</div>
-  <div class="profile-tab" data-tab="achievements">Prestasi</div>
-</div>
+      <div class="profile-tabs">
+        <div class="profile-tab active" data-tab="overview">Ringkasan</div>
+        <div class="profile-tab" data-tab="edit-profile">Edit Profil</div>
+        <!-- <div class="profile-tab" data-tab="achievements">Prestasi</div> -->
+      </div>
 
       <!-- Success or Error Messages -->
       <?php if (!empty($success_message)): ?>
-        <div class="alert alert-success">
-          <?php echo $success_message; ?>
-        </div>
+      <div class="alert alert-success">
+        <?php echo $success_message; ?>
+      </div>
       <?php endif; ?>
-      
+
       <?php if (!empty($error_message)): ?>
-        <div class="alert alert-error">
-          <?php echo $error_message; ?>
-        </div>
+      <div class="alert alert-error">
+        <?php echo $error_message; ?>
+      </div>
       <?php endif; ?>
-<!-- Profile Content - Overview -->
-<div class="profile-content active" id="overview">
+      <!-- Profile Content - Overview -->
+      <div class="profile-content active" id="overview">
 
-  <!-- Recent Activity -->
-  <div class="recent-activity">
-    <h3 class="activity-title">Aktivitas Terbaru</h3>
+        <!-- Recent Activity -->
+        <div class="recent-activity">
+          <h3 class="activity-title">Aktivitas Terbaru</h3>
 
-    <?php if (mysqli_num_rows($recent_result) > 0): ?>
-      <?php while ($activity = mysqli_fetch_assoc($recent_result)): ?>
-        <div class="activity-item">
-          <div>
-            <div class="activity-quiz"><?php echo htmlspecialchars($activity['quiz_title']); ?></div>
-            <div class="activity-date"><?php echo date('d M Y H:i', strtotime($activity['completed_at'])); ?></div>
+          <?php if (mysqli_num_rows($recent_result) > 0): ?>
+          <?php while ($activity = mysqli_fetch_assoc($recent_result)): ?>
+          <div class="activity-item">
+            <div>
+              <div class="activity-quiz"><?php echo htmlspecialchars($activity['quiz_title']); ?></div>
+              <div class="activity-date"><?php echo date('d M Y H:i', strtotime($activity['completed_at'])); ?></div>
+            </div>
+            <div class="activity-score"><?php echo $activity['score']; ?></div>
           </div>
-          <div class="activity-score"><?php echo $activity['score']; ?></div>
+          <?php endwhile; ?>
+          <?php else: ?>
+          <p class="text-center text-gray-400 py-4">Belum ada aktivitas kuis. Mulai kuis pertamamu sekarang!</p>
+          <?php endif; ?>
         </div>
-      <?php endwhile; ?>
-    <?php else: ?>
-      <p class="text-center text-gray-400 py-4">Belum ada aktivitas kuis. Mulai kuis pertamamu sekarang!</p>
-    <?php endif; ?>
-  </div>
 
-  <!-- Skills -->
-  <div class="recent-activity">
-    <h3 class="activity-title">Bahasa Pemrograman</h3>
-    <div class="p-3">
-      <span class="badge">HTML</span>
-      <span class="badge">CSS</span>
-      <span class="badge">JavaScript</span>
-      <span class="badge">Python</span>
-      <span class="badge">PHP</span>
-      <span class="badge">SQL</span>
-    </div>
-  </div>
+        <!-- Skills -->
+        <div class="recent-activity">
+          <h3 class="activity-title">Bahasa Pemrograman</h3>
+          <div class="p-3">
+            <span class="badge">HTML</span>
+            <span class="badge">CSS</span>
+            <span class="badge">JavaScript</span>
+            <span class="badge">Python</span>
+            <span class="badge">PHP</span>
+            <span class="badge">SQL</span>
+          </div>
+        </div>
 
-  <!-- Premium CTA -->
-  <?php if (!isset($user['is_premium']) || !$user['is_premium']): ?>
-    <div class="mt-8 text-center">
-      <p class="text-light-purple mb-4">Tingkatkan pengalaman belajarmu dengan fitur PINTAR!</p>
-      <button class="btn">Gabung PINTAR Sekarang</button>
-    </div>
-  <?php endif; ?>
+        <!-- Premium CTA -->
+        <?php if (!isset($user['is_premium']) || !$user['is_premium']): ?>
+        <div class="mt-8 text-center">
+          <p class="text-light-purple mb-4">Tingkatkan pengalaman belajarmu dengan fitur PINTAR!</p>
+          <button class="btn">Gabung PINTAR Sekarang</button>
+        </div>
+        <?php endif; ?>
 
-</div>
-
-
-    <!-- Profile Content - Edit Profile -->
-<div class="profile-content" id="edit-profile">
-  <form class="edit-profile-form" method="POST" action="">
-    <div class="form-group">
-      <label class="form-label" for="full_name">Nama Lengkap</label>
-      <input class="form-input" type="text" id="full_name" name="full_name" value="<?php echo isset($user['full_name']) ? htmlspecialchars($user['full_name']) : ''; ?>" placeholder="Masukkan nama lengkap">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="email">Email</label>
-      <input class="form-input" type="email" id="email" name="email" value="<?php echo isset($user['email']) ? htmlspecialchars($user['email']) : ''; ?>" placeholder="Masukkan email">
-    </div>
-
-    <div class="form-group">
-      <label class="form-label" for="bio">Bio</label>
-      <textarea class="form-input form-textarea" id="bio" name="bio" placeholder="Ceritakan tentang dirimu..."><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : ''; ?></textarea>
-    </div>
-
-    <button type="submit" name="update_profile" class="form-submit">Simpan Perubahan</button>
-  </form>
-</div>
-
-<!-- Profile Content - Achievements -->
-<div class="profile-content" id="achievements">
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-    <div class="stat-card flex items-center p-6">
-      <div class="mr-4 text-4xl text-purple-500">
-        <i class="fas fa-trophy"></i>
       </div>
-      <div>
-        <h3 class="text-xl font-semibold text-white mb-1">Pemula HTML</h3>
-        <p class="text-light-purple">Selesaikan kuis HTML pertamamu</p>
-      </div>
-    </div>
 
-    <div class="stat-card flex items-center p-6 opacity-50">
-      <div class="mr-4 text-4xl text-purple-500">
-        <i class="fas fa-medal"></i>
-      </div>
-      <div>
-        <h3 class="text-xl font-semibold text-white mb-1">Ninja CSS</h3>
-        <p class="text-light-purple">Dapatkan skor 100 di kuis CSS</p>
-      </div>
-    </div>
+      <!-- Profile Content - Edit Profile -->
+      <div class="profile-content" id="edit-profile">
+        <form class="edit-profile-form" method="POST" action="">
+          <div class="form-group">
+            <label class="form-label" for="full_name">Nama Lengkap</label>
+            <input class="form-input" type="text" id="full_name" name="full_name"
+              value="<?php echo isset($user['full_name']) ? htmlspecialchars($user['full_name']) : ''; ?>"
+              placeholder="Masukkan nama lengkap">
+          </div>
 
-    <div class="stat-card flex items-center p-6 opacity-50">
-      <div class="mr-4 text-4xl text-purple-500">
-        <i class="fas fa-code"></i>
-      </div>
-      <div>
-        <h3 class="text-xl font-semibold text-white mb-1">JavaScript Master</h3>
-        <p class="text-light-purple">Selesaikan semua kuis JavaScript</p>
-      </div>
-    </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="email" id="email" name="email"
+              value="<?php echo isset($user['email']) ? htmlspecialchars($user['email']) : ''; ?>"
+              placeholder="Masukkan email">
+          </div>
 
-    <div class="stat-card flex items-center p-6 opacity-50">
-      <div class="mr-4 text-4xl text-purple-500">
-        <i class="fas fa-fire"></i>
+          <div class="form-group">
+            <label class="form-label" for="bio">Bio</label>
+            <textarea class="form-input form-textarea" id="bio" name="bio"
+              placeholder="Ceritakan tentang dirimu..."><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : ''; ?></textarea>
+          </div>
+
+          <button type="submit" name="update_profile" class="form-submit">Simpan Perubahan</button>
+        </form>
       </div>
-      <div>
-        <h3 class="text-xl font-semibold text-white mb-1">Streak 7 Hari</h3>
-        <p class="text-light-purple">Menyelesaikan kuis 7 hari berturut-turut</p>
-      </div>
-</main>
+
+      <!-- Profile Content - Achievements -->
+      <!-- <div class="profile-content" id="achievements">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="stat-card flex items-center p-6">
+            <div class="mr-4 text-4xl text-purple-500">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-1">Pemula HTML</h3>
+              <p class="text-light-purple">Selesaikan kuis HTML pertamamu</p>
+            </div>
+          </div>
+
+          <div class="stat-card flex items-center p-6 opacity-50">
+            <div class="mr-4 text-4xl text-purple-500">
+              <i class="fas fa-medal"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-1">Ninja CSS</h3>
+              <p class="text-light-purple">Dapatkan skor 100 di kuis CSS</p>
+            </div>
+          </div>
+
+          <div class="stat-card flex items-center p-6 opacity-50">
+            <div class="mr-4 text-4xl text-purple-500">
+              <i class="fas fa-code"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-1">JavaScript Master</h3>
+              <p class="text-light-purple">Selesaikan semua kuis JavaScript</p>
+            </div>
+          </div>
+
+          <div class="stat-card flex items-center p-6 opacity-50">
+            <div class="mr-4 text-4xl text-purple-500">
+              <i class="fas fa-fire"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-1">Streak 7 Hari</h3>
+              <p class="text-light-purple">Menyelesaikan kuis 7 hari berturut-turut</p>
+            </div> -->
+  </main>
 
   <!-- Footer -->
   <footer>
@@ -579,35 +590,28 @@ mysqli_close($conn);
     document.addEventListener('DOMContentLoaded', function() {
       const profileBtn = document.getElementById('profileBtn');
       const profileDropdown = document.getElementById('profileDropdown');
-      
       // Toggle dropdown when clicking profile button
       profileBtn.addEventListener('click', function(e) {
         profileDropdown.classList.toggle('show');
         e.stopPropagation();
       });
-      
       // Close dropdown when clicking outside
       document.addEventListener('click', function(e) {
         if (!profileBtn.contains(e.target) && !profileDropdown.contains(e.target)) {
           profileDropdown.classList.remove('show');
         }
       });
-
       // Stars animation
       createStars();
-
       // Tab switching
       const tabs = document.querySelectorAll('.profile-tab');
       const contents = document.querySelectorAll('.profile-content');
-      
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
           const target = tab.dataset.tab;
-          
           // Update active tab
           tabs.forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
-          
           // Show relevant content
           contents.forEach(content => {
             content.classList.remove('active');
@@ -617,7 +621,6 @@ mysqli_close($conn);
           });
         });
       });
-
       // Auto-hide alerts after 5 seconds
       const alerts = document.querySelectorAll('.alert');
       if (alerts.length > 0) {
@@ -629,7 +632,6 @@ mysqli_close($conn);
           });
         }, 5000);
       }
-
       // Sweet Alert for Premium button
       const premiumBtn = document.querySelector('.btn');
       if (premiumBtn) {
@@ -652,40 +654,32 @@ mysqli_close($conn);
         });
       }
     });
-
     // Create animated stars in the background
     function createStars() {
       const starsContainer = document.getElementById('stars');
       const starCount = 150;
-
       for (let i = 0; i < starCount; i++) {
         const star = document.createElement('div');
         star.classList.add('star');
-        
         // Random position
         const posX = Math.random() * 100;
         const posY = Math.random() * 100;
-        
         // Random size
         const size = Math.random() * 3;
-        
         // Random duration
         const duration = 3 + Math.random() * 7;
-        
         // Random delay
         const delay = Math.random() * 5;
-        
         star.style.left = `${posX}%`;
         star.style.top = `${posY}%`;
         star.style.width = `${size}px`;
         star.style.height = `${size}px`;
         star.style.setProperty('--duration', `${duration}s`);
         star.style.animationDelay = `${delay}s`;
-        
         starsContainer.appendChild(star);
       }
     }
   </script>
 </body>
-</html>
 
+</html>
