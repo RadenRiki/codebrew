@@ -1147,21 +1147,17 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             <div class="footer-col">
                 <h3>LANGUAGE</h3>
                 <ul>
-                    <li><a href="bank_materi.php?kategori=HTML">HTML</a></li>
-                    <li><a href="bank_materi.php?kategori=CSS">CSS</a></li>
-                    <li><a href="bank_materi.php?kategori=JavaScript">JavaScript</a></li>
-                    <li><a href="bank_materi.php?kategori=Python">Python</a></li>
-                    <li><a href="bank_materi.php?kategori=PHP">PHP</a></li>
-                    <li><a href="bank_materi.php?kategori=MySQL">MySQL</a></li>
+                    <li><a href="../bank_materi/belajar.php">HTML</a></li>
+                    <li><a href="../bank_materi/belajar.php">CSS</a></li>
+                    <li><a href="../bank_materi/belajar.php">JavaScript</a></li>
+                    <li><a href="../bank_materi/belajar.php">Python</a></li>
+                    <li><a href="../bank_materi/belajar.php">PHP</a></li>
+                    <li><a href="../bank_materi/belajar.php">MySQL</a></li>
                 </ul>
             </div>
-            <div class="footer-col">
+            <div class="footer-col pintar">
                 <h3>PINTAR</h3>
-                <ul>
-                    <li><a href="../quiz/index.php">Kuis Gratis</a></li>
-                    <li><a href="../premium/index.php">Paket Premium</a></li>
-                    <li><a href="../dashboard/index.php">Dashboard Belajar</a></li>
-                </ul>
+                <a href="../payment/premium.php" class="pintar-badge">Gabung di sini</a>
             </div>
         </div>
         <div class="copyright">Copyright ©️ CodeBrew 2025</div>

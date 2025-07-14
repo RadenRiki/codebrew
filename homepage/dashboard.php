@@ -639,18 +639,18 @@ $stmt_user_rank->close();
             <div class="footer-col">
                 <h3>LANGUAGE</h3>
                 <ul>
-                    <li><a href="#">HTML</a></li>
-                    <li><a href="#">CSS</a></li>
-                    <li><a href="#">JavaScript</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">PHP</a></li>
-                    <li><a href="#">MySQL</a></li>
+                    <li><a href="../bank_materi/belajar.php">HTML</a></li>
+                    <li><a href="../bank_materi/belajar.php">CSS</a></li>
+                    <li><a href="../bank_materi/belajar.php">JavaScript</a></li>
+                    <li><a href="../bank_materi/belajar.php">Python</a></li>
+                    <li><a href="../bank_materi/belajar.php">PHP</a></li>
+                    <li><a href="../bank_materi/belajar.php">MySQL</a></li>
                 </ul>
             </div>
 
             <div class="footer-col pintar">
                 <h3>PINTAR</h3>
-                <div class="pintar-badge">Gabung di sini</div>
+                <a href="../payment/premium.php" class="pintar-badge">Gabung di sini</a>
             </div>
         </div>
 
