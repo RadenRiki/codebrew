@@ -15,7 +15,8 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 include_once '../connection.php';
 
 // Fungsi untuk menghitung ulang dan memperbarui total_questions di tabel quizzes
-function updateQuizTotalQuestions($conn, $quiz_id) {
+function updateQuizTotalQuestions($conn, $quiz_id)
+{
     // Pastikan quiz_id valid
     if (!$quiz_id) {
         return;
@@ -55,7 +56,7 @@ if (isset($_GET['delete_quiz']) && !empty($_GET['delete_quiz'])) {
     $deleteQuery = "DELETE FROM quizzes WHERE quiz_id = ?";
     $stmt = $conn->prepare($deleteQuery);
     $stmt->bind_param("i", $deleteId);
-    
+
     if ($stmt->execute()) {
         $alert = "Kuis berhasil dihapus beserta pertanyaan dan jawabannya!";
         $alertType = "success";
@@ -74,7 +75,7 @@ if (isset($_GET['edit_quiz']) && !empty($_GET['edit_quiz'])) {
     $stmt->bind_param("i", $editId);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $quiz_id = $row['quiz_id'];
@@ -92,7 +93,7 @@ if (isset($_POST['submit_quiz'])) {
     $topic = $_POST['topic'];
     $is_premium = isset($_POST['is_premium']) ? 1 : 0;
     $admin_id = $_SESSION['user_id'];
-    
+
     if (empty($language) || empty($topic)) {
         $alert = "Bahasa dan Topik kuis harus diisi!";
         $alertType = "danger";
@@ -103,7 +104,7 @@ if (isset($_POST['submit_quiz'])) {
             $updateQuery = "UPDATE quizzes SET language = ?, topic = ?, is_premium = ?, admin_id = ? WHERE quiz_id = ?";
             $stmt = $conn->prepare($updateQuery);
             $stmt->bind_param("ssiii", $language, $topic, $is_premium, $admin_id, $quiz_id);
-            
+
             if ($stmt->execute()) {
                 $alert = "Kuis berhasil diupdate!";
                 $alertType = "success";
@@ -119,7 +120,7 @@ if (isset($_POST['submit_quiz'])) {
             $insertQuery = "INSERT INTO quizzes (language, topic, is_premium, admin_id) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($insertQuery);
             $stmt->bind_param("ssii", $language, $topic, $is_premium, $admin_id);
-            
+
             if ($stmt->execute()) {
                 $alert = "Kuis berhasil ditambahkan!";
                 $alertType = "success";
@@ -139,7 +140,7 @@ if (isset($_POST['submit_quiz'])) {
 // Proses hapus pertanyaan
 if (isset($_GET['delete_question']) && !empty($_GET['delete_question'])) {
     $deleteId = $_GET['delete_question'];
-    
+
     // Dapatkan quiz_id dari pertanyaan yang akan dihapus SEBELUM dihapus
     $target_quiz_id = null;
     $stmt_get_quiz_id = $conn->prepare("SELECT quiz_id FROM questions WHERE question_id = ?");
@@ -152,7 +153,7 @@ if (isset($_GET['delete_question']) && !empty($_GET['delete_question'])) {
     $deleteQuery = "DELETE FROM questions WHERE question_id = ?";
     $stmt = $conn->prepare($deleteQuery);
     $stmt->bind_param("i", $deleteId);
-    
+
     if ($stmt->execute()) {
         // Panggil fungsi untuk update total_questions setelah penghapusan
         if ($target_quiz_id) { // Pastikan quiz_id ditemukan
@@ -170,14 +171,14 @@ if (isset($_GET['delete_question']) && !empty($_GET['delete_question'])) {
 // Proses edit pertanyaan (dan ambil jawabannya)
 if (isset($_GET['edit_question']) && !empty($_GET['edit_question'])) {
     $editId = $_GET['edit_question'];
-    
+
     // Ambil data pertanyaan
     $editQuestionQuery = "SELECT * FROM questions WHERE question_id = ?";
     $stmtQ = $conn->prepare($editQuestionQuery);
     $stmtQ->bind_param("i", $editId);
     $stmtQ->execute();
     $resultQ = $stmtQ->get_result();
-    
+
     if ($resultQ->num_rows > 0) {
         $rowQ = $resultQ->fetch_assoc();
         $question_id = $rowQ['question_id'];
@@ -206,7 +207,7 @@ if (isset($_POST['submit_question'])) {
     $admin_id = $_SESSION['user_id'];
     $answer_texts = $_POST['answer_text']; // Array of answer texts
     $correct_answers = isset($_POST['is_correct']) ? $_POST['is_correct'] : []; // Array of correct answer indices
-    
+
     // Validasi dasar
     if (empty($quiz_id) || empty($question_text)) {
         $alert = "Kuis dan teks pertanyaan harus diisi!";
@@ -235,7 +236,6 @@ if (isset($_POST['submit_question'])) {
                 $stmtD->bind_param("i", $question_id);
                 $stmtD->execute();
                 $stmtD->close();
-
             } else {
                 // Insert Pertanyaan baru
                 $insertQuestionQuery = "INSERT INTO questions (quiz_id, question_text, admin_id) VALUES (?, ?, ?)";
@@ -249,7 +249,7 @@ if (isset($_POST['submit_question'])) {
             // Insert/Update Jawaban
             $insertAnswerQuery = "INSERT INTO answers (question_id, answer_text, is_correct) VALUES (?, ?, ?)";
             $stmtA = $conn->prepare($insertAnswerQuery);
-            
+
             foreach ($answer_texts as $index => $text) {
                 if (!empty(trim($text))) { // Pastikan teks jawaban tidak kosong
                     $is_correct = in_array($index, $correct_answers) ? 1 : 0;
@@ -270,7 +270,6 @@ if (isset($_POST['submit_question'])) {
             $question_id = $question_text = '';
             $answers_for_question = [];
             $isEditingQuestion = false;
-
         } catch (mysqli_sql_exception $e) {
             $conn->rollback(); // Rollback jika ada error
             $alert = "Error: " . $e->getMessage();
@@ -314,6 +313,7 @@ if ($questionResult) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -336,21 +336,21 @@ if ($questionResult) {
             --light-purple: #D1C4E9;
             --gradient: linear-gradient(135deg, #5D2E8E 0%, #A367DC 100%);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
             background-color: #f8f9fa;
             color: #333;
             min-height: 100vh;
             display: flex;
         }
-        
+
         /* Sidebar Styles */
         .sidebar {
             width: 250px;
@@ -361,26 +361,26 @@ if ($questionResult) {
             transition: all 0.3s;
             z-index: 1000;
         }
-        
+
         .sidebar-header {
             padding: 20px;
             background: var(--dark);
             text-align: center;
         }
-        
+
         .sidebar-header img {
             max-width: 150px;
         }
-        
+
         .sidebar-menu {
             padding: 20px 0;
             list-style: none;
         }
-        
+
         .sidebar-menu li {
             margin-bottom: 5px;
         }
-        
+
         .sidebar-menu a {
             display: block;
             padding: 12px 20px;
@@ -389,20 +389,20 @@ if ($questionResult) {
             transition: all 0.3s;
             font-size: 0.95rem;
         }
-        
-        .sidebar-menu a:hover, 
+
+        .sidebar-menu a:hover,
         .sidebar-menu a.active {
             background: var(--primary);
             color: var(--light);
             border-left: 4px solid var(--accent);
         }
-        
+
         .sidebar-menu a i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
         }
-        
+
         /* Main Content Styles */
         .main-content {
             flex: 1;
@@ -410,23 +410,23 @@ if ($questionResult) {
             padding: 20px;
             transition: all 0.3s;
         }
-        
+
         .content-header {
             margin-bottom: 30px;
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 15px;
         }
-        
+
         .content-header h1 {
             font-size: 1.8rem;
             color: var(--primary);
             font-weight: 600;
         }
-        
+
         .content-header .breadcrumb {
             font-size: 0.85rem;
         }
-        
+
         /* Card Styles */
         .card {
             border-radius: 10px;
@@ -434,7 +434,7 @@ if ($questionResult) {
             border: none;
             margin-bottom: 20px;
         }
-        
+
         .card-header {
             background-color: #fff;
             border-bottom: 1px solid #f0f0f0;
@@ -442,28 +442,28 @@ if ($questionResult) {
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         .card-body {
             padding: 20px;
         }
-        
+
         /* Form Styles */
         .form-label {
             font-weight: 500;
             color: #555;
         }
-        
+
         .form-control {
             border-radius: 8px;
             padding: 10px 15px;
             border: 1px solid #e0e0e0;
         }
-        
+
         .form-control:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 0.2rem rgba(163, 103, 220, 0.25);
         }
-        
+
         .btn-primary {
             background: var(--gradient);
             border: none;
@@ -472,17 +472,18 @@ if ($questionResult) {
             font-weight: 500;
             transition: all 0.3s;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(93, 46, 142, 0.3);
         }
-        
+
         /* button ceklis kuis premium */
         .premium-check {
             display: flex;
             align-items: center;
-            border: 2px solid rgb(200, 218, 230); /* border abu-abu */
+            border: 2px solid rgb(200, 218, 230);
+            /* border abu-abu */
             border-radius: 6px;
             background-color: #f8f9fa;
             padding: 8px 12px;
@@ -491,27 +492,30 @@ if ($questionResult) {
         }
 
         .premium-check:hover {
-            background-color: #f0f4ff; /* hover lembut */
+            background-color: #f0f4ff;
+            /* hover lembut */
         }
 
         /* Saat checkbox dicentang: border & teks jadi biru */
-        .premium-check input[type="checkbox"]:checked + span {
-            color: #007bff; /* teks biru */
+        .premium-check input[type="checkbox"]:checked+span {
+            color: #007bff;
+            /* teks biru */
         }
 
         .premium-check:has(input[type="checkbox"]:checked) {
-            border-color: #007bff; /* border biru */
+            border-color: #007bff;
+            /* border biru */
         }
 
         /* Saat checkbox dicentang, ubah border jadi biru */
-        .premium-check input[type="checkbox"]:checked + span {
+        .premium-check input[type="checkbox"]:checked+span {
             border-color: #007bff;
         }
 
         .premium-check input[type="checkbox"] {
             width: 16px;
             height: 16px;
-            accent-color: #007bff; 
+            accent-color: #007bff;
             margin-right: 8px;
             cursor: pointer;
         }
@@ -519,7 +523,7 @@ if ($questionResult) {
         .premium-check span {
             font-size: 1rem;
             font-weight: 600;
-            color:rgb(77, 160, 212);
+            color: rgb(77, 160, 212);
             transition: all 0.3s ease;
         }
 
@@ -530,48 +534,79 @@ if ($questionResult) {
             margin-top: 8px;
             padding-bottom: 10px;
         }
-        
+
         /* Table Styles */
         .table {
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-        
+
         .table thead th {
             background-color: #f8f9fa;
             color: var(--primary);
             font-weight: 600;
             border-bottom: 2px solid #e0e0e0;
         }
-        
+
         .table-action-btn {
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 0.85rem;
         }
-        
+
         /* Alert Styles */
         .alert {
             border-radius: 8px;
             padding: 15px 20px;
         }
-        
+
         /* Badge Styles */
         .badge {
             padding: 6px 10px;
             border-radius: 5px;
             font-weight: 500;
         }
-        
-        .badge-html { background-color: #E44D26; color: white; }
-        .badge-css { background-color: #2965f1; color: white; }
-        .badge-javascript { background-color: #F7DF1E; color: #333; }
-        .badge-python { background-color: #306998; color: white; }
-        .badge-php { background-color: #777BB3; color: white; }
-        .badge-mysql { background-color: #00758F; color: white; }
-        .badge-premium { background-color: var(--accent); color: white; }
-        .badge-free { background-color: #28a745; color: white; }
+
+        .badge-html {
+            background-color: #E44D26;
+            color: white;
+        }
+
+        .badge-css {
+            background-color: #2965f1;
+            color: white;
+        }
+
+        .badge-javascript {
+            background-color: #F7DF1E;
+            color: #333;
+        }
+
+        .badge-python {
+            background-color: #306998;
+            color: white;
+        }
+
+        .badge-php {
+            background-color: #777BB3;
+            color: white;
+        }
+
+        .badge-mysql {
+            background-color: #00758F;
+            color: white;
+        }
+
+        .badge-premium {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .badge-free {
+            background-color: #28a745;
+            color: white;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -579,26 +614,27 @@ if ($questionResult) {
                 width: 70px;
                 text-align: center;
             }
-            
+
             .sidebar-header img {
                 max-width: 40px;
             }
-            
+
             .sidebar-menu a span {
                 display: none;
             }
-            
+
             .sidebar-menu a i {
                 margin-right: 0;
                 font-size: 1.2rem;
             }
-            
+
             .main-content {
                 margin-left: 70px;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -606,11 +642,6 @@ if ($questionResult) {
             <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo">
         </div>
         <ul class="sidebar-menu">
-            <li>
-                <a href="dashboard.php">
-                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-                </a>
-            </li>
             <li>
                 <a href="materi_bank.php">
                     <i class="fas fa-book"></i> <span>Bank Materi</span>
@@ -627,12 +658,7 @@ if ($questionResult) {
                 </a>
             </li>
             <li>
-                <a href="settings.php">
-                    <i class="fas fa-cog"></i> <span>Pengaturan</span>
-                </a>
-            </li>
-            <li>
-                <a href="../register-login/logout.php">
+                <a href="../register-login/logout.php" id="logout-link">
                     <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
                 </a>
             </li>
@@ -660,15 +686,15 @@ if ($questionResult) {
                 </div>
             </div>
         </div>
-        
+
         <!-- Alert Message -->
         <?php if (!empty($alert)): ?>
-        <div class="alert alert-<?php echo $alertType; ?> alert-dismissible fade show" role="alert">
-            <?php echo $alert; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-<?php echo $alertType; ?> alert-dismissible fade show" role="alert">
+                <?php echo $alert; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
-        
+
         <!-- Form Card: Kelola Kuis (Topik) -->
         <div class="card mb-4">
             <div class="card-header">
@@ -679,7 +705,7 @@ if ($questionResult) {
                     <?php if ($isEditingQuiz): ?>
                         <input type="hidden" name="quiz_id" value="<?php echo $quiz_id; ?>">
                     <?php endif; ?>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="language" class="form-label">Bahasa</label>
@@ -698,9 +724,9 @@ if ($questionResult) {
                             <input type="text" class="form-control" id="topic" name="topic" placeholder="Contoh: HTML Basics, CSS Layout" value="<?php echo htmlspecialchars($topic); ?>" required>
                         </div>
                     </div>
-                    
+
                     <label class="premium-check">
-                        <input type="checkbox" id="is_premium" name="is_premium" 
+                        <input type="checkbox" id="is_premium" name="is_premium"
                             <?php echo (isset($is_premium) && $is_premium) ? 'checked' : ''; ?>>
                         <span>💡 Kuis Premium (Hanya untuk Pengguna Premium)</span>
                     </label>
@@ -742,41 +768,54 @@ if ($questionResult) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                                <?php
                                 $no = 1;
-                                foreach ($quizzes_data as $quiz_row): 
+                                foreach ($quizzes_data as $quiz_row):
                                     $badgeClass = 'badge-';
                                     switch ($quiz_row['language']) {
-                                        case 'HTML': $badgeClass .= 'html'; break;
-                                        case 'CSS': $badgeClass .= 'css'; break;
-                                        case 'JavaScript': $badgeClass .= 'javascript'; break;
-                                        case 'Python': $badgeClass .= 'python'; break;
-                                        case 'PHP': $badgeClass .= 'php'; break;
-                                        case 'MySQL': $badgeClass .= 'mysql'; break;
-                                        default: $badgeClass .= 'primary';
+                                        case 'HTML':
+                                            $badgeClass .= 'html';
+                                            break;
+                                        case 'CSS':
+                                            $badgeClass .= 'css';
+                                            break;
+                                        case 'JavaScript':
+                                            $badgeClass .= 'javascript';
+                                            break;
+                                        case 'Python':
+                                            $badgeClass .= 'python';
+                                            break;
+                                        case 'PHP':
+                                            $badgeClass .= 'php';
+                                            break;
+                                        case 'MySQL':
+                                            $badgeClass .= 'mysql';
+                                            break;
+                                        default:
+                                            $badgeClass .= 'primary';
                                     }
                                 ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><span class="badge <?php echo $badgeClass; ?>"><?php echo htmlspecialchars($quiz_row['language']); ?></span></td>
-                                    <td><?php echo htmlspecialchars($quiz_row['topic']); ?></td>
-                                    <td>
-                                        <span class="badge <?php echo ($quiz_row['is_premium'] ? 'badge-premium' : 'badge-free'); ?>">
-                                            <?php echo ($quiz_row['is_premium'] ? 'Premium' : 'Gratis'); ?>
-                                        </span>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($quiz_row['total_questions']); ?></td> <!-- Menampilkan jumlah soal -->
-                                    <td>
-                                        <div class="d-flex gap-1">
-                                            <a href="manage_quiz.php?edit_quiz=<?php echo $quiz_row['quiz_id']; ?>" class="btn btn-sm btn-warning table-action-btn">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                            <button type="button" onclick="confirmDeleteQuiz(<?php echo $quiz_row['quiz_id']; ?>)" class="btn btn-sm btn-danger table-action-btn">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><span class="badge <?php echo $badgeClass; ?>"><?php echo htmlspecialchars($quiz_row['language']); ?></span></td>
+                                        <td><?php echo htmlspecialchars($quiz_row['topic']); ?></td>
+                                        <td>
+                                            <span class="badge <?php echo ($quiz_row['is_premium'] ? 'badge-premium' : 'badge-free'); ?>">
+                                                <?php echo ($quiz_row['is_premium'] ? 'Premium' : 'Gratis'); ?>
+                                            </span>
+                                        </td>
+                                        <td><?php echo htmlspecialchars($quiz_row['total_questions']); ?></td> <!-- Menampilkan jumlah soal -->
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <a href="manage_quiz.php?edit_quiz=<?php echo $quiz_row['quiz_id']; ?>" class="btn btn-sm btn-warning table-action-btn">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <button type="button" onclick="confirmDeleteQuiz(<?php echo $quiz_row['quiz_id']; ?>)" class="btn btn-sm btn-danger table-action-btn">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -799,7 +838,7 @@ if ($questionResult) {
                     <?php if ($isEditingQuestion): ?>
                         <input type="hidden" name="question_id" value="<?php echo $question_id; ?>">
                     <?php endif; ?>
-                    
+
                     <div class="mb-3">
                         <label for="quiz_id_for_question" class="form-label">Pilih Kuis</label>
                         <select class="form-select" id="quiz_id_for_question" name="quiz_id_for_question" required>
@@ -816,7 +855,7 @@ if ($questionResult) {
                         <label for="question_text" class="form-label">Teks Pertanyaan</label>
                         <textarea class="form-control" id="question_text" name="question_text" rows="3" placeholder="Masukkan teks pertanyaan..." required><?php echo htmlspecialchars($question_text); ?></textarea>
                     </div>
-                    
+
                     <hr>
                     <h5>Pilihan Jawaban (Minimal 2, Maksimal 5)</h5>
                     <div id="answers-container">
@@ -881,27 +920,27 @@ if ($questionResult) {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                                <?php
                                 $no = 1;
-                                foreach ($questions_data as $q_row): 
+                                foreach ($questions_data as $q_row):
                                 ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><?php echo htmlspecialchars($q_row['language'] . ' - ' . $q_row['topic']); ?></td>
-                                    <td><?php echo htmlspecialchars($q_row['question_text']); ?></td>
-                                    <td><?php echo htmlspecialchars($q_row['correct_answers_text'] ?: 'N/A'); ?></td>
-                                    <td><?php echo htmlspecialchars($q_row['total_answers']); ?></td>
-                                    <td>
-                                        <div class="d-flex gap-1">
-                                            <a href="manage_quiz.php?edit_question=<?php echo $q_row['question_id']; ?>" class="btn btn-sm btn-warning table-action-btn">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                            <button type="button" onclick="confirmDeleteQuestion(<?php echo $q_row['question_id']; ?>)" class="btn btn-sm btn-danger table-action-btn">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo htmlspecialchars($q_row['language'] . ' - ' . $q_row['topic']); ?></td>
+                                        <td><?php echo htmlspecialchars($q_row['question_text']); ?></td>
+                                        <td><?php echo htmlspecialchars($q_row['correct_answers_text'] ?: 'N/A'); ?></td>
+                                        <td><?php echo htmlspecialchars($q_row['total_answers']); ?></td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <a href="manage_quiz.php?edit_question=<?php echo $q_row['question_id']; ?>" class="btn btn-sm btn-warning table-action-btn">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <button type="button" onclick="confirmDeleteQuestion(<?php echo $q_row['question_id']; ?>)" class="btn btn-sm btn-danger table-action-btn">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php endforeach; ?>
                             </tbody>
                         </table>
@@ -947,9 +986,9 @@ if ($questionResult) {
                     // Update value for correct answer index. This is crucial for correct_answers[] to work.
                     // If editing, the checkbox value might already be set from DB, so only update if it's a new field.
                     if (!$(this).find('input[type="checkbox"]').data('original-value')) { // Check if it's an original loaded value
-                         $(this).find('input[type="checkbox"]').val(index);
+                        $(this).find('input[type="checkbox"]').val(index);
                     }
-                   
+
                     // Set required for first two answers
                     if (index < minAnswers) {
                         $(this).find('input[type="text"]').prop('required', true);
@@ -1009,5 +1048,19 @@ if ($questionResult) {
             toggleAddButton(); // Initial check for add button visibility
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    var yakin = confirm('Apakah Anda yakin ingin logout?');
+                    if (!yakin) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
 </body>
+
 </html>

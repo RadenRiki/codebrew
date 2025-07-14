@@ -31,6 +31,7 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,8 +43,8 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom CSS (from materi_bank.php) -->
-    
-        <style>
+
+    <style>
         :root {
             --primary: #5D2E8E;
             --secondary: #A367DC;
@@ -54,21 +55,21 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             --light-purple: #D1C4E9;
             --gradient: linear-gradient(135deg, #5D2E8E 0%, #A367DC 100%);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
             background-color: #f8f9fa;
             color: #333;
             min-height: 100vh;
             display: flex;
         }
-        
+
         /* Sidebar Styles */
         .sidebar {
             width: 250px;
@@ -79,26 +80,26 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             transition: all 0.3s;
             z-index: 1000;
         }
-        
+
         .sidebar-header {
             padding: 20px;
             background: var(--dark);
             text-align: center;
         }
-        
+
         .sidebar-header img {
             max-width: 150px;
         }
-        
+
         .sidebar-menu {
             padding: 20px 0;
             list-style: none;
         }
-        
+
         .sidebar-menu li {
             margin-bottom: 5px;
         }
-        
+
         .sidebar-menu a {
             display: block;
             padding: 12px 20px;
@@ -107,20 +108,20 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             transition: all 0.3s;
             font-size: 0.95rem;
         }
-        
-        .sidebar-menu a:hover, 
+
+        .sidebar-menu a:hover,
         .sidebar-menu a.active {
             background: var(--primary);
             color: var(--light);
             border-left: 4px solid var(--accent);
         }
-        
+
         .sidebar-menu a i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
         }
-        
+
         /* Main Content Styles */
         .main-content {
             flex: 1;
@@ -128,23 +129,23 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             padding: 20px;
             transition: all 0.3s;
         }
-        
+
         .content-header {
             margin-bottom: 30px;
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 15px;
         }
-        
+
         .content-header h1 {
             font-size: 1.8rem;
             color: var(--primary);
             font-weight: 600;
         }
-        
+
         .content-header .breadcrumb {
             font-size: 0.85rem;
         }
-        
+
         /* Card Styles */
         .card {
             border-radius: 10px;
@@ -152,7 +153,7 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             border: none;
             margin-bottom: 20px;
         }
-        
+
         .card-header {
             background-color: #fff;
             border-bottom: 1px solid #f0f0f0;
@@ -160,28 +161,28 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         .card-body {
             padding: 20px;
         }
-        
+
         /* Form Styles */
         .form-label {
             font-weight: 500;
             color: #555;
         }
-        
+
         .form-control {
             border-radius: 8px;
             padding: 10px 15px;
             border: 1px solid #e0e0e0;
         }
-        
+
         .form-control:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 0.2rem rgba(163, 103, 220, 0.25);
         }
-        
+
         .btn-primary {
             background: var(--gradient);
             border: none;
@@ -190,53 +191,84 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             font-weight: 500;
             transition: all 0.3s;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(93, 46, 142, 0.3);
         }
-        
+
         /* Table Styles */
         .table {
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-        
+
         .table thead th {
             background-color: #f8f9fa;
             color: var(--primary);
             font-weight: 600;
             border-bottom: 2px solid #e0e0e0;
         }
-        
+
         .table-action-btn {
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 0.85rem;
         }
-        
+
         /* Alert Styles */
         .alert {
             border-radius: 8px;
             padding: 15px 20px;
         }
-        
+
         /* Badge Styles */
         .badge {
             padding: 6px 10px;
             border-radius: 5px;
             font-weight: 500;
         }
-        
-        .badge-html { background-color: #E44D26; color: white; }
-        .badge-css { background-color: #2965f1; color: white; }
-        .badge-javascript { background-color: #F7DF1E; color: #333; }
-        .badge-python { background-color: #306998; color: white; }
-        .badge-php { background-color: #777BB3; color: white; }
-        .badge-mysql { background-color: #00758F; color: white; }
-        .badge-premium { background-color: var(--accent); color: white; }
-        .badge-free { background-color: #28a745; color: white; }
+
+        .badge-html {
+            background-color: #E44D26;
+            color: white;
+        }
+
+        .badge-css {
+            background-color: #2965f1;
+            color: white;
+        }
+
+        .badge-javascript {
+            background-color: #F7DF1E;
+            color: #333;
+        }
+
+        .badge-python {
+            background-color: #306998;
+            color: white;
+        }
+
+        .badge-php {
+            background-color: #777BB3;
+            color: white;
+        }
+
+        .badge-mysql {
+            background-color: #00758F;
+            color: white;
+        }
+
+        .badge-premium {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .badge-free {
+            background-color: #28a745;
+            color: white;
+        }
 
         .pagination-container {
             margin-top: 30px;
@@ -251,26 +283,27 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                 width: 70px;
                 text-align: center;
             }
-            
+
             .sidebar-header img {
                 max-width: 40px;
             }
-            
+
             .sidebar-menu a span {
                 display: none;
             }
-            
+
             .sidebar-menu a i {
                 margin-right: 0;
                 font-size: 1.2rem;
             }
-            
+
             .main-content {
                 margin-left: 70px;
             }
         }
-        </style>
+    </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -279,12 +312,7 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
         </div>
         <ul class="sidebar-menu">
             <li>
-                <a href="dashboard.php">
-                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
-                <a href="materi_bank.php" class="active">
+                <a href="materi_bank.php">
                     <i class="fas fa-book"></i> <span>Bank Materi</span>
                 </a>
             </li>
@@ -294,17 +322,12 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                 </a>
             </li>
             <li>
-                <a href="users.php">
+                <a href="users.php" class="active">
                     <i class="fas fa-users"></i> <span>Pengguna</span>
                 </a>
             </li>
             <li>
-                <a href="settings.php">
-                    <i class="fas fa-cog"></i> <span>Pengaturan</span>
-                </a>
-            </li>
-            <li>
-                <a href="../register-login/logout.php">
+                <a href="../register-login/logout.php" id="logout-link">
                     <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
                 </a>
             </li>
@@ -320,7 +343,6 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                     <h1>Kelola Pengguna</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Pengguna</li>
                         </ol>
                     </nav>
@@ -332,11 +354,11 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                 </div>
             </div>
         </div>
-    
 
 
-            <!-- Data Table Card: Daftar Kuis -->
-            <div class="card mb-4">
+
+        <!-- Data Table Card: Daftar Kuis -->
+        <div class="card mb-4">
             <div class="card-header">
                 Daftar Pengguna
             </div>
@@ -355,29 +377,29 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
+                                <?php
                                 $no = $offset + 1;
-                                while ($user = mysqli_fetch_assoc($daftaruser)): 
+                                while ($user = mysqli_fetch_assoc($daftaruser)):
                                     $badgeClass = $user['is_premium'] ? 'badge bg-success' : 'badge bg-secondary';
                                     $statusLabel = $user['is_premium'] ? 'Premium' : 'Gratis';
                                 ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><?php echo htmlspecialchars($user['username']); ?></td>
-                                    <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                    <td><span class="<?php echo $badgeClass; ?>"><?php echo $statusLabel; ?></span></td>
-                                    <td><?php echo (int)$user['xp_total']; ?> XP</td>
-                                    <td>
-                                        <div class="d-flex gap-1">
-                                            <a href="edit_user.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-sm btn-warning">
-                                                <i class="fas fa-edit"></i> Edit
-                                            </a>
-                                            <button type="button" onclick="confirmDeleteUser(<?php echo $user['user_id']; ?>)" class="btn btn-sm btn-danger">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><?php echo htmlspecialchars($user['username']); ?></td>
+                                        <td><?php echo htmlspecialchars($user['email']); ?></td>
+                                        <td><span class="<?php echo $badgeClass; ?>"><?php echo $statusLabel; ?></span></td>
+                                        <td><?php echo (int)$user['xp_total']; ?> XP</td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <a href="edit_user.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-sm btn-warning">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <button type="button" onclick="confirmDeleteUser(<?php echo $user['user_id']; ?>)" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
@@ -417,13 +439,28 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
 
 
 
-<script>
-function confirmDeleteUser(userId) {
-    if (confirm("Apakah kamu yakin ingin menghapus pengguna ini?")) {
-        window.location.href = "delete_user.php?user_id=" + userId;
-    }
-}
-</script>
+    <script>
+        function confirmDeleteUser(userId) {
+            if (confirm("Apakah kamu yakin ingin menghapus pengguna ini?")) {
+                window.location.href = "delete_user.php?user_id=" + userId;
+            }
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    var yakin = confirm('Apakah Anda yakin ingin logout?');
+                    if (!yakin) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
+    </script>
 
 </body>
+
 </html>

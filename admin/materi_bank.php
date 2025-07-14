@@ -393,11 +393,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
         <ul class="sidebar-menu">
             <li>
-                <a href="dashboard.php">
-                    <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-                </a>
-            </li>
-            <li>
                 <a href="materi_bank.php" class="active">
                     <i class="fas fa-book"></i> <span>Bank Materi</span>
                 </a>
@@ -413,13 +408,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </a>
             </li>
             <li>
-                <a href="settings.php">
-                    <i class="fas fa-cog"></i> <span>Pengaturan</span>
-                </a>
-            </li>
-            <li>
-                <a href="../register-login/logout.php">
-                    <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
+            <a href="../register-login/logout.php" id="logout-link">
+            <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
                 </a>
             </li>
         </ul>
@@ -434,7 +424,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <h1>Kelola Bank Materi</h1>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Bank Materi</li>
                         </ol>
                     </nav>
@@ -609,6 +598,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 window.location.href = 'materi_bank.php?delete=' + id;
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var logoutLink = document.getElementById('logout-link');
+            if (logoutLink) {
+                logoutLink.addEventListener('click', function(e) {
+                    var yakin = confirm('Apakah Anda yakin ingin logout?');
+                    if (!yakin) {
+                        e.preventDefault();
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
