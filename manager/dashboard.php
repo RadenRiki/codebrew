@@ -712,15 +712,6 @@ $premiumUsers = $totalPremiumUsers;
                     <i class="fas fa-user avatar"></i>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-user-circle"></i>
-                        <span>Profil</span>
-                    </a>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-cog"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
                     <a href="../register-login/logout.php" class="dropdown-item logout-item">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
@@ -1090,6 +1081,7 @@ $premiumUsers = $totalPremiumUsers;
             });
         });
     </script>
+
 </body>
 </html>
 
