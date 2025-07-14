@@ -10,13 +10,16 @@ if (!isset($_SESSION['username'])) {
 require_once '../connection.php';
 $user = htmlspecialchars($_SESSION['username']);
 
-// Query untuk cek status premium
-$stmt = $conn->prepare("SELECT is_premium FROM user WHERE username = ?");
-$stmt->bind_param("s", $_SESSION['username']);
-$stmt->execute();
-$result = $stmt->get_result();
-$user_data = $result->fetch_assoc();
-$is_premium = $user_data['is_premium'] ?? 0;
+// Ambil data user untuk cek status premium
+$user_id = $_SESSION['user_id'];
+$stmt_user = $conn->prepare("SELECT username, is_premium FROM user WHERE user_id = ?");
+$stmt_user->bind_param("i", $user_id);
+$stmt_user->execute();
+$result_user = $stmt_user->get_result();
+$user_data = $result_user->fetch_assoc();
+$is_premium_user = $user_data['is_premium'] ?? 0;
+$username = $user_data['username'];
+$stmt_user->close();
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +38,6 @@ $is_premium = $user_data['is_premium'] ?? 0;
 
     <!-- Custom Chatbot Styling -->
     <style>
-
         nav a.active {
             color: var(--light);
         }
@@ -43,7 +45,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
         nav a.active::after {
             width: 100%;
         }
-        
+
         /* Chatbot Container */
         .chatbot-container {
             position: fixed;
@@ -328,7 +330,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <li><a href="kuis.php">Kuis</a></li>
                 <li><a href="ranking.php">Ranking</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
-                <?php if ($is_premium): ?>
+                <?php if ($is_premium_user): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
                 <?php endif; ?>
             </ul>
@@ -339,7 +341,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
             <?php if (isset($_SESSION['username'])): ?>
                 <span class="greeting">
                     Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                    <?php if ($is_premium): ?>
+                    <?php if ($is_premium_user): ?>
                         <span class="premium-indicator">⭐</span>
                     <?php endif; ?>
                 </span>
@@ -347,14 +349,14 @@ $is_premium = $user_data['is_premium'] ?? 0;
 
             <!-- Profile button with dropdown -->
             <div class="profile-menu">
-                <div class="profile-btn <?php echo $is_premium ? 'premium-profile' : ''; ?>" id="profileBtn">
+                <div class="profile-btn <?php echo $is_premium_user ? 'premium-profile' : ''; ?>" id="profileBtn">
                     <i class="fas fa-user avatar"></i>
-                    <?php if ($is_premium): ?>
+                    <?php if ($is_premium_user): ?>
                         <div class="premium-crown">👑</div>
                     <?php endif; ?>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <?php if ($is_premium): ?>
+                    <?php if ($is_premium_user): ?>
                         <div class="premium-status">
                             <i class="fas fa-crown"></i>
                             <span>Status Premium</span>
@@ -438,7 +440,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">HTML</h3>
                 <p class="language-desc">Bangun pondasi digitalmu dengan HTML! Bahasa markup sederhana untuk menyusun
                     struktur konten web.</p>
-                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
+                <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -448,7 +450,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">CSS</h3>
                 <p class="language-desc">Transformasi biasa menjadi luar biasa dengan CSS! Berikan warna, layout, dan
                     animasi pada websitemu.</p>
-                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
+                <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -458,7 +460,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">JAVASCRIPT</h3>
                 <p class="language-desc">Hidupkan web statis menjadi dinamis dengan JavaScript! Tambahkan logika dan
                     interaksi canggih.</p>
-                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
+                <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -468,7 +470,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">PYTHON</h3>
                 <p class="language-desc">Python menggabungkan kesederhanaan sintaks dengan kekuatan tak terbatas untuk
                     berbagai aplikasi.</p>
-                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
+                <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -478,7 +480,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">PHP</h3>
                 <p class="language-desc">PHP adalah bahasa scripting server-side untuk memproses data dan berkomunikasi
                     dengan database.</p>
-                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
+                <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -488,13 +490,13 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">SQL</h3>
                 <p class="language-desc">Kuasai seni berbicara dengan database! SQL untuk mengelola dan memanipulasi
                     data relasional.</p>
-                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
+                <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
         </div>
     </section>
 
     <!-- Premium Section -->
-    <?php if (!$is_premium): ?>
+    <?php if (!$is_premium_user): ?>
         <section class="premium">
             <div class="premium-container">
                 <h2 class="premium-title">Jadilah bagian dari komunitas yang lebih mendalam dengan <span class="pintar-badge">PINTAR</span></h2>
@@ -834,15 +836,15 @@ $is_premium = $user_data['is_premium'] ?? 0;
     </script>
 
     <script>
-    // Tangkap semua elemen logout
-    document.querySelectorAll('.logout-item').forEach(function(element) {
-        element.addEventListener('click', function(event) {
-        const yakin = confirm("Apakah Anda yakin ingin logout?");
-        if (!yakin) {
-            event.preventDefault(); // Batalkan logout jika user membatalkan
-        }
+        // Tangkap semua elemen logout
+        document.querySelectorAll('.logout-item').forEach(function(element) {
+            element.addEventListener('click', function(event) {
+                const yakin = confirm("Apakah Anda yakin ingin logout?");
+                if (!yakin) {
+                    event.preventDefault(); // Batalkan logout jika user membatalkan
+                }
+            });
         });
-    });
     </script>
 
 

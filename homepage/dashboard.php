@@ -308,25 +308,25 @@ $stmt_user_rank->close();
 
         .chart-card {
             position: relative;
-  height: 400px;         /* ketinggian chart tetap */
-  overflow-x: auto;      /* scroll horizontal di dalam chart saja */
-  overflow-y: visible;
-  padding: 1.5rem;
-  background: rgba(93, 46, 142, 0.2);
-  border-radius: 10px;
-  border: 1px solid rgba(93, 46, 142, 0.3);
+            height: 400px;         /* ketinggian chart tetap */
+            overflow-x: auto;      /* scroll horizontal di dalam chart saja */
+            overflow-y: visible;
+            padding: 1.5rem;
+            background: rgba(93, 46, 142, 0.2);
+            border-radius: 10px;
+            border: 1px solid rgba(93, 46, 142, 0.3);
 
         }
 
         .chart-scroll-container {
-  width: 100%;
-  height: calc(100% - 2rem);  /* sisakan ruang 2rem untuk label */
-  overflow: auto;
-}
-.chart-scroll-container canvas {
-  min-width: 800px;            /* sesuai kebutuhan */
-  height: 100% !important;
-}
+            width: 100%;
+            height: calc(100% - 2rem);  /* sisakan ruang 2rem untuk label */
+            overflow: auto;
+            }
+            .chart-scroll-container canvas {
+            min-width: 800px;            /* sesuai kebutuhan */
+            height: 100% !important;
+            }
 
         .chart-card h3 {
             font-size: 1.5rem;
@@ -422,6 +422,8 @@ $stmt_user_rank->close();
             font-weight: bold;
             color: var(--accent);
         }
+
+        
 
         /* Responsive adjustments */
         @media (max-width: 768px) {

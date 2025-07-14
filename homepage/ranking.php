@@ -36,7 +36,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
-         nav ul {
+        nav ul {
             display: flex;
             list-style: none;
             gap: 2.5rem;
@@ -48,7 +48,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
-            
+
         }
 
         nav a:hover {
@@ -74,6 +74,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             color: #fff !important;
             position: relative;
         }
+
         nav a.active::after {
             content: "";
             position: absolute;
@@ -167,119 +168,142 @@ $current_page = basename($_SERVER['PHP_SELF']);
             box-shadow: 0 10px 20px rgba(163, 103, 220, 0.3);
         }
 
-/* Profile Button */
-.profile-menu {
-    position: relative;
-}
+        /* Profile Button */
+        .profile-menu {
+            position: relative;
+        }
 
-.profile-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: var(--gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-    border: 2px solid var(--light);
-}
+        .profile-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 2px solid var(--light);
+        }
 
-.profile-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(163, 103, 220, 0.5);
-}
+        .profile-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(163, 103, 220, 0.5);
+        }
 
-.profile-btn .avatar {
-    font-size: 22px;
-    color: var(--light);
-}
+        .profile-btn .avatar {
+            font-size: 22px;
+            color: var(--light);
+        }
 
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-.profile-dropdown {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background: rgba(26, 11, 46, 0.95);
-    border: 1px solid rgba(93, 46, 142, 0.5);
-    border-radius: 12px;
-    width: 180px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    padding: 0.8rem 0;
-    display: none;
-    z-index: 100;
-    animation: fadeInDown 0.3s ease;
-}
+        .profile-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(26, 11, 46, 0.95);
+            border: 1px solid rgba(93, 46, 142, 0.5);
+            border-radius: 12px;
+            width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 0;
+            display: none;
+            z-index: 100;
+            animation: fadeInDown 0.3s ease;
+        }
 
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        /* Premium Profile Button */
+        .premium-profile {
+            background: linear-gradient(45deg, #ffd700, #ff84e8);
+            border: 2px solid #ffd700;
+            position: relative;
+        }
 
-.profile-dropdown::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: 20px;
-    width: 16px;
-    height: 16px;
-    background: rgba(26, 11, 46, 0.95);
-    transform: rotate(45deg);
-    border-left: 1px solid rgba(93, 46, 142, 0.5);
-    border-top: 1px solid rgba(93, 46, 142, 0.5);
-}
+        .premium-crown {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 16px;
+            background: #ffd700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--light);
+        }
 
-.profile-dropdown.show {
-    display: block;
-}
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 1.5rem;
-    color: var(--light);
-    text-decoration: none;
-    transition: background-color 0.2s;
-    gap: 10px;
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.dropdown-item i {
-    font-size: 16px;
-    color: var(--light-purple);
-    width: 20px;
-}
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(26, 11, 46, 0.95);
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(93, 46, 142, 0.5);
+            border-top: 1px solid rgba(93, 46, 142, 0.5);
+        }
 
-.dropdown-item:hover {
-    background-color: rgba(93, 46, 142, 0.3);
-}
+        .profile-dropdown.show {
+            display: block;
+        }
 
-.dropdown-divider {
-    height: 1px;
-    background: rgba(93, 46, 142, 0.5);
-    margin: 0.5rem 0;
-}
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            transition: background-color 0.2s;
+            gap: 10px;
+        }
 
-.logout-item {
-    color: #ff6a7a;
-}
+        .dropdown-item i {
+            font-size: 16px;
+            color: var(--light-purple);
+            width: 20px;
+        }
 
-.logout-item i {
-    color: #ff6a7a;
-}
+        .dropdown-item:hover {
+            background-color: rgba(93, 46, 142, 0.3);
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(93, 46, 142, 0.5);
+            margin: 0.5rem 0;
+        }
+
+        .logout-item {
+            color: #ff6a7a;
+        }
+
+        .logout-item i {
+            color: #ff6a7a;
+        }
     </style>
 </head>
 
@@ -296,7 +320,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
             <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo"
                 class="logo" />
         </a>
-         <!-- Navigasi -->
+        <!-- Navigasi -->
         <nav>
             <ul>
                 <li>
@@ -312,9 +336,9 @@ $current_page = basename($_SERVER['PHP_SELF']);
                     <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'active' : '' ?>">Ranking</a>
                 </li>
                 <li>
-                <a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Dashboard</a>
+                    <a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Dashboard</a>
                 </li>
-                
+
                 <?php if ($is_premium): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
                 <?php endif; ?>
@@ -441,17 +465,17 @@ $current_page = basename($_SERVER['PHP_SELF']);
 
     <!-- JavaScript untuk dropdown profil -->
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
             const profileBtn = document.getElementById("profileBtn");
             const profileDropdown = document.getElementById("profileDropdown");
 
             if (profileBtn && profileDropdown) {
-                profileBtn.addEventListener("click", function (e) {
+                profileBtn.addEventListener("click", function(e) {
                     e.stopPropagation();
                     profileDropdown.classList.toggle("show");
                 });
 
-                document.addEventListener("click", function (e) {
+                document.addEventListener("click", function(e) {
                     if (!profileDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
                         profileDropdown.classList.remove("show");
                     }

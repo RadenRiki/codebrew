@@ -311,8 +311,8 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
 
         /* Premium Profile Button */
         .premium-profile {
-            background: linear-gradient(45deg, #ffd700, #ff84e8);
-            border: 2px solid #ffd700;
+            background: linear-gradient(45deg, #ffd700, #ff84e8) !important;
+            border: 2px solid #ffd700 !important;
             position: relative;
         }
 
@@ -434,6 +434,28 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             color: #FFD700;
             margin-left: 0.5rem;
             filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        /* Premium Profile Button */
+        .premium-profile {
+            background: linear-gradient(45deg, #ffd700, #ff84e8);
+            border: 2px solid #ffd700;
+            position: relative;
+        }
+
+        .premium-crown {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 16px;
+            background: #ffd700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--light);
         }
 
         /* Profile Menu */
@@ -903,7 +925,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                     <a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'active' : '' ?>">Kuis</a>
                 </li>
                 <li>
-                    <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'active' : '' ?>">Ranking</a>
+                    <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'text-white hover:text-purple-400' : '' ?>">Ranking</a>
                 </li>
                 <li>
                     <a href="../homepage/dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-white hover:text-purple-400' : '' ?>">Dashboard</a>
@@ -1107,7 +1129,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             </nav>
         <?php endif; ?>
 
-       
+
     </div>
 
     <!-- Footer -->

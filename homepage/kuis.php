@@ -22,6 +22,8 @@ $is_premium_user = $user_data['is_premium'] ?? 0;
 $username = $user_data['username'];
 $stmt_user->close();
 
+
+
 // Ambil semua data kuis dari database
 $quizzes_by_language = [];
 $quiz_query = "SELECT quiz_id, language, topic, is_premium FROM quizzes ORDER BY language, topic";
@@ -52,6 +54,7 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -74,7 +77,7 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
-            
+
         }
 
         nav a:hover {
@@ -100,6 +103,7 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             color: #fff !important;
             position: relative;
         }
+
         nav a.active::after {
             content: "";
             position: absolute;
@@ -118,8 +122,10 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             background: linear-gradient(180deg, var(--darker), var(--dark));
             color: var(--light);
             min-height: 100vh;
-            padding-top: 100px; /* Adjust for fixed header */
+            padding-top: 100px;
+            /* Adjust for fixed header */
         }
+
 
         .quiz-selection-section {
             padding: 3rem 5%;
@@ -273,15 +279,18 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             .language-category h2 {
                 font-size: 1.8rem;
             }
+
             .quiz-card h3 {
                 font-size: 1.2rem;
             }
+
             .quiz-card.locked::after {
                 font-size: 1.5rem;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Background stars -->
     <div class="stars" id="stars"></div>
@@ -306,7 +315,8 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             <ul>
                 <li><a href="index.php">Beranda</a></li>
                 <li><a href="../bank_materi/belajar.php">Belajar</a></li>
-                <li><a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'active' : '' ?>">Kuis</a></li>                <li><a href="ranking.php">Ranking</a></li>
+                <li><a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'active' : '' ?>">Kuis</a></li>
+                <li><a href="ranking.php">Ranking</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <?php if ($is_premium_user): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
@@ -371,22 +381,36 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             <?php foreach ($ordered_quizzes as $language => $quizzes): ?>
                 <div class="language-category">
                     <h2>
-                        <?php 
-                            $icon_class = '';
-                            switch ($language) {
-                                case 'HTML': $icon_class = 'fab fa-html5'; break;
-                                case 'CSS': $icon_class = 'fab fa-css3-alt'; break;
-                                case 'JavaScript': $icon_class = 'fab fa-js-square'; break;
-                                case 'Python': $icon_class = 'fab fa-python'; break;
-                                case 'PHP': $icon_class = 'fab fa-php'; break;
-                                case 'MySQL': $icon_class = 'fas fa-database'; break;
-                                default: $icon_class = 'fas fa-code'; break;
-                            }
+                        <?php
+                        $icon_class = '';
+                        switch ($language) {
+                            case 'HTML':
+                                $icon_class = 'fab fa-html5';
+                                break;
+                            case 'CSS':
+                                $icon_class = 'fab fa-css3-alt';
+                                break;
+                            case 'JavaScript':
+                                $icon_class = 'fab fa-js-square';
+                                break;
+                            case 'Python':
+                                $icon_class = 'fab fa-python';
+                                break;
+                            case 'PHP':
+                                $icon_class = 'fab fa-php';
+                                break;
+                            case 'MySQL':
+                                $icon_class = 'fas fa-database';
+                                break;
+                            default:
+                                $icon_class = 'fas fa-code';
+                                break;
+                        }
                         ?>
                         <i class="<?php echo $icon_class; ?>"></i> <?php echo htmlspecialchars($language); ?>
                     </h2>
                     <div class="quiz-list">
-                        <?php foreach ($quizzes as $quiz): 
+                        <?php foreach ($quizzes as $quiz):
                             $is_locked = ($quiz['is_premium'] && !$is_premium_user);
                             $quiz_link = $is_locked ? '#' : 'start_quiz.php?quiz_id=' . $quiz['quiz_id']; // Ganti start_quiz.php dengan halaman kuis sebenarnya
                             $quiz_class = $is_locked ? 'quiz-card locked' : 'quiz-card';
@@ -525,4 +549,5 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
         });
     </script>
 </body>
+
 </html>
