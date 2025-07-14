@@ -483,6 +483,18 @@ $current_page = basename($_SERVER['PHP_SELF']);
             }
         });
     </script>
+
+    <script>
+        // Tangkap semua elemen logout
+        document.querySelectorAll('.logout-item').forEach(function(element) {
+            element.addEventListener('click', function(event) {
+                const yakin = confirm("Apakah Anda yakin ingin logout?");
+                if (!yakin) {
+                    event.preventDefault(); // Batalkan logout jika user membatalkan
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

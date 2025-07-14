@@ -1231,6 +1231,18 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             }
         });
     </script>
+
+    <script>
+        // Tangkap semua elemen logout
+        document.querySelectorAll('.logout-item').forEach(function(element) {
+            element.addEventListener('click', function(event) {
+                const yakin = confirm("Apakah Anda yakin ingin logout?");
+                if (!yakin) {
+                    event.preventDefault(); // Batalkan logout jika user membatalkan
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
