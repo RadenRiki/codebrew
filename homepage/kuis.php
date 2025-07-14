@@ -318,7 +318,7 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
         <div class="user-profile-container">
             <?php if (isset($_SESSION['username'])): ?>
                 <span class="greeting">
-                    Halo, <?php echo htmlspecialchars($username); ?>!
+                    Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
                     <?php if ($is_premium_user): ?>
                         <span class="premium-indicator">⭐</span>
                     <?php endif; ?>
