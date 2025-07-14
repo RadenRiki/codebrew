@@ -1,5 +1,8 @@
 <?php
 session_start();
+
+$current_page = 'kuis.php';
+
 // Pastikan user sudah login
 if (!isset($_SESSION['username'])) {
     header('Location: ../register-login/login.php'); // Sesuaikan path jika perlu
@@ -59,6 +62,57 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--light-purple);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            
+        }
+
+        nav a:hover {
+            color: var(--light);
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient2);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: #fff !important;
+            position: relative;
+        }
+        nav a.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 100%;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #a367dc, #ff84e8);
+            transition: width 0.3s;
+            z-index: 2;
+        }
+
         /* Custom styles for kuis.php */
         body {
             background: linear-gradient(180deg, var(--darker), var(--dark));
@@ -252,8 +306,7 @@ foreach ($quizzes_by_language as $lang => $quizzes) {
             <ul>
                 <li><a href="index.php">Beranda</a></li>
                 <li><a href="../bank_materi/belajar.php">Belajar</a></li>
-                <li><a href="kuis.php" class="active">Kuis</a></li>
-                <li><a href="ranking.php">Ranking</a></li>
+                <li><a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'active' : '' ?>">Kuis</a></li>                <li><a href="ranking.php">Ranking</a></li>
                 <li><a href="dashboard.php">Dashboard</a></li>
                 <?php if ($is_premium_user): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>

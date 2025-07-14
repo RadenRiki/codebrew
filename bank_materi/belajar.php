@@ -4,6 +4,8 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
+$current_page = 'belajar.php';
+
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     // Redirect to login page if not logged in
@@ -62,6 +64,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -85,14 +88,14 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             --gradient: linear-gradient(135deg, #5D2E8E 0%, #A367DC 100%);
             --gradient2: linear-gradient(90deg, var(--primary-light), var(--accent));
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
             background-color: #f8f9fa;
             color: #333;
@@ -169,189 +172,198 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             box-shadow: 0 10px 20px rgba(163, 103, 220, 0.3);
         }
 
-/* Profile Button */
-.profile-menu {
-    position: relative;
-}
+        /* Profile Button */
+        .profile-menu {
+            position: relative;
+        }
 
-.profile-btn {
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    background: var(--gradient);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s, box-shadow 0.3s;
-    position: relative;
-    border: 2px solid var(--light);
-}
+        .profile-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            border: 2px solid var(--light);
+        }
 
-.profile-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(163, 103, 220, 0.5);
-}
+        .profile-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(163, 103, 220, 0.5);
+        }
 
-.profile-btn .avatar {
-    font-size: 22px;
-    color: var(--light);
-}
+        .profile-btn .avatar {
+            font-size: 22px;
+            color: var(--light);
+        }
 
-.profile-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-}
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
 
-.profile-dropdown {
-    position: absolute;
-    top: 60px;
-    right: 0;
-    background: rgba(26, 11, 46, 0.95);
-    border: 1px solid rgba(93, 46, 142, 0.5);
-    border-radius: 12px;
-    width: 180px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-    padding: 0.8rem 0;
-    display: none;
-    z-index: 100;
-    animation: fadeInDown 0.3s ease;
-}
+        .profile-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: rgba(26, 11, 46, 0.95);
+            border: 1px solid rgba(93, 46, 142, 0.5);
+            border-radius: 12px;
+            width: 180px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 0;
+            display: none;
+            z-index: 100;
+            animation: fadeInDown 0.3s ease;
+        }
 
-@keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
 
-.profile-dropdown::before {
-    content: '';
-    position: absolute;
-    top: -8px;
-    right: 20px;
-    width: 16px;
-    height: 16px;
-    background: rgba(26, 11, 46, 0.95);
-    transform: rotate(45deg);
-    border-left: 1px solid rgba(93, 46, 142, 0.5);
-    border-top: 1px solid rgba(93, 46, 142, 0.5);
-}
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.profile-dropdown.show {
-    display: block;
-}
+        .profile-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(26, 11, 46, 0.95);
+            transform: rotate(45deg);
+            border-left: 1px solid rgba(93, 46, 142, 0.5);
+            border-top: 1px solid rgba(93, 46, 142, 0.5);
+        }
 
-.dropdown-item {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 1.5rem;
-    color: var(--light);
-    text-decoration: none;
-    transition: background-color 0.2s;
-    gap: 10px;
-}
+        .profile-dropdown.show {
+            display: block;
+        }
 
-.dropdown-item i {
-    font-size: 16px;
-    color: var(--light-purple);
-    width: 20px;
-}
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: var(--light);
+            text-decoration: none;
+            transition: background-color 0.2s;
+            gap: 10px;
+        }
 
-.dropdown-item:hover {
-    background-color: rgba(93, 46, 142, 0.3);
-}
+        .dropdown-item i {
+            font-size: 16px;
+            color: var(--light-purple);
+            width: 20px;
+        }
 
-.dropdown-divider {
-    height: 1px;
-    background: rgba(93, 46, 142, 0.5);
-    margin: 0.5rem 0;
-}
+        .dropdown-item:hover {
+            background-color: rgba(93, 46, 142, 0.3);
+        }
 
-.logout-item {
-    color: #ff6a7a;
-}
+        .dropdown-divider {
+            height: 1px;
+            background: rgba(93, 46, 142, 0.5);
+            margin: 0.5rem 0;
+        }
 
-.logout-item i {
-    color: #ff6a7a;
-}
+        .logout-item {
+            color: #ff6a7a;
+        }
 
-/* Premium Navigation Badge */
-.premium-badge-nav {
-    background: linear-gradient(45deg, #ffd700, #ffed4e);
-    color: #1a0b2e;
-    padding: 0.3rem 0.8rem;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    animation: premiumGlow 2s ease-in-out infinite alternate;
-}
+        .logout-item i {
+            color: #ff6a7a;
+        }
 
-@keyframes premiumGlow {
-    from {
-        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-    }
-    to {
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
-    }
-}
+        /* Premium Navigation Badge */
+        .premium-badge-nav {
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #1a0b2e;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            animation: premiumGlow 2s ease-in-out infinite alternate;
+        }
 
-/* Premium Profile Button */
-.premium-profile {
-    background: linear-gradient(45deg, #ffd700, #ff84e8);
-    border: 2px solid #ffd700;
-    position: relative;
-}
+        @keyframes premiumGlow {
+            from {
+                box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+            }
 
-.premium-crown {
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    font-size: 16px;
-    background: #ffd700;
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--light);
-}
+            to {
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+            }
+        }
 
-/* Premium Indicator in Greeting */
-.premium-indicator {
-    color: #ffd700;
-    margin-left: 5px;
-    animation: sparkle 1.5s ease-in-out infinite;
-}
+        /* Premium Profile Button */
+        .premium-profile {
+            background: linear-gradient(45deg, #ffd700, #ff84e8);
+            border: 2px solid #ffd700;
+            position: relative;
+        }
 
-@keyframes sparkle {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-}
+        .premium-crown {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            font-size: 16px;
+            background: #ffd700;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--light);
+        }
 
-/* Premium Status in Dropdown */
-.premium-status {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 1.5rem;
-    color: #ffd700;
-    font-weight: 600;
-    gap: 10px;
-    background: rgba(255, 215, 0, 0.1);
-}
+        /* Premium Indicator in Greeting */
+        .premium-indicator {
+            color: #ffd700;
+            margin-left: 5px;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
 
-.premium-status i {
-    color: #ffd700;
-}
+        @keyframes sparkle {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Premium Status in Dropdown */
+        .premium-status {
+            display: flex;
+            align-items: center;
+            padding: 0.8rem 1.5rem;
+            color: #ffd700;
+            font-weight: 600;
+            gap: 10px;
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .premium-status i {
+            color: #ffd700;
+        }
 
         nav ul {
             display: flex;
@@ -365,7 +377,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
-            
+
         }
 
         nav a:hover {
@@ -388,11 +400,21 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
         }
 
         nav a.active {
-            color: var(--light);
+            color: #fff !important;
+            position: relative;
         }
 
         nav a.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
             width: 100%;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #a367dc, #ff84e8);
+            transition: width 0.3s;
+            z-index: 2;
         }
 
         /* User Section */
@@ -471,11 +493,11 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             header {
                 padding: 1rem 3%;
             }
-            
+
             nav ul {
                 gap: 1.5rem;
             }
-            
+
             .greeting {
                 display: none;
             }
@@ -489,12 +511,12 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             nav ul {
                 gap: 1rem;
             }
-            
+
             nav a {
                 font-size: 0.9rem;
             }
         }
-        
+
         /* Page Header */
         .page-header {
             background: var(--gradient);
@@ -505,7 +527,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             position: relative;
             overflow: hidden;
         }
-        
+
         .page-header h1 {
             font-weight: 700;
             font-size: 2.5rem;
@@ -513,7 +535,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             position: relative;
             z-index: 1;
         }
-        
+
         .page-header p {
             font-size: 1.1rem;
             opacity: 0.9;
@@ -522,7 +544,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             position: relative;
             z-index: 1;
         }
-        
+
         .page-header::before {
             content: '';
             position: absolute;
@@ -533,7 +555,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
         }
-        
+
         .page-header::after {
             content: '';
             position: absolute;
@@ -544,7 +566,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             background: rgba(255, 255, 255, 0.08);
             border-radius: 50%;
         }
-        
+
         /* Filter Section */
         .filter-section {
             background: white;
@@ -553,7 +575,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             margin-bottom: 30px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        
+
         /* Category Pills */
         .category-pills {
             display: flex;
@@ -561,7 +583,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             gap: 10px;
             margin-bottom: 20px;
         }
-        
+
         .category-pill {
             padding: 6px 16px;
             border-radius: 20px;
@@ -574,18 +596,19 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             background: #f0f0f0;
             border: 1px solid #e0e0e0;
         }
-        
-        .category-pill:hover, .category-pill.active {
+
+        .category-pill:hover,
+        .category-pill.active {
             transform: translateY(-2px);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         .category-pill.active {
             color: white;
             background: var(--primary);
             border-color: var(--primary);
         }
-        
+
         /* Course Cards */
         .material-card {
             border: none;
@@ -595,23 +618,23 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             height: 100%;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        
+
         .material-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
-        
+
         .material-card .card-header {
             padding: 15px 20px;
             border-bottom: 1px solid #f0f0f0;
             font-weight: 600;
             background: white;
         }
-        
+
         .material-card .card-body {
             padding: 20px;
         }
-        
+
         .material-card .material-title {
             font-size: 1.1rem;
             font-weight: 600;
@@ -624,7 +647,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             line-height: 1.5;
             height: 3rem;
         }
-        
+
         .material-card .material-category {
             display: inline-block;
             padding: 5px 12px;
@@ -633,7 +656,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             font-weight: 600;
             margin-bottom: 15px;
         }
-        
+
         .material-card .material-desc {
             color: #666;
             font-size: 0.9rem;
@@ -644,13 +667,13 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             overflow: hidden;
             height: 4.5rem;
         }
-        
+
         .material-card-footer {
             padding: 15px 20px;
             background: #f9f9f9;
             border-top: 1px solid #f0f0f0;
         }
-        
+
         .material-link {
             display: inline-block;
             padding: 8px 20px;
@@ -661,59 +684,59 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             text-decoration: none;
             transition: all 0.3s;
         }
-        
+
         .material-link:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(93, 46, 142, 0.3);
             color: white;
         }
-        
+
         /* Category Colors */
         .category-html {
             background-color: #E44D26;
             color: white;
         }
-        
+
         .category-css {
             background-color: #2965f1;
             color: white;
         }
-        
+
         .category-javascript {
             background-color: #F7DF1E;
             color: #333;
         }
-        
+
         .category-python {
             background-color: #306998;
             color: white;
         }
-        
+
         .category-php {
             background-color: #777BB3;
             color: white;
         }
-        
+
         .category-mysql {
             background-color: #00758F;
             color: white;
         }
-        
+
         /* Pagination */
         .pagination {
             margin-top: 30px;
             justify-content: center;
         }
-        
+
         .page-item.active .page-link {
             background: var(--primary);
             border-color: var(--primary);
         }
-        
+
         .page-link {
             color: var(--primary);
         }
-        
+
         /* Badge Styles */
         .badge-premium {
             background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
@@ -726,7 +749,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             align-items: center;
             gap: 5px;
         }
-        
+
         .badge-free {
             background-color: #28a745;
             color: white;
@@ -738,30 +761,30 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             align-items: center;
             gap: 5px;
         }
-        
+
         /* Empty State */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
         }
-        
+
         .empty-state img {
             max-width: 250px;
             margin-bottom: 20px;
         }
-        
+
         .empty-state h3 {
             color: var(--primary);
             margin-bottom: 15px;
             font-weight: 600;
         }
-        
+
         .empty-state p {
             color: #666;
             max-width: 500px;
             margin: 0 auto 20px;
         }
-        
+
         /* No Results */
         .no-results {
             text-align: center;
@@ -770,19 +793,19 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
-        
+
         .no-results h3 {
             color: var(--primary);
             margin-bottom: 15px;
             font-weight: 600;
         }
-        
+
         .no-results p {
             color: #666;
             max-width: 500px;
             margin: 0 auto 20px;
         }
-        
+
         /* Footer */
         footer {
             background: var(--darker);
@@ -790,7 +813,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             padding: 3rem 0 2rem;
             margin-top: 4rem;
         }
-        
+
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -799,34 +822,34 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         .footer-col h3 {
             color: var(--accent);
             margin-bottom: 1.2rem;
             font-weight: 600;
             font-size: 1.2rem;
         }
-        
+
         .footer-col ul {
             list-style: none;
             padding: 0;
         }
-        
+
         .footer-col ul li {
             margin-bottom: 0.8rem;
         }
-        
+
         .footer-col ul li a {
             color: var(--light-purple);
             text-decoration: none;
             transition: all 0.3s;
         }
-        
+
         .footer-col ul li a:hover {
             color: var(--light);
             padding-left: 5px;
         }
-        
+
         .copyright {
             text-align: center;
             padding-top: 2rem;
@@ -836,27 +859,28 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             font-size: 0.9rem;
             opacity: 0.7;
         }
-        
+
         /* Responsive Adjustments */
         @media (max-width: 768px) {
             .page-header {
                 padding: 1.5rem 0;
             }
-            
+
             .page-header h1 {
                 font-size: 2rem;
             }
-            
+
             .category-pills {
                 justify-content: center;
             }
-            
+
             .footer-content {
                 grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Stars animation background -->
     <div class="stars" id="stars"></div>
@@ -866,24 +890,24 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo"
                 class="logo" />
         </a>
-         <!-- Navigasi -->
+        <!-- Navigasi -->
         <nav>
             <ul>
-              <li>
-  <a href="../homepage/index.php" class="<?= $current_page == 'index.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Beranda</a>
-</li>
-<li>
-  <a href="../bank_materi/belajar.php" class="<?= $current_page == 'belajar.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Belajar</a>
-</li>
-<li>
-  <a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Kuis</a>
-</li>
-<li>
-  <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Ranking</a>
-</li>
-<li>
-  <a href="../homepage/dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Dashboard</a>
-</li>
+                <li>
+                    <a href="../homepage/index.php" class="<?= $current_page == 'index.php' ? 'active' : '' ?>">Beranda</a>
+                </li>
+                <li>
+                    <a href="../bank_materi/belajar.php" class="<?= $current_page == 'belajar.php' ? 'active' : '' ?>">Belajar</a>
+                </li>
+                <li>
+                    <a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'active' : '' ?>">Kuis</a>
+                </li>
+                <li>
+                    <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'active' : '' ?>">Ranking</a>
+                </li>
+                <li>
+                    <a href="../homepage/dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-white hover:text-purple-400' : '' ?>">Dashboard</a>
+                </li>
 
                 <?php if ($is_premium): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
@@ -957,14 +981,14 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                             Semua
                         </a>
                         <?php foreach ($categories as $category): ?>
-                            <a href="bank_materi.php?kategori=<?php echo urlencode($category); ?>" 
-                               class="category-pill <?php echo $selectedCategory === $category ? 'active' : ''; ?>">
+                            <a href="bank_materi.php?kategori=<?php echo urlencode($category); ?>"
+                                class="category-pill <?php echo $selectedCategory === $category ? 'active' : ''; ?>">
                                 <?php echo htmlspecialchars($category); ?>
                             </a>
                         <?php endforeach; ?>
                     </div>
                 </div>
-                
+
                 <!-- Search Box -->
                 <div class="col-md-4">
                     <h5 class="mb-3">Cari Materi:</h5>
@@ -984,7 +1008,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
         <!-- Materials Section -->
         <div class="row">
             <?php if ($result && $result->num_rows > 0): ?>
-                <?php while ($row = $result->fetch_assoc()): 
+                <?php while ($row = $result->fetch_assoc()):
                     // Determine category class
                     $categoryClass = 'category-';
                     switch (strtolower($row['kategori'])) {
@@ -1017,22 +1041,22 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                             $categoryIcon = 'fa-code';
                     }
                 ?>
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card material-card">
-                        <div class="card-body">
-                            <span class="material-category <?php echo $categoryClass; ?>">
-                                <i class="fab <?php echo $categoryIcon; ?> me-1"></i>
-                                <?php echo htmlspecialchars($row['kategori']); ?>
-                            </span>
-                            
-                            <h3 class="material-title"><?php echo htmlspecialchars($row['judul']); ?></h3>
-                            
-                            <p class="material-desc">
-                                Tutorial lengkap tentang <?php echo htmlspecialchars($row['judul']); ?> untuk membantu Anda memperdalam pemahaman tentang <?php echo htmlspecialchars($row['kategori']); ?>.
-                            </p>
-                            
-                            <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                <!-- <div class="mb-2">
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card material-card">
+                            <div class="card-body">
+                                <span class="material-category <?php echo $categoryClass; ?>">
+                                    <i class="fab <?php echo $categoryIcon; ?> me-1"></i>
+                                    <?php echo htmlspecialchars($row['kategori']); ?>
+                                </span>
+
+                                <h3 class="material-title"><?php echo htmlspecialchars($row['judul']); ?></h3>
+
+                                <p class="material-desc">
+                                    Tutorial lengkap tentang <?php echo htmlspecialchars($row['judul']); ?> untuk membantu Anda memperdalam pemahaman tentang <?php echo htmlspecialchars($row['kategori']); ?>.
+                                </p>
+
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <!-- <div class="mb-2">
                                     <?php if (rand(0, 1) === 0 || !$_SESSION['is_premium']): ?>
                                     <span class="badge-free">
                                         <i class="fas fa-unlock"></i> Gratis
@@ -1043,14 +1067,14 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                                     </span>
                                     <?php endif; ?>
                                 </div> -->
-                                
-                                <a href="<?php echo htmlspecialchars($row['url']); ?>" target="_blank" class="material-link">
-                                    <i class="fas fa-external-link-alt me-1"></i> Buka Materi
-                                </a>
+
+                                    <a href="<?php echo htmlspecialchars($row['url']); ?>" target="_blank" class="material-link">
+                                        <i class="fas fa-external-link-alt me-1"></i> Buka Materi
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 <?php endwhile; ?>
             <?php else: ?>
                 <!-- No Results Found -->
@@ -1059,7 +1083,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                         <i class="fas fa-search" style="font-size: 3rem; color: #ccc; margin-bottom: 1rem;"></i>
                         <h3>Materi Tidak Ditemukan</h3>
                         <p>
-                            Tidak ada materi yang sesuai dengan kriteria pencarian Anda. 
+                            Tidak ada materi yang sesuai dengan kriteria pencarian Anda.
                             Silakan coba dengan kata kunci lain atau kategori yang berbeda.
                         </p>
                         <a href="bank_materi.php" class="btn btn-primary">
@@ -1072,37 +1096,18 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
 
         <!-- Pagination (if needed for future development) -->
         <?php if (isset($result) && $result->num_rows > 9): ?>
-        <nav aria-label="Pagination">
-            <ul class="pagination">
-                <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">Next</a></li>
-            </ul>
-        </nav>
+            <nav aria-label="Pagination">
+                <ul class="pagination">
+                    <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
         <?php endif; ?>
-        
-        <!-- Premium CTA Banner (for free users) -->
-        <?php if (!$_SESSION['is_premium']): ?>
-        <div class="card mt-5 mb-5">
-            <div class="card-body p-4 text-center">
-                <div class="row align-items-center">
-                    <div class="col-md-8 text-md-start">
-                        <h4 class="mb-3" style="color: var(--primary);"><i class="fas fa-crown text-warning me-2"></i>Akses Semua Materi Premium</h4>
-                        <p class="mb-md-0">
-                            Tingkatkan ke Premium sekarang untuk membuka semua materi eksklusif dan fitur tambahan!
-                        </p>
-                    </div>
-                    <div class="col-md-4 mt-3 mt-md-0">
-                        <a href="../premium/index.php" class="btn btn-warning btn-lg fw-bold">
-                            <i class="fas fa-crown me-2"></i> Upgrade ke Premium
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php endif; ?>
+
+       
     </div>
 
     <!-- Footer -->
@@ -1155,23 +1160,23 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             for (let i = 0; i < numberOfStars; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                
+
                 // Random position
                 star.style.left = Math.random() * 100 + '%';
                 star.style.top = Math.random() * 100 + '%';
-                
+
                 // Random size
                 const size = Math.random() * 3 + 1;
                 star.style.width = size + 'px';
                 star.style.height = size + 'px';
-                
+
                 // Random animation duration
                 const duration = Math.random() * 3 + 2;
                 star.style.setProperty('--duration', duration + 's');
-                
+
                 // Random delay
                 star.style.animationDelay = Math.random() * 5 + 's';
-                
+
                 starsContainer.appendChild(star);
             }
         }
@@ -1183,7 +1188,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             // Profile dropdown functionality
             const profileBtn = document.getElementById('profileBtn');
             const profileDropdown = document.getElementById('profileDropdown');
-            
+
             if (profileBtn && profileDropdown) {
                 profileBtn.addEventListener('click', function(e) {
                     profileDropdown.classList.toggle('show');
@@ -1205,4 +1210,5 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
         });
     </script>
 </body>
+
 </html>

@@ -4,6 +4,8 @@ ini_set('display_errors', 1);
 session_start();
 include '../connection.php';
 
+$current_page = 'rangking.php';
+
 // Cek apakah pengguna premium
 $is_premium = false;
 if (isset($_SESSION['user_id'])) {
@@ -34,6 +36,57 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
     <style>
+         nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        nav a {
+            color: var(--light-purple);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+            
+        }
+
+        nav a:hover {
+            color: var(--light);
+        }
+
+        nav a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient2);
+            transition: width 0.3s;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: #fff !important;
+            position: relative;
+        }
+        nav a.active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 100%;
+            height: 2px;
+            border-radius: 2px;
+            background: linear-gradient(90deg, #a367dc, #ff84e8);
+            transition: width 0.3s;
+            z-index: 2;
+        }
+
         .ranking-container {
             display: flex;
             justify-content: center;
@@ -246,22 +299,22 @@ $current_page = basename($_SERVER['PHP_SELF']);
          <!-- Navigasi -->
         <nav>
             <ul>
-              <li>
-  <a href="index.php" class="<?= $current_page == 'index.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Beranda</a>
-</li>
-<li>
-  <a href="../bank_materi/belajar.php" class="<?= $current_page == 'belajar.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Belajar</a>
-</li>
-<li>
-  <a href="kuis.php" class="<?= $current_page == 'kuis.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Kuis</a>
-</li>
-<li>
-  <a href="ranking.php" class="<?= $current_page == 'ranking.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Ranking</a>
-</li>
-<li>
-  <a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Dashboard</a>
-</li>
-
+                <li>
+                    <a href="index.php" class="<?= $current_page == 'index.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Beranda</a>
+                </li>
+                <li>
+                    <a href="../bank_materi/belajar.php" class="<?= $current_page == 'belajar.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Belajar</a>
+                </li>
+                <li>
+                    <a href="kuis.php" class="<?= $current_page == 'kuis.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Kuis</a>
+                </li>
+                <li>
+                    <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'active' : '' ?>">Ranking</a>
+                </li>
+                <li>
+                <a href="dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Dashboard</a>
+                </li>
+                
                 <?php if ($is_premium): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
                 <?php endif; ?>
