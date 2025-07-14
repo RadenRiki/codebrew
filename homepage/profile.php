@@ -8,11 +8,12 @@ if (!isset($_SESSION['username'])) {
 }
 
 // Koneksi ke database
-$conn = mysqli_connect("localhost", "root", "root", "codebrew_db");
+// Menggunakan file connection.php untuk koneksi
+require_once '../connection.php'; // Pastikan path ini benar
 
 // Cek koneksi
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+if ($conn->connect_error) { // Menggunakan $conn dari connection.php
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // Ambil data user dari tabel `user`
@@ -21,26 +22,75 @@ $sql = "SELECT * FROM user WHERE username = '$username'";
 $result = mysqli_query($conn, $sql);
 $user = mysqli_fetch_assoc($result);
 $user_id = $user['user_id']; // ID user dari tabel user
+$is_premium = $user['is_premium'] ?? 0; // Ambil status premium
 
 // Handle update profil
 $success_message = "";
 $error_message = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['update_profile'])) {
-    $full_name = mysqli_real_escape_string($conn, $_POST['full_name']);
-    $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $bio = mysqli_real_escape_string($conn, $_POST['bio']);
+    $new_email = mysqli_real_escape_string($conn, $_POST['email']);
+    $new_password = $_POST['password']; // Ambil password baru (belum di-escape)
+    $confirm_password = $_POST['confirm_password']; // Ambil konfirmasi password
 
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error_message = "Format email tidak valid";
+    // Validasi email
+    if (!filter_var($new_email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Format email tidak valid.";
     } else {
-        $update_sql = "UPDATE user SET full_name = '$full_name', email = '$email', bio = '$bio' WHERE id = '$user_id'";
-        if (mysqli_query($conn, $update_sql)) {
-            $success_message = "Profil berhasil diperbarui!";
-            $result = mysqli_query($conn, $sql);
-            $user = mysqli_fetch_assoc($result);
+        // Cek apakah email sudah digunakan oleh user lain
+        $check_email_sql = "SELECT user_id FROM user WHERE email = '$new_email' AND user_id != '$user_id'";
+        $check_email_result = mysqli_query($conn, $check_email_sql);
+        if (mysqli_num_rows($check_email_result) > 0) {
+            $error_message = "Email sudah digunakan oleh akun lain.";
         } else {
-            $error_message = "Error: " . mysqli_error($conn);
+            $update_fields = [];
+            $update_params = [];
+            $param_types = '';
+
+            // Update email jika berbeda
+            if ($new_email !== $user['email']) {
+                $update_fields[] = "email = ?";
+                $update_params[] = $new_email;
+                $param_types .= 's';
+            }
+
+            // Update password jika diisi dan cocok
+            if (!empty($new_password)) {
+                if ($new_password === $confirm_password) {
+                    // Hashing password sebelum disimpan
+                    $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+                    $update_fields[] = "password = ?";
+                    $update_params[] = $hashed_password;
+                    $param_types .= 's';
+                } else {
+                    $error_message = "Konfirmasi password tidak cocok.";
+                }
+            }
+
+            if (!empty($update_fields) && empty($error_message)) {
+                $update_sql = "UPDATE user SET " . implode(", ", $update_fields) . " WHERE user_id = ?";
+                $update_params[] = $user_id;
+                $param_types .= 'i'; // 'i' for integer user_id
+
+                $stmt = mysqli_prepare($conn, $update_sql);
+                if ($stmt) {
+                    mysqli_stmt_bind_param($stmt, $param_types, ...$update_params);
+                    if (mysqli_stmt_execute($stmt)) {
+                        $success_message = "Profil berhasil diperbarui!";
+                        // Refresh user data setelah update
+                        $result = mysqli_query($conn, $sql);
+                        $user = mysqli_fetch_assoc($result);
+                        $is_premium = $user['is_premium'] ?? 0; // Perbarui status premium setelah update
+                    } else {
+                        $error_message = "Error saat memperbarui: " . mysqli_error($conn);
+                    }
+                    mysqli_stmt_close($stmt);
+                } else {
+                    $error_message = "Error saat menyiapkan statement: " . mysqli_error($conn);
+                }
+            } elseif (empty($update_fields) && empty($error_message)) {
+                $error_message = "Tidak ada perubahan yang disimpan.";
+            }
         }
     }
 }
@@ -357,32 +407,51 @@ mysqli_close($conn);
     <nav>
       <ul>
         <li><a href="index.php">Beranda</a></li>
-        <li><a href="belajar.php">Belajar</a></li>
+        <li><a href="../bank_materi/belajar.php">Belajar</a></li>
+        <li><a href="kuis.php">Kuis</a></li>
         <li><a href="ranking.php">Ranking</a></li>
         <li><a href="dashboard.php">Dashboard</a></li>
+        <?php if ($is_premium): ?>
+            <li><span class="premium-badge-nav">PREMIUM</span></li>
+        <?php endif; ?>
       </ul>
     </nav>
 
     <!-- User greeting and profile button -->
     <div class="user-profile-container">
       <?php if (isset($_SESSION['username'])): ?>
-      <span class="greeting">Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!</span>
+        <span class="greeting">
+            Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+            <?php if ($is_premium): ?>
+                <span class="premium-indicator">⭐</span>
+            <?php endif; ?>
+        </span>
       <?php endif; ?>
 
       <!-- Profile button with dropdown -->
       <div class="profile-menu">
-        <div class="profile-btn" id="profileBtn">
+        <div class="profile-btn <?php echo $is_premium ? 'premium-profile' : ''; ?>" id="profileBtn">
           <i class="fas fa-user avatar"></i>
+          <?php if ($is_premium): ?>
+              <div class="premium-crown">👑</div>
+          <?php endif; ?>
         </div>
         <div class="profile-dropdown" id="profileDropdown">
+          <?php if ($is_premium): ?>
+              <div class="premium-status">
+                  <i class="fas fa-crown"></i>
+                  <span>Status Premium</span>
+              </div>
+              <div class="dropdown-divider"></div>
+          <?php endif; ?>
           <a href="profile.php" class="dropdown-item">
             <i class="fas fa-user-circle"></i>
             <span>Profil</span>
           </a>
-          <a href="settings.php" class="dropdown-item">
+          <!-- <a href="settings.php" class="dropdown-item">
             <i class="fas fa-cog"></i>
             <span>Pengaturan</span>
-          </a>
+          </a> -->
           <div class="dropdown-divider"></div>
           <a href="../register-login/logout.php" class="dropdown-item logout-item">
             <i class="fas fa-sign-out-alt"></i>
@@ -399,19 +468,20 @@ mysqli_close($conn);
       <!-- Profile Header -->
       <section class="profile-header">
         <div class="profile-avatar">
-          <?php 
+          <?php
             // Display first letter of username if no avatar
-            echo strtoupper(substr($username, 0, 1)); 
+            echo strtoupper(substr($username, 0, 1));
           ?>
         </div>
         <div class="profile-info">
           <h1 class="profile-name">
-            <?php echo isset($user['full_name']) && !empty($user['full_name']) ? htmlspecialchars($user['full_name']) : htmlspecialchars($username); ?>
+            <?php echo htmlspecialchars($username); // Hanya menampilkan username ?>
           </h1>
           <div class="profile-username">@<?php echo htmlspecialchars($username); ?>
             <?php echo isset($user['is_premium']) && $user['is_premium'] ? '<span class="badge badge-primary"><i class="fas fa-star"></i> PINTAR</span>' : ''; ?>
           </div>
-          <p class="profile-bio"><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : 'Belum ada bio.'; ?>
+          <p class="profile-bio">
+            <?php echo isset($user['email']) ? 'Email: ' . htmlspecialchars($user['email']) : 'Email belum diatur.'; ?>
           </p>
         </div>
       </section>
@@ -474,7 +544,7 @@ mysqli_close($conn);
         <?php if (!isset($user['is_premium']) || !$user['is_premium']): ?>
         <div class="mt-8 text-center">
           <p class="text-light-purple mb-4">Tingkatkan pengalaman belajarmu dengan fitur PINTAR!</p>
-          <button class="btn">Gabung PINTAR Sekarang</button>
+          <button class="btn premium-cta-profile">Gabung PINTAR Sekarang</button>
         </div>
         <?php endif; ?>
 
@@ -484,23 +554,22 @@ mysqli_close($conn);
       <div class="profile-content" id="edit-profile">
         <form class="edit-profile-form" method="POST" action="">
           <div class="form-group">
-            <label class="form-label" for="full_name">Nama Lengkap</label>
-            <input class="form-input" type="text" id="full_name" name="full_name"
-              value="<?php echo isset($user['full_name']) ? htmlspecialchars($user['full_name']) : ''; ?>"
-              placeholder="Masukkan nama lengkap">
-          </div>
-
-          <div class="form-group">
             <label class="form-label" for="email">Email</label>
             <input class="form-input" type="email" id="email" name="email"
               value="<?php echo isset($user['email']) ? htmlspecialchars($user['email']) : ''; ?>"
-              placeholder="Masukkan email">
+              placeholder="Masukkan email baru">
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="bio">Bio</label>
-            <textarea class="form-input form-textarea" id="bio" name="bio"
-              placeholder="Ceritakan tentang dirimu..."><?php echo isset($user['bio']) ? htmlspecialchars($user['bio']) : ''; ?></textarea>
+            <label class="form-label" for="password">Password Baru</label>
+            <input class="form-input" type="password" id="password" name="password"
+              placeholder="Kosongkan jika tidak ingin mengubah password">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="confirm_password">Konfirmasi Password Baru</label>
+            <input class="form-input" type="password" id="confirm_password" name="confirm_password"
+              placeholder="Konfirmasi password baru Anda">
           </div>
 
           <button type="submit" name="update_profile" class="form-submit">Simpan Perubahan</button>
@@ -633,22 +702,27 @@ mysqli_close($conn);
         }, 5000);
       }
       // Sweet Alert for Premium button
-      const premiumBtn = document.querySelector('.btn');
+      const premiumBtn = document.querySelector('.premium-cta-profile'); // Ubah selector
       if (premiumBtn) {
         premiumBtn.addEventListener('click', function() {
           Swal.fire({
-            title: 'Tingkatkan ke PINTAR!',
-            text: 'Akses fitur premium untuk pembelajaran yang lebih optimal.',
+            title: 'Beralih ke PINTAR!',
+            html: `<p>Dengan meng-upgrade ke PINTAR kamu akan mendapatkan:</p>
+               <ul class="premium-features-list">
+                 <li><i class="fas fa-check"></i> Akses ke level latihan lebih tinggi</li>
+                 <li><i class="fas fa-check"></i> Dashboard statistik perkembangan</li>
+                 <li><i class="fas fa-check"></i> Nilai yang lebih maksimal</li>
+               </ul>`,
             icon: 'info',
             showCancelButton: true,
-            confirmButtonColor: '#5d2e8e',
+            confirmButtonColor: 'var(--accent)',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'Gabung Sekarang',
+            confirmButtonText: 'Upgrade Sekarang!',
             cancelButtonText: 'Nanti Saja'
           }).then((result) => {
             if (result.isConfirmed) {
               // Redirect to premium signup
-              window.location.href = 'premium.php';
+              window.location.href = '../payment/premium.php'; // Sesuaikan path jika perlu
             }
           });
         });
@@ -679,6 +753,16 @@ mysqli_close($conn);
         starsContainer.appendChild(star);
       }
     }
+
+    // Logout confirmation
+    document.querySelectorAll('.logout-item').forEach(function(element) {
+        element.addEventListener('click', function(event) {
+            const yakin = confirm("Apakah Anda yakin ingin logout?");
+            if (!yakin) {
+                event.preventDefault(); // Batalkan logout jika user membatalkan
+            }
+        });
+    });
   </script>
 </body>
 

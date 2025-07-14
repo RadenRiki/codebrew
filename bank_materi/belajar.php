@@ -14,6 +14,16 @@ if (!isset($_SESSION['user_id'])) {
 // Include database connection
 include_once '../connection.php';
 
+// Cek apakah pengguna premium
+$is_premium = false;
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $check_premium = mysqli_query($conn, "SELECT is_premium FROM user WHERE user_id = $user_id");
+    if ($check_premium && $data = mysqli_fetch_assoc($check_premium)) {
+        $is_premium = $data['is_premium'];
+    }
+}
+
 // Get the selected category (if any)
 $selectedCategory = isset($_GET['kategori']) ? $_GET['kategori'] : '';
 
@@ -141,10 +151,207 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             border-bottom: 1px solid rgba(93, 46, 142, 0.3);
         }
 
-        .logo {
-            width: 35%;
-            padding-top: 0.5%;
+        .cta-button {
+            background: var(--gradient);
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            color: white;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 1rem;
+            text-align: center;
+            text-decoration: none;
+            transition: 0.3s ease;
         }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(163, 103, 220, 0.3);
+        }
+
+/* Profile Button */
+.profile-menu {
+    position: relative;
+}
+
+.profile-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: var(--gradient);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    position: relative;
+    border: 2px solid var(--light);
+}
+
+.profile-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(163, 103, 220, 0.5);
+}
+
+.profile-btn .avatar {
+    font-size: 22px;
+    color: var(--light);
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background: rgba(26, 11, 46, 0.95);
+    border: 1px solid rgba(93, 46, 142, 0.5);
+    border-radius: 12px;
+    width: 180px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    padding: 0.8rem 0;
+    display: none;
+    z-index: 100;
+    animation: fadeInDown 0.3s ease;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.profile-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    right: 20px;
+    width: 16px;
+    height: 16px;
+    background: rgba(26, 11, 46, 0.95);
+    transform: rotate(45deg);
+    border-left: 1px solid rgba(93, 46, 142, 0.5);
+    border-top: 1px solid rgba(93, 46, 142, 0.5);
+}
+
+.profile-dropdown.show {
+    display: block;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    color: var(--light);
+    text-decoration: none;
+    transition: background-color 0.2s;
+    gap: 10px;
+}
+
+.dropdown-item i {
+    font-size: 16px;
+    color: var(--light-purple);
+    width: 20px;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(93, 46, 142, 0.3);
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(93, 46, 142, 0.5);
+    margin: 0.5rem 0;
+}
+
+.logout-item {
+    color: #ff6a7a;
+}
+
+.logout-item i {
+    color: #ff6a7a;
+}
+
+/* Premium Navigation Badge */
+.premium-badge-nav {
+    background: linear-gradient(45deg, #ffd700, #ffed4e);
+    color: #1a0b2e;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    animation: premiumGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes premiumGlow {
+    from {
+        box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+    }
+    to {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+}
+
+/* Premium Profile Button */
+.premium-profile {
+    background: linear-gradient(45deg, #ffd700, #ff84e8);
+    border: 2px solid #ffd700;
+    position: relative;
+}
+
+.premium-crown {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 16px;
+    background: #ffd700;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--light);
+}
+
+/* Premium Indicator in Greeting */
+.premium-indicator {
+    color: #ffd700;
+    margin-left: 5px;
+    animation: sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+}
+
+/* Premium Status in Dropdown */
+.premium-status {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    color: #ffd700;
+    font-weight: 600;
+    gap: 10px;
+    background: rgba(255, 215, 0, 0.1);
+}
+
+.premium-status i {
+    color: #ffd700;
+}
 
         nav ul {
             display: flex;
@@ -243,83 +450,6 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             object-fit: cover;
         }
 
-        .profile-dropdown {
-            position: absolute;
-            top: 60px;
-            right: 0;
-            background: rgba(26, 11, 46, 0.95);
-            border: 1px solid rgba(93, 46, 142, 0.5);
-            border-radius: 12px;
-            width: 200px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 0.8rem 0;
-            display: none;
-            z-index: 100;
-            animation: fadeInDown 0.3s ease;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .profile-dropdown::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            right: 20px;
-            width: 16px;
-            height: 16px;
-            background: rgba(26, 11, 46, 0.95);
-            transform: rotate(45deg);
-            border-left: 1px solid rgba(93, 46, 142, 0.5);
-            border-top: 1px solid rgba(93, 46, 142, 0.5);
-        }
-
-        .profile-dropdown.show {
-            display: block;
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            padding: 0.8rem 1.5rem;
-            color: var(--light);
-            text-decoration: none;
-            transition: background-color 0.2s;
-            gap: 10px;
-        }
-
-        .dropdown-item i {
-            font-size: 16px;
-            color: var(--light-purple);
-            width: 20px;
-        }
-
-        .dropdown-item:hover {
-            background-color: rgba(93, 46, 142, 0.3);
-        }
-
-        .dropdown-divider {
-            height: 1px;
-            background: rgba(93, 46, 142, 0.5);
-            margin: 0.5rem 0;
-        }
-
-        .logout-item {
-            color: #ff6a7a !important;
-        }
-
-        .logout-item i {
-            color: #ff6a7a !important;
-        }
 
         /* Content area for demo */
         .content {
@@ -732,55 +862,72 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
     <div class="stars" id="stars"></div>
 
     <header>
-        <!-- Logo -->
-        <a href="../homepage/index.php" class="logo">
-            <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" class="logo">
+        <a href="index.php" class="logo">
+            <img src="../assets/Cuplikan_layar_2025-04-17_195753-removebg-preview 1.png" alt="CodeBrew Logo"
+                class="logo" />
         </a>
-
-        <!-- Navigasi -->
+         <!-- Navigasi -->
         <nav>
             <ul>
-                <li><a href="../homepage/index.php">Beranda</a></li>
-                <li><a href="../bank_materi/belajar.php" class="active">Belajar</a></li>
-                <li><a href="../homepage/kuis.php">Kuis</a></li>
-                <li><a href="../homepage/ranking.php">Ranking</a></li>
-                <li><a href="../homepage/dashboard.php">Dashboard</a></li>
+              <li>
+  <a href="../homepage/index.php" class="<?= $current_page == 'index.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Beranda</a>
+</li>
+<li>
+  <a href="../bank_materi/belajar.php" class="<?= $current_page == 'belajar.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Belajar</a>
+</li>
+<li>
+  <a href="../homepage/kuis.php" class="<?= $current_page == 'kuis.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Kuis</a>
+</li>
+<li>
+  <a href="../homepage/ranking.php" class="<?= $current_page == 'ranking.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Ranking</a>
+</li>
+<li>
+  <a href="../homepage/dashboard.php" class="<?= $current_page == 'dashboard.php' ? 'text-purple-400 border-b-2 border-purple-400 font-semibold pb-1' : 'text-white hover:text-purple-400' ?>">Dashboard</a>
+</li>
+
+                <?php if ($is_premium): ?>
+                    <li><span class="premium-badge-nav">PREMIUM</span></li>
+                <?php endif; ?>
             </ul>
         </nav>
 
         <!-- User greeting and profile button -->
         <div class="user-profile-container">
-            <!-- User greeting (demo data) -->
-            <span class="greeting">
-                <?php if (isset($_SESSION['username'])): ?>
+            <?php if (isset($_SESSION['username'])): ?>
                 <span class="greeting">
                     Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                    <?php if ($is_premium): ?>
+                        <span class="premium-indicator">⭐</span>
+                    <?php endif; ?>
                 </span>
-                <?php endif; ?>
-            </span>
+            <?php endif; ?>
 
             <!-- Profile button with dropdown -->
             <div class="profile-menu">
-                <div class="profile-btn premium-profile" id="profileBtn">
-                    <!-- You can switch between profile image or avatar icon -->
-                    <!-- <img src="path/to/profile.jpg" alt="Profile" class="profile-img"> -->
+                <div class="profile-btn <?php echo $is_premium ? 'premium-profile' : ''; ?>" id="profileBtn">
                     <i class="fas fa-user avatar"></i>
+                    <?php if ($is_premium): ?>
+                        <div class="premium-crown">👑</div>
+                    <?php endif; ?>
                 </div>
-                
-                <div class="profile-dropdown" id="profileDropdown">            
-                    <a href="../homepage/profile.php" class="dropdown-item">
+                <div class="profile-dropdown" id="profileDropdown">
+                    <?php if ($is_premium): ?>
+                        <div class="premium-status">
+                            <i class="fas fa-crown"></i>
+                            <span>Status Premium</span>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                    <?php endif; ?>
+                    <a href="../homepage/" class="dropdown-item">
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
-                    
-                    <a href="../settings/index.php" class="dropdown-item">
+                    <!-- <a href="settings.php" class="dropdown-item">
                         <i class="fas fa-cog"></i>
                         <span>Pengaturan</span>
-                    </a>
-                    
+                    </a> -->
                     <div class="dropdown-divider"></div>
-                    
-                    <a href="../logout.php" class="dropdown-item logout-item">
+                    <a href="../register-login/logout.php" class="dropdown-item logout-item">
                         <i class="fas fa-sign-out-alt"></i>
                         <span>Logout</span>
                     </a>
@@ -885,7 +1032,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                             </p>
                             
                             <div class="d-flex justify-content-between align-items-center flex-wrap">
-                                <div class="mb-2">
+                                <!-- <div class="mb-2">
                                     <?php if (rand(0, 1) === 0 || !$_SESSION['is_premium']): ?>
                                     <span class="badge-free">
                                         <i class="fas fa-unlock"></i> Gratis
@@ -895,7 +1042,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                                         <i class="fas fa-crown"></i> Premium
                                     </span>
                                     <?php endif; ?>
-                                </div>
+                                </div> -->
                                 
                                 <a href="<?php echo htmlspecialchars($row['url']); ?>" target="_blank" class="material-link">
                                     <i class="fas fa-external-link-alt me-1"></i> Buka Materi

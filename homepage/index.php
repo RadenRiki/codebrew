@@ -365,10 +365,10 @@ $is_premium = $user_data['is_premium'] ?? 0;
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
-                    <a href="settings.php" class="dropdown-item">
+                    <!-- <a href="settings.php" class="dropdown-item">
                         <i class="fas fa-cog"></i>
                         <span>Pengaturan</span>
-                    </a>
+                    </a> -->
                     <div class="dropdown-divider"></div>
                     <a href="../register-login/logout.php" class="dropdown-item logout-item">
                         <i class="fas fa-sign-out-alt"></i>
@@ -438,7 +438,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">HTML</h3>
                 <p class="language-desc">Bangun pondasi digitalmu dengan HTML! Bahasa markup sederhana untuk menyusun
                     struktur konten web.</p>
-                <button class="quiz-btn">Mulai Quiz</button>
+                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -448,7 +448,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">CSS</h3>
                 <p class="language-desc">Transformasi biasa menjadi luar biasa dengan CSS! Berikan warna, layout, dan
                     animasi pada websitemu.</p>
-                <button class="quiz-btn">Mulai Quiz</button>
+                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -458,7 +458,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">JAVASCRIPT</h3>
                 <p class="language-desc">Hidupkan web statis menjadi dinamis dengan JavaScript! Tambahkan logika dan
                     interaksi canggih.</p>
-                <button class="quiz-btn">Mulai Quiz</button>
+                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -468,7 +468,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">PYTHON</h3>
                 <p class="language-desc">Python menggabungkan kesederhanaan sintaks dengan kekuatan tak terbatas untuk
                     berbagai aplikasi.</p>
-                <button class="quiz-btn">Mulai Quiz</button>
+                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -478,7 +478,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">PHP</h3>
                 <p class="language-desc">PHP adalah bahasa scripting server-side untuk memproses data dan berkomunikasi
                     dengan database.</p>
-                <button class="quiz-btn">Mulai Quiz</button>
+                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
 
             <div class="language-card">
@@ -488,7 +488,7 @@ $is_premium = $user_data['is_premium'] ?? 0;
                 <h3 class="language-title">SQL</h3>
                 <p class="language-desc">Kuasai seni berbicara dengan database! SQL untuk mengelola dan memanipulasi
                     data relasional.</p>
-                <button class="quiz-btn">Mulai Quiz</button>
+                    <button class="quiz-btn" onclick="location.href='../homepage/kuis.php'">Mulai Quiz</button>
             </div>
         </div>
     </section>
@@ -677,12 +677,12 @@ $is_premium = $user_data['is_premium'] ?? 0;
             }
 
             // === Quiz buttons ===
-            document.querySelectorAll('.quiz-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const lang = this.closest('.language-card').querySelector('.language-title').textContent;
-                    alert(`Quiz untuk ${lang} akan segera dimulai!`);
-                });
-            });
+            // document.querySelectorAll('.quiz-btn').forEach(btn => {
+            //     btn.addEventListener('click', function() {
+            //         const lang = this.closest('.language-card').querySelector('.language-title').textContent;
+            //         alert(`Quiz untuk ${lang} akan segera dimulai!`);
+            //     });
+            // });
 
             // === Chatbot Functionality ===
             const chatbotButton = document.getElementById('chatbotButton');

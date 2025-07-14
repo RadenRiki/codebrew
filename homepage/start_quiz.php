@@ -249,9 +249,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     white-space: nowrap;
 }
 
-/* Pastikan list items tidak muncul */
-.explanation p {
-    list-style: none !important;
+/* Cache indicator */
+.cache-indicator {
+    display: inline-block;
+    margin-left: 8px;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+.cache-indicator i {
+    margin-right: 3px;
+}
+
+.cache-indicator.new {
+    color: #ffc107;
+}
+
+.cache-indicator:not(.new) {
+    color: #28a745;
+}
+
+.explanation small.text-muted {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.75em;
+    opacity: 0.6;
 }
 
 /* Animasi loading yang lebih smooth */
@@ -664,27 +686,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
     <script>
 // Tambahkan di bagian JavaScript start_quiz.php setelah quiz selesai
 
-// Fungsi untuk load penjelasan secara asynchronous
+// Fungsi untuk load penjelasan secara asynchronous dengan prioritas
 function loadExplanations() {
     const explanationElements = document.querySelectorAll('.explanation');
+    const loadQueue = [];
     
-    explanationElements.forEach((element, index) => {
+    // Collect all explanation requests
+    explanationElements.forEach((element) => {
         const questionId = element.dataset.questionId;
         const userAnswerId = element.dataset.userAnswerId || null;
         const quizId = element.dataset.quizId;
         
-        // Tampilkan loading spinner
-        element.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Memuat penjelasan...</p>';
-        
-        // Delay untuk menghindari overload
-        setTimeout(() => {
-            fetchExplanation(questionId, quizId, userAnswerId, element);
-        }, index * 500); // 500ms delay antar request
+        loadQueue.push({
+            element,
+            questionId,
+            userAnswerId,
+            quizId
+        });
     });
+    
+    // Load explanations in parallel with limited concurrency
+    const maxConcurrent = 3; // Load 3 at a time
+    let currentIndex = 0;
+    
+    function loadNext() {
+        if (currentIndex >= loadQueue.length) return;
+        
+        const item = loadQueue[currentIndex];
+        currentIndex++;
+        
+        // Show loading spinner
+        item.element.innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Memuat penjelasan...</p>';
+        
+        fetchExplanation(item.questionId, item.quizId, item.userAnswerId, item.element)
+            .finally(() => {
+                // Load next item regardless of success/failure
+                loadNext();
+            });
+    }
+    
+    // Start loading with max concurrent requests
+    for (let i = 0; i < Math.min(maxConcurrent, loadQueue.length); i++) {
+        loadNext();
+    }
 }
 
 // Fungsi untuk fetch penjelasan dari server
 async function fetchExplanation(questionId, quizId, userAnswerId, element) {
+    const startTime = Date.now();
+    
     try {
         const formData = new FormData();
         formData.append('question_id', questionId);
@@ -699,18 +749,24 @@ async function fetchExplanation(questionId, quizId, userAnswerId, element) {
         });
         
         const data = await response.json();
+        const loadTime = Date.now() - startTime;
         
         if (data.success) {
-            // Explanation sudah di-escape di server side
-            // Tinggal wrap tag HTML dengan <code> untuk styling
+            // Process explanation
             let processedExplanation = data.explanation;
             
-            // Deteksi dan format tag HTML yang sudah di-escape dengan <code>
+            // Detect and format escaped HTML tags with <code>
             processedExplanation = processedExplanation.replace(/&lt;(\/?[^&]+?)&gt;/g, '<code>&lt;$1&gt;</code>');
             
+            // Add cache indicator
+            const cacheIndicator = data.from_cache 
+                ? '<span class="cache-indicator" title="Dari cache"><i class="fas fa-bolt"></i></span>' 
+                : '<span class="cache-indicator new" title="Baru di-generate"><i class="fas fa-magic"></i></span>';
+            
             element.innerHTML = `
-                <strong>Penjelasan:</strong>
+                <strong>Penjelasan:</strong> ${cacheIndicator}
                 <p>${processedExplanation}</p>
+                ${data.from_cache ? `<small class="text-muted"></small>` : ''}
             `;
         } else {
             element.innerHTML = `
@@ -731,7 +787,7 @@ async function fetchExplanation(questionId, quizId, userAnswerId, element) {
 document.addEventListener('DOMContentLoaded', function() {
     <?php if ($quiz_completed): ?>
         // Load penjelasan setelah halaman selesai render
-        setTimeout(loadExplanations, 1000);
+        setTimeout(loadExplanations, 500); // Reduced delay
     <?php endif; ?>
 });
         document.addEventListener('DOMContentLoaded', function() {

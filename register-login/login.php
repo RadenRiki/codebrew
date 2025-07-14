@@ -290,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 
     <!-- Footer -->
-    <footer>
+    <!-- <footer>
       <div class="footer-content">
         <div class="footer-col">
           <h3>COMPANY</h3>
@@ -318,7 +318,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </div>
       </div>
       <div class="copyright">Copyright ©️ Wasabi 2025</div>
-    </footer>
+    </footer> -->
 
     <script src="auth.js"></script>
     <?php

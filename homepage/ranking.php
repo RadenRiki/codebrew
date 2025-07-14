@@ -299,10 +299,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
-                    <a href="settings.php" class="dropdown-item">
+                    <!-- <a href="settings.php" class="dropdown-item">
                         <i class="fas fa-cog"></i>
                         <span>Pengaturan</span>
-                    </a>
+                    </a> -->
                     <div class="dropdown-divider"></div>
                     <a href="../register-login/logout.php" class="dropdown-item logout-item">
                         <i class="fas fa-sign-out-alt"></i>

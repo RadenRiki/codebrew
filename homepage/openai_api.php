@@ -17,26 +17,43 @@ if (file_exists($envFile)) {
 define('OPENAI_API_KEY', $envVars['OPENAI_API_KEY'] ?? '');
 define('OPENAI_ENDPOINT', 'https://api.openai.com/v1/chat/completions');
 
-// Check cache first
+// Check cache first - FIXED VERSION
 function check_explanation_cache($question_id, $user_answer_id = null) {
     global $conn;
     
-    $stmt = $conn->prepare("
-        SELECT explanation 
-        FROM explanation_cache 
-        WHERE question_id = ? 
-        AND (user_answer_id = ? OR (user_answer_id IS NULL AND ? IS NULL))
-        AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)
-    ");
-    $stmt->bind_param("iii", $question_id, $user_answer_id, $user_answer_id);
+    // Handle NULL answer_id properly
+    if ($user_answer_id === null || $user_answer_id === 0) {
+        $stmt = $conn->prepare("
+            SELECT explanation 
+            FROM explanation_cache 
+            WHERE question_id = ? 
+            AND user_answer_id IS NULL
+            AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)
+            LIMIT 1
+        ");
+        $stmt->bind_param("i", $question_id);
+    } else {
+        $stmt = $conn->prepare("
+            SELECT explanation 
+            FROM explanation_cache 
+            WHERE question_id = ? 
+            AND user_answer_id = ?
+            AND created_at > DATE_SUB(NOW(), INTERVAL 30 DAY)
+            LIMIT 1
+        ");
+        $stmt->bind_param("ii", $question_id, $user_answer_id);
+    }
+    
     $stmt->execute();
     $result = $stmt->get_result();
     
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
+        $stmt->close();
         return $row['explanation'];
     }
     
+    $stmt->close();
     return null;
 }
 
