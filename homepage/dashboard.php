@@ -185,11 +185,11 @@ $stmt_user_rank->close();
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <head>
-    <title>Dashboard Pengguna - Codebrew</title>
+    <title>Dashboard Pengguna - CodeBrew</title>
     <link rel = "icon" type = "image/png" href = "../assets/LogoIcon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -203,7 +203,8 @@ $stmt_user_rank->close();
             background: linear-gradient(180deg, var(--darker), var(--dark));
             color: var(--light);
             min-height: 100vh;
-            padding-top: 100px; /* Adjust for fixed header */
+            padding-top: 100px;
+            /* Adjust for fixed header */
         }
 
         nav ul {
@@ -218,7 +219,7 @@ $stmt_user_rank->close();
             font-weight: 500;
             transition: color 0.3s;
             position: relative;
-            
+
         }
 
         nav a:hover {
@@ -244,6 +245,7 @@ $stmt_user_rank->close();
             color: #fff !important;
             position: relative;
         }
+
         nav a.active::after {
             content: "";
             position: absolute;
@@ -325,8 +327,10 @@ $stmt_user_rank->close();
 
         .chart-card {
             position: relative;
-            height: 400px;         /* ketinggian chart tetap */
-            overflow-x: auto;      /* scroll horizontal di dalam chart saja */
+            height: 400px;
+            /* ketinggian chart tetap */
+            overflow-x: auto;
+            /* scroll horizontal di dalam chart saja */
             overflow-y: visible;
             padding: 1.5rem;
             background: rgba(93, 46, 142, 0.2);
@@ -337,13 +341,16 @@ $stmt_user_rank->close();
 
         .chart-scroll-container {
             width: 100%;
-            height: calc(100% - 2rem);  /* sisakan ruang 2rem untuk label */
+            height: calc(100% - 2rem);
+            /* sisakan ruang 2rem untuk label */
             overflow: auto;
-            }
-            .chart-scroll-container canvas {
-            min-width: 800px;            /* sesuai kebutuhan */
+        }
+
+        .chart-scroll-container canvas {
+            min-width: 800px;
+            /* sesuai kebutuhan */
             height: 100% !important;
-            }
+        }
 
         .chart-card h3 {
             font-size: 1.5rem;
@@ -352,7 +359,8 @@ $stmt_user_rank->close();
             text-align: center;
         }
 
-        .recent-quizzes-section, .ranking-section {
+        .recent-quizzes-section,
+        .ranking-section {
             background: rgba(93, 46, 142, 0.2);
             border-radius: 10px;
             padding: 1.5rem;
@@ -360,7 +368,8 @@ $stmt_user_rank->close();
             border: 1px solid rgba(93, 46, 142, 0.3);
         }
 
-        .recent-quizzes-section h3, .ranking-section h3 {
+        .recent-quizzes-section h3,
+        .ranking-section h3 {
             font-size: 1.5rem;
             color: var(--light);
             margin-bottom: 1rem;
@@ -373,7 +382,8 @@ $stmt_user_rank->close();
             margin-top: 1rem;
         }
 
-        .quiz-list-table th, .quiz-list-table td {
+        .quiz-list-table th,
+        .quiz-list-table td {
             padding: 0.8rem;
             text-align: left;
             border-bottom: 1px solid rgba(93, 46, 142, 0.2);
@@ -440,35 +450,44 @@ $stmt_user_rank->close();
             color: var(--accent);
         }
 
-        
+
 
         /* Responsive adjustments */
         @media (max-width: 768px) {
             .dashboard-container {
                 padding: 1rem;
             }
+
             .dashboard-header h1 {
                 font-size: 2rem;
             }
-            .stats-grid, .chart-section {
+
+            .stats-grid,
+            .chart-section {
                 grid-template-columns: 1fr;
             }
+
             .stat-card .value {
                 font-size: 2rem;
             }
+
             .chart-card {
                 padding: 1rem;
             }
+
             .chart-card h3 {
                 font-size: 1.3rem;
             }
-            .quiz-list-table th, .quiz-list-table td {
+
+            .quiz-list-table th,
+            .quiz-list-table td {
                 font-size: 0.9rem;
                 padding: 0.6rem;
             }
         }
     </style>
 </head>
+
 <body>
     <!-- Background stars -->
     <div class="stars" id="stars"></div>
@@ -506,8 +525,8 @@ $stmt_user_rank->close();
         <div class="user-profile-container">
             <?php if (isset($_SESSION['username'])): ?>
                 <span class="greeting">
-                Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
-                <?php if ($is_premium_user): ?>
+                    Halo, <?php echo htmlspecialchars($_SESSION['username']); ?>!
+                    <?php if ($is_premium_user): ?>
                         <span class="premium-indicator">⭐</span>
                     <?php endif; ?>
                 </span>
@@ -677,6 +696,7 @@ $stmt_user_rank->close();
     <!-- JavaScript for Functionality -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+
             // === Profile dropdown ===
             const profileBtn = document.getElementById('profileBtn');
             const profileDropdown = document.getElementById('profileDropdown');
@@ -709,137 +729,297 @@ $stmt_user_rank->close();
                     const dur = Math.random() * 4 + 1,
                         delay = Math.random() * 5;
                     Object.assign(star.style, {
-                        left: `${x}%`,
-                        top: `${y}%`,
-                        width: `${size}px`,
-                        height: `${size}px`,
+                        left: x + '%',
+                        top: y + '%',
+                        width: size + 'px',
+                        height: size + 'px',
                         backgroundColor: color,
-                        boxShadow: `0 0 ${size*2}px ${color}`,
-                        animationDuration: `${dur}s`,
-                        animationDelay: `${delay}s`
+                        boxShadow: '0 0 ' + (size * 2) + 'px ' + color,
+                        animationDuration: dur + 's',
+                        animationDelay: delay + 's'
                     });
                     container.appendChild(star);
                 }
             }
 
             // === Chart.js for Language Progress ===
-const languageProgressCtx = document.getElementById('languageProgressChart').getContext('2d');
-new Chart(languageProgressCtx, {
-    type: 'bar',
-    data: {
-        labels: <?php echo json_encode($chart_labels); ?>,
-        datasets: [{
-            label: 'Kuis Selesai',
-            data: <?php echo json_encode($chart_data_completed); ?>,
-            backgroundColor: 'rgba(163, 103, 220, 0.7)', // primary-light
-            borderColor: 'rgba(163, 103, 220, 1)',
-            borderWidth: 1
-        }, {
-            label: 'Total Kuis',
-            data: <?php echo json_encode($chart_data_total); ?>,
-            backgroundColor: 'rgba(255, 132, 232, 0.3)', // accent with transparency
-            borderColor: 'rgba(255, 132, 232, 0.7)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: 'white'
-                },
-                grid: {
-                    color: 'rgba(93, 46, 142, 0.2)'
-                }
-            },
-            x: {
-                ticks: {
-                    color: 'white'
-                },
-                grid: {
-                    color: 'rgba(93, 46, 142, 0.2)'
-                },
-                barPercentage: 0.5, // Atur lebar batang
-                categoryPercentage: 0.5 // Atur lebar kategori
-            }
-        },
-        plugins: {
-            legend: {
-                labels: {
-                    color: 'white'
-                }
-            },
-            tooltip: {
-                backgroundColor: 'rgba(26, 11, 46, 0.9)',
-                titleColor: 'white',
-                bodyColor: 'white',
-                borderColor: 'white',
-                borderWidth: 1
-            }
-        }
-    }
-});
-
-
-            // === Chart.js for Score History ===
-            const scoreHistoryCtx = document.getElementById('scoreHistoryChart').getContext('2d');
-            new Chart(scoreHistoryCtx, {
-                type: 'line',
+            // Chart Progres Kuis per Bahasa - PERBAIKAN
+            const languageProgressCtx = document.getElementById('languageProgressChart').getContext('2d');
+            new Chart(languageProgressCtx, {
+                type: 'bar',
                 data: {
-                    labels: <?php echo json_encode($score_chart_labels); ?>,
+                    labels: <?php echo json_encode($chart_labels); ?>,
                     datasets: [{
-                        label: 'Skor Kuis',
-                        data: <?php echo json_encode($score_chart_data); ?>,
-                        fill: true,
-                        backgroundColor: 'rgba(155, 78, 141, 0.2)', // accent with transparency
-                        borderColor: 'rgb(184, 85, 165)',
-                        tension: 0.3,
-                        pointBackgroundColor: 'rgb(159, 90, 146)',
-                        pointBorderColor: 'rgb(199, 76, 176)',
-                        pointRadius: 5,
-                        pointHoverRadius: 7
+                        label: 'Kuis Selesai',
+                        data: <?php echo json_encode($chart_data_completed); ?>,
+                        backgroundColor: 'rgba(255, 132, 232, 0.8)', // Warna pink terang
+                        borderColor: 'rgba(255, 132, 232, 1)',
+                        borderWidth: 2,
+                        barPercentage: 0.6
+                    }, {
+                        label: 'Total Kuis Tersedia',
+                        data: <?php echo json_encode($chart_data_total); ?>,
+                        backgroundColor: 'rgba(163, 103, 220, 0.5)', // Warna ungu transparan
+                        borderColor: 'rgba(163, 103, 220, 1)',
+                        borderWidth: 2,
+                        barPercentage: 0.6
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Perbandingan Kuis yang Selesai vs Total Kuis per Bahasa',
+                            color: 'white',
+                            font: {
+                                size: 14
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: 'white',
+                                padding: 15,
+                                font: {
+                                    size: 12
+                                },
+                                usePointStyle: true
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 11, 46, 0.95)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 132, 232, 0.5)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            displayColors: true,
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    if (context.datasetIndex === 0) {
+                                        const total = context.chart.data.datasets[1].data[context.dataIndex];
+                                        const percentage = Math.round((context.parsed.y / total) * 100);
+                                        return 'Progress: ' + percentage + '%';
+                                    }
+                                    return '';
+                                }
+                            }
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
-                            max: 100, // Assuming max score is 100
                             ticks: {
-                                color: 'white'
+                                color: 'white',
+                                stepSize: 1,
+                                font: {
+                                    size: 11
+                                }
                             },
                             grid: {
-                                color: 'rgba(93, 46, 142, 0.2)'
+                                color: 'rgba(93, 46, 142, 0.2)',
+                                drawBorder: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Jumlah Kuis',
+                                color: 'white',
+                                font: {
+                                    size: 12
+                                }
                             }
                         },
                         x: {
                             ticks: {
-                                color: 'white'
+                                color: 'white',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
                             },
                             grid: {
-                                color: 'rgba(93, 46, 142, 0.2)'
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Chart Riwayat Skor - PERBAIKAN
+            const scoreHistoryCtx = document.getElementById('scoreHistoryChart').getContext('2d');
+
+            // Proses data untuk chart yang lebih bersih
+            const scoreData = <?php echo json_encode($score_history); ?>;
+            const processedLabels = scoreData.map((item, index) => {
+                // Hanya tampilkan tanggal pendek atau nomor attempt
+                return 'Kuis ' + (index + 1);
+            });
+
+            const detailedLabels = scoreData.map(item => {
+                return item.topic + ' - ' + (new Date(item.attempt_date)).toLocaleDateString('id-ID');
+            });
+
+            new Chart(scoreHistoryCtx, {
+                type: 'line',
+                data: {
+                    labels: processedLabels,
+                    datasets: [{
+                        label: 'Skor Kuis',
+                        data: <?php echo json_encode($score_chart_data); ?>,
+                        fill: true,
+                        backgroundColor: 'rgba(255, 132, 232, 0.1)',
+                        borderColor: 'rgb(255, 132, 232)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgb(255, 132, 232)',
+                        pointBorderColor: 'rgb(255, 255, 255)',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: 'rgb(255, 255, 255)',
+                        pointHoverBorderColor: 'rgb(255, 132, 232)',
+                        pointHoverBorderWidth: 3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Tren Skor 20 Kuis Terakhir',
+                            color: 'white',
+                            font: {
+                                size: 14
+                            },
+                            padding: {
+                                bottom: 20
+                            }
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(26, 11, 46, 0.95)',
+                            titleColor: 'white',
+                            bodyColor: 'white',
+                            borderColor: 'rgba(255, 132, 232, 0.5)',
+                            borderWidth: 1,
+                            cornerRadius: 8,
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const index = tooltipItems[0].dataIndex;
+                                    return detailedLabels[index];
+                                },
+                                label: function(context) {
+                                    return 'Skor: ' + context.parsed.y + '/100';
+                                },
+                                afterLabel: function(context) {
+                                    const score = context.parsed.y;
+                                    let status = '';
+                                    if (score >= 80) status = '🌟 Excellent!';
+                                    else if (score >= 60) status = '✅ Good';
+                                    else if (score >= 40) status = '📚 Keep Learning';
+                                    else status = '💪 Try Again';
+                                    return status;
+                                }
                             }
                         }
                     },
-                    plugins: {
-                        legend: {
-                            labels: {
-                                color: 'white'
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                color: 'white',
+                                stepSize: 20,
+                                font: {
+                                    size: 11
+                                },
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(93, 46, 142, 0.2)',
+                                drawBorder: false
+                            },
+                            title: {
+                                display: true,
+                                text: 'Skor (%)',
+                                color: 'white',
+                                font: {
+                                    size: 12
+                                }
                             }
                         },
-                        tooltip: {
-                            backgroundColor: 'rgba(26, 11, 46, 0.9)',
-                            titleColor: 'white',
-                            bodyColor: 'white',
-                            borderColor: 'white',
-                            borderWidth: 1
+                        x: {
+                            ticks: {
+                                color: 'white',
+                                maxRotation: 45,
+                                minRotation: 0,
+                                font: {
+                                    size: 11
+                                }
+                            },
+                            grid: {
+                                display: false
+                            }
                         }
                     }
+                }
+            });
+
+            // === Visual Enhancements untuk Stat Cards ===
+            // Progress bar untuk skor rata-rata
+            const scoreCard = document.querySelector('.stat-card:nth-child(3)');
+            if (scoreCard) {
+                scoreCard.classList.add('score-average');
+                const avgScore = <?php echo $average_score; ?>;
+                scoreCard.style.setProperty('--progress', avgScore + '%');
+            }
+
+            // Color coding untuk ranking
+            const rankCard = document.querySelector('.stat-card:nth-child(4)');
+            if (rankCard) {
+                rankCard.classList.add('ranking');
+                const rank = <?php echo $user_rank; ?>;
+                let rankColor = '#ff84e8'; // default pink
+                if (rank <= 10) rankColor = '#ffd700'; // gold
+                else if (rank <= 50) rankColor = '#c0c0c0'; // silver
+                else if (rank <= 100) rankColor = '#cd7f32'; // bronze
+                rankCard.style.setProperty('--rank-color', rankColor);
+            }
+
+            // === Tambahkan icon ke stat cards ===
+            const statIcons = {
+                'Total XP': '⚡',
+                'Kuis Selesai': '✅',
+                'Skor Rata-rata': '📊',
+                'Peringkat Anda': '🏆'
+            };
+
+            document.querySelectorAll('.stat-card').forEach(card => {
+                const label = card.querySelector('.label').textContent;
+                if (statIcons[label]) {
+                    const icon = document.createElement('span');
+                    icon.textContent = statIcons[label];
+                    icon.style.fontSize = '2rem';
+                    icon.style.position = 'absolute';
+                    icon.style.top = '10px';
+                    icon.style.right = '15px';
+                    icon.style.opacity = '0.2';
+                    card.appendChild(icon);
                 }
             });
         });
@@ -854,5 +1034,7 @@ new Chart(languageProgressCtx, {
             });
         });
     </script>
+
 </body>
+
 </html>
