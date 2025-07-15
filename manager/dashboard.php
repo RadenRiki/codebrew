@@ -744,7 +744,7 @@ $premiumUsers = $totalPremiumUsers;
         </div>
 
         <div class="filter-controls">
-            <button class="<?php echo ($currentFilter == 'daily') ? 'active' : ''; ?>" onclick="window.location.href='dashboard.php?filter=daily'">Harian</button>
+            <!-- <button class="<?php echo ($currentFilter == 'daily') ? 'active' : ''; ?>" onclick="window.location.href='dashboard.php?filter=daily'">Harian</button> -->
             <button class="<?php echo ($currentFilter == 'last7days') ? 'active' : ''; ?>" onclick="window.location.href='dashboard.php?filter=last7days'">7 Hari Terakhir</button>
             <button class="<?php echo ($currentFilter == 'monthly') ? 'active' : ''; ?>" onclick="window.location.href='dashboard.php?filter=monthly&year=<?php echo $selectedYear; ?>'">Bulanan</button>
             <button class="<?php echo ($currentFilter == 'yearly') ? 'active' : ''; ?>" onclick="window.location.href='dashboard.php?filter=yearly'">Tahunan</button>

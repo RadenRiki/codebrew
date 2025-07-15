@@ -108,9 +108,10 @@ foreach ($quiz_progress_by_language as $lang_data) {
 
 
 // 3. Grafik Progres Skor (untuk grafik garis)
+// 3. Grafik Progres Skor (untuk grafik garis)
 $score_history = [];
 $stmt_score_history = $conn->prepare("
-    SELECT qa.attempt_date, qa.score, q.topic
+    SELECT qa.attempt_date, qa.score, q.topic, q.total_questions -- Tambahkan q.total_questions
     FROM quiz_attempts qa
     JOIN quizzes q ON qa.quiz_id = q.quiz_id
     WHERE qa.user_id = ?
@@ -128,9 +129,17 @@ $stmt_score_history->close();
 $score_chart_labels = [];
 $score_chart_data = [];
 foreach ($score_history as $history_item) {
+    // Hitung persentase skor untuk setiap item riwayat
+    $quiz_total_possible_score = $history_item['total_questions'] * 10; // Asumsi 10 poin per soal
+    $quiz_percentage_score = 0;
+    if ($quiz_total_possible_score > 0) {
+        $quiz_percentage_score = round(($history_item['score'] / $quiz_total_possible_score) * 100, 2);
+    }
+
     $score_chart_labels[] = date('d M', strtotime($history_item['attempt_date'])) . ' - ' . $history_item['topic'];
-    $score_chart_data[] = $history_item['score'];
+    $score_chart_data[] = $quiz_percentage_score; // <--- Sekarang ini adalah persentase
 }
+
 
 
 // 4. Riwayat Kuis Terbaru
