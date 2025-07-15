@@ -46,6 +46,7 @@ $stmt_user->close();
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CodeBrew</title>
+    <link rel = "icon" type = "image/png" href = "../assets/LogoIcon.png">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
@@ -615,12 +616,12 @@ $stmt_user->close();
             <div class="footer-col">
                 <h3>LANGUAGE</h3>
                 <ul>
-                    <li><a href="#">HTML</a></li>
-                    <li><a href="#">CSS</a></li>
-                    <li><a href="#">JavaScript</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">PHP</a></li>
-                    <li><a href="#">MySQL</a></li>
+                    <li><a href="../bank_materi/belajar.php">HTML</a></li>
+                    <li><a href="../bank_materi/belajar.php">CSS</a></li>
+                    <li><a href="../bank_materi/belajar.php">JavaScript</a></li>
+                    <li><a href="../bank_materi/belajar.php">Python</a></li>
+                    <li><a href="../bank_materi/belajar.php">PHP</a></li>
+                    <li><a href="../bank_materi/belajar.php">MySQL</a></li>
                 </ul>
             </div>
 

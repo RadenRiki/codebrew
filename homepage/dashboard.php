@@ -41,7 +41,7 @@ $stmt_user->close();
 // Redirect jika bukan premium user
 if (!$is_premium_user) {
     $_SESSION['alert'] = ['type' => 'warning', 'message' => 'Fitur dashboard hanya untuk pengguna PREMIUM. Silakan upgrade akun Anda!'];
-    header('Location: kuis.php'); // Atau ke halaman upgrade premium
+    header('Location: ../payment/premium.php'); // Atau ke halaman upgrade premium
     exit;
 }
 
@@ -188,7 +188,9 @@ $stmt_user_rank->close();
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard Pengguna - CodeBrew</title>
+    <head>
+    <title>Dashboard Pengguna - Codebrew</title>
+    <link rel = "icon" type = "image/png" href = "../assets/LogoIcon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="index.css"> <!-- Menggunakan CSS yang sama -->
