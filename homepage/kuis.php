@@ -41,7 +41,7 @@ $stmt_user->close();
 
 // Ambil semua data kuis dari database
 $quizzes_by_language = [];
-$quiz_query = "SELECT quiz_id, language, topic, is_premium FROM quizzes ORDER BY language, topic";
+$quiz_query = "SELECT quiz_id, language, topic, is_premium FROM quizzes ORDER BY language, is_premium ASC, topic";
 $quiz_result = $conn->query($quiz_query);
 
 if ($quiz_result->num_rows > 0) {
