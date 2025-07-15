@@ -568,6 +568,13 @@ if ($questionResult) {
             font-weight: 500;
         }
 
+        .badge-admin {
+            background-color: var(--primary);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
+        }
+
         .badge-html {
             background-color: #E44D26;
             color: white;
@@ -680,7 +687,7 @@ if ($questionResult) {
                     </nav>
                 </div>
                 <div>
-                    <span class="badge bg-primary">
+                    <span class="badge-admin">
                         <i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['username']); ?>
                     </span>
                 </div>
