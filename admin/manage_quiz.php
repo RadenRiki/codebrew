@@ -49,7 +49,7 @@ $alertType = '';
 
 // --- PAGINATION SETTINGS ---
 $kuis_per_page = 5;
-$pertanyaan_per_page = 5;
+$pertanyaan_per_page = 10;
 
 // Ambil halaman aktif dari parameter GET (default 1)
 $kuis_page = isset($_GET['kuis_page']) ? max(1, intval($_GET['kuis_page'])) : 1;
