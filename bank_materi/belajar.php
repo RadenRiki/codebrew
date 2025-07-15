@@ -16,6 +16,21 @@ if (!isset($_SESSION['user_id'])) {
 // Include database connection
 include_once '../connection.php';
 
+// cek user aktif
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $cek_aktif = mysqli_query($conn, "SELECT is_active FROM user WHERE user_id = $user_id");
+    if ($cek_aktif) {
+        $data_aktif = mysqli_fetch_assoc($cek_aktif);
+        if ($data_aktif['is_active'] == 0) {
+            // Jika akun nonaktif, langsung logout dan redirect ke login
+            session_destroy();
+            header("Location: ../register-login/login.php?notif=nonaktif");
+            exit();
+        }
+    }
+}
+
 // Cek apakah pengguna premium
 $is_premium = false;
 if (isset($_SESSION['user_id'])) {
@@ -277,6 +292,17 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
             height: 1px;
             background: rgba(93, 46, 142, 0.5);
             margin: 0.5rem 0;
+        }
+        
+        .pintar-badge {
+            display: inline-block;
+            background: var(--gradient);
+            color: var(--dark);
+            padding: 0.5rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            margin-top: -1rem;
+            cursor: pointer;
         }
 
         .logout-item {
@@ -999,11 +1025,11 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                 <div class="col-md-8 mb-3 mb-md-0">
                     <h5 class="mb-3">Filter Kategori:</h5>
                     <div class="category-pills">
-                        <a href="bank_materi.php" class="category-pill <?php echo empty($selectedCategory) ? 'active' : ''; ?>">
+                        <a href="belajar.php" class="category-pill <?php echo empty($selectedCategory) ? 'active' : ''; ?>">
                             Semua
                         </a>
                         <?php foreach ($categories as $category): ?>
-                            <a href="bank_materi.php?kategori=<?php echo urlencode($category); ?>"
+                            <a href="belajar.php?kategori=<?php echo urlencode($category); ?>"
                                 class="category-pill <?php echo $selectedCategory === $category ? 'active' : ''; ?>">
                                 <?php echo htmlspecialchars($category); ?>
                             </a>
@@ -1014,7 +1040,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                 <!-- Search Box -->
                 <div class="col-md-4">
                     <h5 class="mb-3">Cari Materi:</h5>
-                    <form action="bank_materi.php" method="GET" class="d-flex">
+                    <form action="belajar.php" method="GET" class="d-flex">
                         <?php if (!empty($selectedCategory)): ?>
                             <input type="hidden" name="kategori" value="<?php echo htmlspecialchars($selectedCategory); ?>">
                         <?php endif; ?>
@@ -1108,7 +1134,7 @@ if ($categoriesResult && $categoriesResult->num_rows > 0) {
                             Tidak ada materi yang sesuai dengan kriteria pencarian Anda.
                             Silakan coba dengan kata kunci lain atau kategori yang berbeda.
                         </p>
-                        <a href="bank_materi.php" class="btn btn-primary">
+                        <a href="belajar.php" class="btn btn-primary">
                             <i class="fas fa-undo me-1"></i> Reset Filter
                         </a>
                     </div>

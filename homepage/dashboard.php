@@ -10,6 +10,21 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// cek user aktif
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+    $cek_aktif = mysqli_query($conn, "SELECT is_active FROM user WHERE user_id = $user_id");
+    if ($cek_aktif) {
+        $data_aktif = mysqli_fetch_assoc($cek_aktif);
+        if ($data_aktif['is_active'] == 0) {
+            // Jika akun nonaktif, langsung logout dan redirect ke login
+            session_destroy();
+            header("Location: ../register-login/login.php?notif=nonaktif");
+            exit();
+        }
+    }
+}
+
 $user_id = $_SESSION['user_id'];
 
 // Ambil data user

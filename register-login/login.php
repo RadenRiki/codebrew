@@ -34,8 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             // Gunakan prepared statement untuk keamanan
             // Tambahkan kolom 'role' dalam SELECT
-            $stmt = $conn->prepare("SELECT user_id, username, email, password, is_premium, xp_total, role FROM user WHERE email = ?");
-            
+            $stmt = $conn->prepare("SELECT user_id, username, email, password, is_premium, xp_total, role, is_active FROM user WHERE email = ?");
+
             if ($stmt) {
                 $stmt->bind_param("s", $email);
                 $stmt->execute();
@@ -45,33 +45,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $user = $result->fetch_assoc();
 
                     // Verifikasi password
-                    if (password_verify($password, $user['password'])) {
-                        // Login berhasil
-                        $_SESSION['user_id'] = $user['user_id'];
-                        $_SESSION['username'] = $user['username'];
-                        $_SESSION['email'] = $user['email'];
-                        $_SESSION['is_premium'] = $user['is_premium'];
-                        $_SESSION['xp_total'] = $user['xp_total'];
-                        $_SESSION['role'] = $user['role']; // Simpan role di session
+                    if ($user && password_verify($password, $user['password'])) {
+                        if ($user['is_active'] == 0) {
+                            // Akun nonaktif
+                            $notif = "Akun Anda telah dinonaktifkan oleh admin.";
+                        } else {
+                            // Akun aktif, lanjutkan login
+                            $_SESSION['user_id'] = $user['user_id'];
+                            $_SESSION['username'] = $user['username'];
+                            $_SESSION['email'] = $user['email'];
+                            $_SESSION['is_premium'] = $user['is_premium'];
+                            $_SESSION['xp_total'] = $user['xp_total'];
+                            $_SESSION['role'] = $user['role']; // Simpan role di session
 
-                        // Alert sukses dan redirect berdasarkan role
-                        if ($user['role'] === 'admin') {
-                            echo "<script>
-                                alert('✅ Login berhasil! Selamat datang, Admin " . htmlspecialchars($user['username']) . "!');
-                                window.location.href = '../admin/materi_bank.php'; // Arahkan ke dashboard admin
-                            </script>";
-                        } elseif ($user['role'] === 'manager') {
-                            echo "<script>
-                                alert('✅ Login berhasil! Selamat datang, Manager " . htmlspecialchars($user['username']) . "!');
-                                window.location.href = '../manager/dashboard.php'; // Arahkan ke dashboard manager
-                            </script>";
-                        } else { // Default ke user biasa
-                            echo "<script>
-                                alert('✅ Login berhasil! Selamat datang, " . htmlspecialchars($user['username']) . "!');
-                                window.location.href = '../homepage/index.php';
-                            </script>";
+                            // Alert sukses dan redirect berdasarkan role
+                            if ($user['role'] === 'admin') {
+                                echo "<script>
+                                    alert('✅ Login berhasil! Selamat datang, Admin " . htmlspecialchars($user['username']) . "!');
+                                    window.location.href = '../admin/materi_bank.php'; // Arahkan ke dashboard admin
+                                </script>";
+                            } elseif ($user['role'] === 'manager') {
+                                echo "<script>
+                                    alert('✅ Login berhasil! Selamat datang, Manager " . htmlspecialchars($user['username']) . "!');
+                                    window.location.href = '../manager/dashboard.php'; // Arahkan ke dashboard manager
+                                </script>";
+                            } else { // Default ke user biasa
+                                echo "<script>
+                                    alert('✅ Login berhasil! Selamat datang, " . htmlspecialchars($user['username']) . "!');
+                                    window.location.href = '../homepage/index.php';
+                                </script>";
+                            }
+                            exit();
                         }
-                        exit();
                     } else {
                         // Password salah
                         $notif = "⚠️ Password salah!";
@@ -91,132 +96,134 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Masuk - CodeBrew</title>
     <style>
         footer {
-    flex-shrink: 0;
-    padding: 3rem 5% 2rem;
-    background: var(--darker);
-    margin-top: 3rem;
-    position: relative;
-    z-index: 1;
-    color: var(--light-purple);
-    font-size: 0.9rem;
-}
+            flex-shrink: 0;
+            padding: 3rem 5% 2rem;
+            background: var(--darker);
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+            color: var(--light-purple);
+            font-size: 0.9rem;
+        }
 
 
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-    max-width: 1000px;
-    margin: 0 auto 2rem;
-}
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto 2rem;
+        }
 
-.footer-col h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1.2rem;
-    color: var(--accent);
-    font-weight: 600;
-}
+        .footer-col h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.2rem;
+            color: var(--accent);
+            font-weight: 600;
+        }
 
-.footer-col ul {
-    list-style: none;
-    padding-left: 0;
-    margin: 0;
-}
+        .footer-col ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
 
-.footer-col ul li {
-    margin-bottom: 0.6rem;
-}
+        .footer-col ul li {
+            margin-bottom: 0.6rem;
+        }
 
-.footer-col ul li a {
-    color: var(--light-purple);
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
+        .footer-col ul li a {
+            color: var(--light-purple);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
 
-.footer-col ul li a:hover {
-    color: var(--light);
-    text-decoration: underline;
-}
+        .footer-col ul li a:hover {
+            color: var(--light);
+            text-decoration: underline;
+        }
 
-.footer-col.pintar .pintar-badge {
-    display: inline-block;
-    background: var(--gradient);
-    color: var(--light);
-    padding: 0.6rem 1.2rem;
-    border-radius: 1.5rem;
-    font-weight: 600;
-    font-size: 0.9rem;
-    cursor: pointer;
-    border: none;
-    transition: all 0.3s ease;
-}
+        .footer-col.pintar .pintar-badge {
+            display: inline-block;
+            background: var(--gradient);
+            color: var(--light);
+            padding: 0.6rem 1.2rem;
+            border-radius: 1.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
 
-.footer-col.pintar .pintar-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(163, 103, 220, 0.3);
-}
+        .footer-col.pintar .pintar-badge:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(163, 103, 220, 0.3);
+        }
 
-.copyright {
-    text-align: center;
-    padding-top: 1.5rem;
-    border-top: 1px solid rgba(93, 46, 142, 0.3);
-    color: var(--light-purple);
-    font-size: 0.85rem;
-    opacity: 0.8;
-}
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(93, 46, 142, 0.3);
+            color: var(--light-purple);
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
 
-/* Responsive */
+        /* Responsive */
 
-@media (max-width: 768px) {
-    footer {
-        padding: 2rem 5% 1.5rem;
-        margin-top: 2rem;
-    }
+        @media (max-width: 768px) {
+            footer {
+                padding: 2rem 5% 1.5rem;
+                margin-top: 2rem;
+            }
 
-    .footer-content {
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-    }
+            .footer-content {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 1.5rem;
+            }
 
-    .footer-col h3 {
-        font-size: 1.1rem;
-        margin-bottom: 1rem;
-    }
-}
+            .footer-col h3 {
+                font-size: 1.1rem;
+                margin-bottom: 1rem;
+            }
+        }
 
-@media (max-width: 480px) {
-    footer {
-        padding: 1.5rem 1rem;
-    }
+        @media (max-width: 480px) {
+            footer {
+                padding: 1.5rem 1rem;
+            }
 
-    .footer-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 1rem;
-    }
-    
-    .footer-col.pintar .pintar-badge {
-        padding: 0.5rem 1rem;
-        font-size: 0.85rem;
-    }
-}
-</style>
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .footer-col.pintar .pintar-badge {
+                padding: 0.5rem 1rem;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
     </style>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link rel="stylesheet" href="auth.css">
 </head>
+
 <body>
     <!-- Background stars -->
     <div class="stars" id="stars"></div>
-    
+
     <!-- Static star assets -->
     <img class="star-assets star1" src="../assets/—Pngtree—white light star twinkle light_7487663 1.png" alt="" />
     <img class="star-assets star2" src="../assets/—Pngtree—white light star twinkle light_7487663 2.png" alt="" />
@@ -260,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     </div>
                 </div>
 
-                 <!-- Divider -->
+                <!-- Divider -->
                 <div class="divider">
                     <div class="divider-line"></div>
                     <span class="divider-text">ATAU</span>
@@ -322,49 +329,50 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <script src="auth.js"></script>
     <?php
-        if (!empty($notif)) {
-            echo "<script>alert('" . addslashes($notif) . "');</script>";
-        }
+    if (!empty($notif)) {
+        echo "<script>alert('" . addslashes($notif) . "');</script>";
+    }
     ?>
 
 
     <script>
-    // Toggle password visibility
-     function togglePassword(inputId) {
-        const input = document.getElementById(inputId);
-        const icon = document.getElementById(inputId + '-eye');
+        // Toggle password visibility
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(inputId + '-eye');
 
-        if (input.type === 'password') {
-            input.type = 'text';
-            icon.classList.remove('fa-eye');
-            icon.classList.add('fa-eye-slash');
-        } else {
-            input.type = 'password';
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
-        }
-    }
-
-    // Validate login form
-    function validateLoginForm() {
-        const email = document.getElementById('loginEmail').value.trim();
-        const password = document.getElementById('loginPassword').value;
-
-        // Check empty fields
-        if (!email || !password) {
-            alert('⚠️ Email dan password harus diisi!');
-            return false;
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
         }
 
-        // Check email format
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            alert('⚠️ Format email tidak valid!');
-            return false;
-        }
+        // Validate login form
+        function validateLoginForm() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
 
-        return true;
-    }
+            // Check empty fields
+            if (!email || !password) {
+                alert('⚠️ Email dan password harus diisi!');
+                return false;
+            }
+
+            // Check email format
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                alert('⚠️ Format email tidak valid!');
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </body>
+
 </html>

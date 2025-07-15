@@ -14,18 +14,47 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'admin') {
 // Include database connection
 include_once '../connection.php';
 
+// Nonaktifkan akun
+if (isset($_GET['nonaktifkan'])) {
+    $id = (int)$_GET['nonaktifkan'];
+    $conn->query("UPDATE user SET is_active = 0 WHERE user_id = $id");
+    header("Location: users.php");
+    exit();
+}
+
+// Aktifkan akun
+if (isset($_GET['aktifkan'])) {
+    $id = (int)$_GET['aktifkan'];
+    $conn->query("UPDATE user SET is_active = 1 WHERE user_id = $id");
+    header("Location: users.php");
+    exit();
+}
+
 // Konfigurasi pagination
 $limit = 15; // jumlah data per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1; // ambil halaman dari URL
 $offset = ($page - 1) * $limit; // hitung offset
 
 // Ambil total user
-$total_users_result = mysqli_query($conn, "SELECT COUNT(*) AS total FROM user");
+$where = [];
+if (!empty($_GET['search'])) {
+    $search = $conn->real_escape_string($_GET['search']);
+    $where[] = "(username LIKE '%$search%' OR email LIKE '%$search%')";
+}
+if (!empty($_GET['status'])) {
+    if ($_GET['status'] == 'premium') {
+        $where[] = "is_premium = 1";
+    } elseif ($_GET['status'] == 'gratis') {
+        $where[] = "is_premium = 0";
+    }
+}
+$where_sql = $where ? 'WHERE ' . implode(' AND ', $where) : '';
+$total_users_result = mysqli_query($conn, "SELECT COUNT(*) AS total FROM user $where_sql");
 $total_users = mysqli_fetch_assoc($total_users_result)['total'];
 $total_pages = ceil($total_users / $limit);
 
 // Ambil data user sesuai halaman
-$daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offset");
+$daftaruser = mysqli_query($conn, "SELECT * FROM user $where_sql LIMIT $limit OFFSET $offset");
 
 ?>
 
@@ -276,6 +305,14 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             border-top: 1px solid #ddd;
         }
 
+        .angka-rapih {
+            text-align: center;
+            min-width: 80px;
+            font-variant-numeric: tabular-nums;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -355,6 +392,25 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             </div>
         </div>
 
+        <!-- Form Pencarian & Filter -->
+        <form method="GET" class="row mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Cari username/email..." value="<?= isset($_GET['search']) ? htmlspecialchars($_GET['search']) : '' ?>">
+            </div>
+            <div class="col-md-4">
+                <select name="status" class="form-select">
+                    <option value="">Semua Status</option>
+                    <option value="premium" <?= (isset($_GET['status']) && $_GET['status'] == 'premium') ? 'selected' : '' ?>>Premium</option>
+                    <option value="gratis" <?= (isset($_GET['status']) && $_GET['status'] == 'gratis') ? 'selected' : '' ?>>Gratis</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Cari</button>
+            </div>
+            <div class="col-md-2">
+                <a href="users.php" class="btn btn-secondary w-100">Refresh</a>
+            </div>
+        </form>
 
 
         <!-- Data Table Card: Daftar Kuis -->
@@ -365,15 +421,16 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
             <div class="card-body">
                 <?php if (mysqli_num_rows($daftaruser) > 0): ?>
                     <div class="table-responsive">
-                        <table class="table table-striped table-hover">
-                            <thead>
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-light">
                                 <tr>
-                                    <th>No</th>
+                                    <th style="width: 50px; text-align:center;">No</th>
                                     <th>Username</th>
                                     <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Total XP</th>
-                                    <th>Aksi</th>
+                                    <th style="width: 110px; text-align:center;">Status Akun</th>
+                                    <th style="width: 110px; text-align:center;">Tipe</th>
+                                    <th class="text-center" style="width: 100px;">Total XP</th>
+                                    <th style="width: 180px; text-align:center;">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -384,19 +441,37 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                                     $statusLabel = $user['is_premium'] ? 'Premium' : 'Gratis';
                                 ?>
                                     <tr>
-                                        <td><?php echo $no++; ?></td>
+                                        <td class="text-center"><?php echo $no++; ?></td>
                                         <td><?php echo htmlspecialchars($user['username']); ?></td>
                                         <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                        <td><span class="<?php echo $badgeClass; ?>"><?php echo $statusLabel; ?></span></td>
-                                        <td><?php echo (int)$user['xp_total']; ?> XP</td>
-                                        <td>
-                                            <div class="d-flex gap-1">
-                                                <a href="edit_user.php?user_id=<?php echo $user['user_id']; ?>" class="btn btn-sm btn-warning">
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </a>
-                                                <button type="button" onclick="confirmDeleteUser(<?php echo $user['user_id']; ?>)" class="btn btn-sm btn-danger">
-                                                    <i class="fas fa-trash"></i> Hapus
-                                                </button>
+                                        <td class="text-center">
+                                            <?php if ($user['is_active']): ?>
+                                                <span class="badge bg-success">Aktif</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-danger">Nonaktif</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="text-center">
+                                            <?php if ($user['is_premium']): ?>
+                                                <span class="badge badge-premium">Premium</span>
+                                            <?php else: ?>
+                                                <span class="badge badge-free">Gratis</span>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="angka-rapih">
+                                            <div><?php echo number_format($user['xp_total'], 0, ',', '.'); ?></div>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="d-flex gap-1 justify-content-center">
+                                                <?php if ($user['is_active']): ?>
+                                                    <a href="users.php?nonaktifkan=<?php echo $user['user_id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Nonaktifkan akun ini?')">
+                                                        <i class="fas fa-user-slash"></i> Nonaktifkan
+                                                    </a>
+                                                <?php else: ?>
+                                                    <a href="users.php?aktifkan=<?php echo $user['user_id']; ?>" class="btn btn-sm btn-success" onclick="return confirm('Aktifkan kembali akun ini?')">
+                                                        <i class="fas fa-user-check"></i> Aktifkan
+                                                    </a>
+                                                <?php endif; ?>
                                             </div>
                                         </td>
                                     </tr>
@@ -411,32 +486,37 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user LIMIT $limit OFFSET $offse
                 <?php endif; ?>
             </div>
         </div>
+        <!-- Pagination -->
+        <div class="pagination-container mt-4 mb-4">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <?php
+                    $show = 2; // jumlah halaman sebelum/sesudah current
+                    $start = max(1, $page - $show);
+                    $end = min($total_pages, $page + $show);
+                    if ($page > 1) {
+                        echo '<li class="page-item"><a class="page-link" href="?page=' . ($page - 1) . '">Sebelumnya</a></li>';
+                    }
+                    if ($start > 1) {
+                        echo '<li class="page-item"><a class="page-link" href="?page=1">1</a></li>';
+                        if ($start > 2) echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                    }
+                    for ($i = $start; $i <= $end; $i++) {
+                        $active = $i == $page ? 'active' : '';
+                        echo '<li class="page-item ' . $active . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+                    }
+                    if ($end < $total_pages) {
+                        if ($end < $total_pages - 1) echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                        echo '<li class="page-item"><a class="page-link" href="?page=' . $total_pages . '">' . $total_pages . '</a></li>';
+                    }
+                    if ($page < $total_pages) {
+                        echo '<li class="page-item"><a class="page-link" href="?page=' . ($page + 1) . '">Berikutnya</a></li>';
+                    }
+                    ?>
+                </ul>
+            </nav>
+        </div>
     </div>
-    <!-- Pagination -->
-    <div class=" pagination-container mt-4">
-        <nav>
-            <ul class="pagination justify-content-center">
-                <?php if ($page > 1): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $page - 1; ?>">Sebelumnya</a>
-                    </li>
-                <?php endif; ?>
-
-                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                    <li class="page-item <?php if ($i == $page) echo 'active'; ?>">
-                        <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                    </li>
-                <?php endfor; ?>
-
-                <?php if ($page < $total_pages): ?>
-                    <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $page + 1; ?>">Berikutnya</a>
-                    </li>
-                <?php endif; ?>
-            </ul>
-        </nav>
-    </div>
-
 
 
     <script>
