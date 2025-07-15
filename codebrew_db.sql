@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 15, 2025 at 11:13 AM
+-- Generation Time: Jul 15, 2025 at 06:09 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -919,7 +919,87 @@ INSERT INTO `answers` (`answer_id`, `question_id`, `answer_text`, `is_correct`, 
 (891, 224, 'Menyusun kode program', 0, '2025-07-13 21:29:45', '2025-07-13 21:29:45'),
 (892, 224, 'Memetakan hubungan antar entitas dalam database', 1, '2025-07-13 21:29:45', '2025-07-13 21:29:45'),
 (893, 224, 'Menjalankan query', 0, '2025-07-13 21:29:45', '2025-07-13 21:29:45'),
-(894, 224, 'Menentukan ukuran penyimpanan', 0, '2025-07-13 21:29:45', '2025-07-13 21:29:45');
+(894, 224, 'Menentukan ukuran penyimpanan', 0, '2025-07-13 21:29:45', '2025-07-13 21:29:45'),
+(899, 226, 'x = 5', 1, '2025-07-15 22:23:51', '2025-07-15 22:23:51'),
+(900, 226, 'int x = 5', 0, '2025-07-15 22:23:51', '2025-07-15 22:23:51'),
+(901, 226, ' var x = 5', 0, '2025-07-15 22:23:51', '2025-07-15 22:23:51'),
+(902, 226, 'x := 5', 0, '2025-07-15 22:23:51', '2025-07-15 22:23:51'),
+(903, 227, '5.5', 0, '2025-07-15 22:25:19', '2025-07-15 22:25:19'),
+(904, 227, 'True', 0, '2025-07-15 22:25:19', '2025-07-15 22:25:19'),
+(905, 227, '\"Hello\"', 1, '2025-07-15 22:25:19', '2025-07-15 22:25:19'),
+(906, 227, '[1, 2, 3]', 0, '2025-07-15 22:25:19', '2025-07-15 22:25:19'),
+(907, 228, 'Menampilkan output ke layar', 1, '2025-07-15 22:25:57', '2025-07-15 22:25:57'),
+(908, 228, 'Menyimpan data ke file', 0, '2025-07-15 22:25:57', '2025-07-15 22:25:57'),
+(909, 228, 'Membaca input dari pengguna', 0, '2025-07-15 22:25:57', '2025-07-15 22:25:57'),
+(910, 228, 'Mengulang program', 0, '2025-07-15 22:25:57', '2025-07-15 22:25:57'),
+(911, 229, 'Menyimpan file', 0, '2025-07-15 22:26:38', '2025-07-15 22:26:38'),
+(912, 229, 'Menampilkan teks', 0, '2025-07-15 22:26:38', '2025-07-15 22:26:38'),
+(913, 229, 'Menerima input dari pengguna', 1, '2025-07-15 22:26:38', '2025-07-15 22:26:38'),
+(914, 229, 'Menjumlahkan angka', 0, '2025-07-15 22:26:38', '2025-07-15 22:26:38'),
+(915, 230, '// komentar', 0, '2025-07-15 22:28:09', '2025-07-15 22:28:09'),
+(916, 230, '# komentar', 1, '2025-07-15 22:28:09', '2025-07-15 22:28:09'),
+(917, 230, ' <!-- komentar -->', 0, '2025-07-15 22:28:09', '2025-07-15 22:28:09'),
+(918, 230, '/* komentar */', 0, '2025-07-15 22:28:09', '2025-07-15 22:28:09'),
+(919, 231, '<class \'int\'>', 0, '2025-07-15 22:29:11', '2025-07-15 22:29:11'),
+(920, 231, '<class \'str\'>', 1, '2025-07-15 22:29:11', '2025-07-15 22:29:11'),
+(921, 231, '<str>', 0, '2025-07-15 22:29:11', '2025-07-15 22:29:11'),
+(922, 231, 'string', 0, '2025-07-15 22:29:11', '2025-07-15 22:29:11'),
+(923, 232, 'Harus menggunakan titik koma di akhir baris', 0, '2025-07-15 22:29:48', '2025-07-15 22:29:48'),
+(924, 232, 'Menggunakan indentasi untuk blok kode', 1, '2025-07-15 22:29:48', '2025-07-15 22:29:48'),
+(925, 232, 'Bersifat statically typed', 0, '2025-07-15 22:29:48', '2025-07-15 22:29:48'),
+(926, 232, 'Tidak mendukung operasi matematika', 0, '2025-07-15 22:29:48', '2025-07-15 22:29:48'),
+(927, 233, 'Bilangan bulat', 0, '2025-07-15 22:30:34', '2025-07-15 22:30:34'),
+(928, 233, 'Bilangan desimal', 1, '2025-07-15 22:30:34', '2025-07-15 22:30:34'),
+(929, 233, ' Karakter', 0, '2025-07-15 22:30:34', '2025-07-15 22:30:34'),
+(930, 233, 'Boolean', 0, '2025-07-15 22:30:34', '2025-07-15 22:30:34'),
+(931, 234, '20', 0, '2025-07-15 22:31:36', '2025-07-15 22:31:36'),
+(932, 234, '14', 1, '2025-07-15 22:31:36', '2025-07-15 22:31:36'),
+(933, 234, '24', 0, '2025-07-15 22:31:36', '2025-07-15 22:31:36'),
+(934, 234, '18', 0, '2025-07-15 22:31:36', '2025-07-15 22:31:36'),
+(935, 235, 'print(\"Hello\" + name)', 0, '2025-07-15 22:32:25', '2025-07-15 22:32:25'),
+(936, 235, 'print(\"Hello\", name)', 0, '2025-07-15 22:32:25', '2025-07-15 22:32:25'),
+(937, 235, 'Kedua jawaban benar', 1, '2025-07-15 22:32:25', '2025-07-15 22:32:25'),
+(938, 235, 'Tidak bisa', 0, '2025-07-15 22:32:25', '2025-07-15 22:32:25'),
+(939, 236, 'Menyimpan data', 0, '2025-07-15 22:33:00', '2025-07-15 22:33:00'),
+(940, 236, 'Menentukan tipe data input', 0, '2025-07-15 22:33:00', '2025-07-15 22:33:00'),
+(941, 236, 'Menampilkan tipe data suatu variabel', 1, '2025-07-15 22:33:00', '2025-07-15 22:33:00'),
+(942, 236, 'Mengubah variabel menjadi string', 0, '2025-07-15 22:33:00', '2025-07-15 22:33:00'),
+(943, 237, 'x = (1, 2, 3)', 0, '2025-07-15 22:33:42', '2025-07-15 22:33:42'),
+(944, 237, ' x = {1, 2, 3}', 0, '2025-07-15 22:33:42', '2025-07-15 22:33:42'),
+(945, 237, ' x = [1, 2, 3]', 1, '2025-07-15 22:33:42', '2025-07-15 22:33:42'),
+(946, 237, ' x = <1, 2, 3>', 0, '2025-07-15 22:33:42', '2025-07-15 22:33:42'),
+(947, 238, 'ya dan tidak', 0, '2025-07-15 22:34:20', '2025-07-15 22:34:20'),
+(948, 238, 'True dan False', 1, '2025-07-15 22:34:20', '2025-07-15 22:34:20'),
+(949, 238, '1 dan 0.0', 0, '2025-07-15 22:34:20', '2025-07-15 22:34:20'),
+(950, 238, 'benar dan salah', 0, '2025-07-15 22:34:20', '2025-07-15 22:34:20'),
+(951, 239, 'Menampilkan integer', 0, '2025-07-15 22:34:57', '2025-07-15 22:34:57'),
+(952, 239, 'Mengubah nilai menjadi bilangan bulat', 1, '2025-07-15 22:34:57', '2025-07-15 22:34:57'),
+(953, 239, 'Menentukan apakah nilai bilangan bulat', 0, '2025-07-15 22:34:57', '2025-07-15 22:34:57'),
+(954, 239, 'Menghapus angka dari string', 0, '2025-07-15 22:34:57', '2025-07-15 22:34:57'),
+(955, 240, ' Program menghitung hasil', 0, '2025-07-15 22:35:36', '2025-07-15 22:35:36'),
+(956, 240, 'Program menerima input dari pengguna', 1, '2025-07-15 22:35:36', '2025-07-15 22:35:36'),
+(957, 240, 'Program akan error', 0, '2025-07-15 22:35:36', '2025-07-15 22:35:36'),
+(958, 240, ' Program langsung mencetak 0', 0, '2025-07-15 22:35:36', '2025-07-15 22:35:36'),
+(959, 241, '\\s', 0, '2025-07-15 22:36:10', '2025-07-15 22:36:10'),
+(960, 241, '\\\\n', 0, '2025-07-15 22:36:10', '2025-07-15 22:36:10'),
+(961, 241, '\\n', 1, '2025-07-15 22:36:10', '2025-07-15 22:36:10'),
+(962, 241, 'newline()', 0, '2025-07-15 22:36:10', '2025-07-15 22:36:10'),
+(963, 242, '2data', 0, '2025-07-15 22:36:53', '2025-07-15 22:36:53'),
+(964, 242, 'my data', 0, '2025-07-15 22:36:53', '2025-07-15 22:36:53'),
+(965, 242, '_data', 1, '2025-07-15 22:36:53', '2025-07-15 22:36:53'),
+(966, 242, ' @data', 0, '2025-07-15 22:36:53', '2025-07-15 22:36:53'),
+(967, 243, '16', 0, '2025-07-15 22:37:41', '2025-07-15 22:37:41'),
+(968, 243, '10', 0, '2025-07-15 22:37:41', '2025-07-15 22:37:41'),
+(969, 243, '15', 1, '2025-07-15 22:37:41', '2025-07-15 22:37:41'),
+(970, 243, '5', 0, '2025-07-15 22:37:41', '2025-07-15 22:37:41'),
+(971, 244, 'Menjumlahkan angka', 0, '2025-07-15 22:38:15', '2025-07-15 22:38:15'),
+(972, 244, 'Menghitung panjang dari string/list', 1, '2025-07-15 22:38:15', '2025-07-15 22:38:15'),
+(973, 244, 'Menentukan tipe data', 0, '2025-07-15 22:38:15', '2025-07-15 22:38:15'),
+(974, 244, 'Membuat list baru', 0, '2025-07-15 22:38:15', '2025-07-15 22:38:15'),
+(975, 245, ' print tidak boleh digunakan', 0, '2025-07-15 22:38:45', '2025-07-15 22:38:45'),
+(976, 245, 'Tanda kutip tidak lengkap', 1, '2025-07-15 22:38:45', '2025-07-15 22:38:45'),
+(977, 245, 'Tidak ada titik koma', 0, '2025-07-15 22:38:45', '2025-07-15 22:38:45'),
+(978, 245, 'Huruf kapital tidak sesuai', 0, '2025-07-15 22:38:45', '2025-07-15 22:38:45');
 
 -- --------------------------------------------------------
 
@@ -1240,7 +1320,20 @@ INSERT INTO `explanation_cache` (`cache_id`, `question_id`, `user_answer_id`, `e
 (157, 21, NULL, 'Ya, Anda dapat menuliskan kode HTML di dalam komentar dengan menggunakan tag <!-- dan -->. Kode yang berada di dalam komentar tersebut tidak akan dieksekusi atau ditampilkan oleh browser. Dengan cara ini, Anda dapat memberikan penjelasan atau catatan tanpa memengaruhi tampilan halaman web.', '2025-07-15 01:46:10'),
 (158, 22, NULL, 'Tag <!DOCTYPE html> digunakan untuk mendefinisikan jenis dokumen dan versi HTML yang digunakan dalam sebuah halaman web. Dengan menyertakan tag ini, browser dapat memahami dan merender halaman sesuai dengan standar HTML5. Tanpa tag ini, browser mungkin akan menggunakan mode kompatibilitas yang dapat menyebabkan tampilan halaman tidak sesuai harapan.', '2025-07-15 01:46:12'),
 (159, 23, NULL, 'Tag <!DOCTYPE html> harus dituliskan di atas tag <html> sebagai baris pertama untuk memberi tahu browser bahwa dokumen tersebut adalah dokumen HTML5. Ini membantu browser dalam merender halaman dengan cara yang sesuai dengan standar HTML terbaru. Tanpa tag ini, browser mungkin tidak dapat menampilkan halaman dengan benar.', '2025-07-15 01:46:14'),
-(160, 24, NULL, 'Jika kita tidak menuliskan deklarasi <!DOCTYPE html>, browser tidak akan mengetahui jenis dokumen yang sedang dibaca. Akibatnya, browser mungkin akan menginterpretasikan halaman HTML dengan cara yang berbeda, yang dapat menyebabkan tampilan dan perilaku halaman tidak konsisten. Hal ini dapat menyebabkan masalah dalam rendering elemen, styling, dan fungsi JavaScript pada berbagai browser.', '2025-07-15 01:46:16');
+(160, 24, NULL, 'Jika kita tidak menuliskan deklarasi <!DOCTYPE html>, browser tidak akan mengetahui jenis dokumen yang sedang dibaca. Akibatnya, browser mungkin akan menginterpretasikan halaman HTML dengan cara yang berbeda, yang dapat menyebabkan tampilan dan perilaku halaman tidak konsisten. Hal ini dapat menyebabkan masalah dalam rendering elemen, styling, dan fungsi JavaScript pada berbagai browser.', '2025-07-15 01:46:16'),
+(161, 5, 18, 'Jawaban yang benar adalah \'Hyper Text Markup Language\' karena HTML adalah bahasa yang digunakan untuk membuat dan menyusun halaman web. Kata \'Hyper\' merujuk pada kemampuan untuk menghubungkan dokumen melalui hyperlink, sementara \'Markup Language\' menunjukkan bahwa HTML menggunakan tag untuk menandai struktur dokumen. Dengan demikian, istilah tersebut menggambarkan fungsi dan tujuan utama dari HTML dalam pengembangan web.', '2025-07-15 20:52:58'),
+(162, 7, 25, 'Tag <title> sebaiknya diletakkan di dalam <head> karena fungsinya adalah untuk memberikan judul halaman yang akan ditampilkan di bilah judul browser. Selain itu, konten dalam <head> tidak ditampilkan secara langsung di halaman, namun penting untuk SEO dan pemrosesan halaman. Dengan menempatkan <title> di dalam <head>, kita memastikan bahwa informasi ini diakui oleh mesin pencari dan pengguna.', '2025-07-15 20:53:04'),
+(163, 8, 29, 'Tag <head> dalam HTML berfungsi untuk menyimpan metadata tentang dokumen. Ini termasuk elemen seperti <title> untuk judul halaman, serta <link> untuk menghubungkan file CSS. Dengan demikian, tag <head> tidak berisi konten utama seperti teks atau gambar, melainkan informasi penting yang mendukung struktur halaman.', '2025-07-15 20:53:06'),
+(164, 9, 36, 'Tag <body> adalah elemen HTML yang berfungsi sebagai wadah untuk semua konten yang dapat dilihat di halaman web, termasuk teks, gambar, dan elemen lainnya. Segala sesuatu yang berada di dalam tag <body> akan ditampilkan kepada pengguna saat mereka mengakses halaman tersebut. Sebaliknya, metadata halaman disimpan dalam tag <head>, bukan di dalam tag <body>.', '2025-07-15 20:53:07'),
+(165, 11, 44, 'Tag <h1> hingga <h6> digunakan untuk menentukan tingkat judul teks dalam sebuah halaman web. Tag <h1> biasanya digunakan untuk judul utama, sementara <h2> hingga <h6> digunakan untuk subjudul dengan tingkat kepentingan yang menurun. Ini membantu dalam struktur dan hierarki konten, serta meningkatkan SEO (Search Engine Optimization) pada halaman tersebut.', '2025-07-15 20:53:11'),
+(166, 65, 259, 'Dalam CSS, sintaks dasar terdiri dari deklarasi yang mengandung properti dan nilai, yang dipisahkan oleh tanda titik koma. Format ini adalah cara untuk memberi tahu browser tentang gaya yang harus diterapkan pada elemen HTML. Dengan menggunakan format \'properti: nilai;\', kita dapat dengan jelas menentukan bagaimana elemen tersebut akan ditampilkan.', '2025-07-15 21:09:59'),
+(167, 66, 261, 'Tanda kurung kurawal {} dalam CSS digunakan untuk mengelompokkan aturan dan deklarasi yang berlaku untuk elemen tertentu. Di antara kurung kurawal, kita dapat menuliskan properti dan nilai yang akan diterapkan pada elemen yang dipilih. Misalnya, jika kita memiliki selektor <h1>, maka aturan CSS dapat ditulis sebagai <h1> { color: red; } untuk mengubah warna teks menjadi merah.', '2025-07-15 21:10:02'),
+(168, 68, 270, 'Selector CSS digunakan untuk menentukan elemen-elemen HTML mana yang akan dikenakan aturan gaya tertentu. Dengan menggunakan selector, kita dapat mengubah tampilan elemen seperti warna, ukuran, dan posisi tanpa mengubah struktur HTML itu sendiri. Oleh karena itu, jawaban yang benar adalah \'Memilih elemen HTML yang akan diberi gaya\'.', '2025-07-15 21:10:04'),
+(169, 69, 275, 'Jawaban tersebut benar karena sintaks p { } adalah aturan CSS yang digunakan untuk menyeleksi semua elemen <p> dalam dokumen HTML. Dengan menggunakan aturan ini, Anda dapat menerapkan gaya tertentu, seperti warna atau ukuran font, pada semua paragraf. Ini adalah cara yang efisien untuk mengelola tampilan elemen-elemen tertentu di halaman web.', '2025-07-15 21:10:06'),
+(170, 226, 902, 'Jawaban yang benar adalah \'x = 5\' karena ini adalah sintaks yang tepat untuk mendeklarasikan variabel di Python. Dalam Python, tanda sama dengan \'=\' digunakan untuk menetapkan nilai ke sebuah variabel. Sementara itu, tanda \':=\' merupakan operator walrus yang digunakan untuk penugasan dalam konteks tertentu, bukan untuk mendeklarasikan variabel secara umum.', '2025-07-15 22:27:07'),
+(171, 227, 906, 'Jawaban yang benar adalah \'\"Hello\"\' karena tipe data string di Python merupakan urutan karakter yang diapit oleh tanda kutip tunggal (\' \') atau tanda kutip ganda (\" \"). Sementara itu, [1, 2, 3] adalah tipe data list, yang merupakan koleksi terurut dari beberapa elemen. Dengan demikian, hanya \'\"Hello\"\' yang memenuhi kriteria sebagai string.', '2025-07-15 22:27:10'),
+(172, 228, 908, 'Fungsi <code>print()</code> di Python digunakan untuk menampilkan output ke layar konsol. Ketika fungsi ini dipanggil, ia akan mengeksekusi argumen yang diberikan dan menampilkannya sebagai teks. Ini adalah cara utama untuk memberikan umpan balik kepada pengguna selama program berjalan.', '2025-07-15 22:27:13'),
+(173, 229, 913, 'Fungsi <input>() dalam Python digunakan untuk menerima input dari pengguna melalui keyboard. Ketika fungsi ini dipanggil, program akan berhenti dan menunggu pengguna untuk memasukkan data. Data yang dimasukkan kemudian dapat disimpan dalam variabel untuk digunakan lebih lanjut dalam program.', '2025-07-15 22:27:15');
 
 -- --------------------------------------------------------
 
@@ -2584,7 +2677,27 @@ INSERT INTO `questions` (`question_id`, `quiz_id`, `question_text`, `question_ty
 (221, 11, 'Manakah prinsip penting dalam perancangan database?', 'multiple_choice', 38, '2025-07-13 21:28:26', '2025-07-13 21:28:26'),
 (222, 11, 'Apa kepanjangan dari SQL?', 'multiple_choice', 38, '2025-07-13 21:28:50', '2025-07-13 21:28:50'),
 (223, 11, 'Salah satu keuntungan menggunakan DBMS adalah...?', 'multiple_choice', 38, '2025-07-13 21:29:17', '2025-07-13 21:29:17'),
-(224, 11, 'Apa tujuan dari ERD (Entity Relationship Diagram) dalam database design?', 'multiple_choice', 38, '2025-07-13 21:29:45', '2025-07-13 21:29:45');
+(224, 11, 'Apa tujuan dari ERD (Entity Relationship Diagram) dalam database design?', 'multiple_choice', 38, '2025-07-13 21:29:45', '2025-07-13 21:29:45'),
+(226, 18, 'Bagaimana cara mendeklarasikan variabel di Python?', 'multiple_choice', 38, '2025-07-15 22:23:51', '2025-07-15 22:23:51'),
+(227, 18, 'Manakah dari berikut ini adalah tipe data string di Python?', 'multiple_choice', 38, '2025-07-15 22:25:19', '2025-07-15 22:25:19'),
+(228, 18, 'Fungsi print() di Python digunakan untuk...?', 'multiple_choice', 38, '2025-07-15 22:25:57', '2025-07-15 22:25:57'),
+(229, 18, 'Fungsi input() digunakan untuk...?', 'multiple_choice', 38, '2025-07-15 22:26:38', '2025-07-15 22:26:38'),
+(230, 18, 'Bagaimana cara menulis komentar satu baris di Python?', 'multiple_choice', 38, '2025-07-15 22:28:09', '2025-07-15 22:28:09'),
+(231, 18, 'Apa output dari kode berikut?\r\n\r\nx = \"7\"\r\nprint(type(x))\r\n', 'multiple_choice', 38, '2025-07-15 22:29:11', '2025-07-15 22:29:11'),
+(232, 18, 'Manakah pernyataan yang benar tentang Python?', 'multiple_choice', 38, '2025-07-15 22:29:48', '2025-07-15 22:29:48'),
+(233, 18, 'Tipe data float di Python digunakan untuk...?', 'multiple_choice', 38, '2025-07-15 22:30:34', '2025-07-15 22:30:34'),
+(234, 18, 'Output dari kode berikut adalah?\r\n\r\nprint(2 + 3 * 4)\r\n', 'multiple_choice', 38, '2025-07-15 22:31:36', '2025-07-15 22:31:36'),
+(235, 18, 'Manakah cara yang benar untuk mencetak teks dan variabel?\r\nname = \"Budi\"\r\n', 'multiple_choice', 38, '2025-07-15 22:32:25', '2025-07-15 22:32:25'),
+(236, 18, 'Fungsi type() digunakan untuk...?', 'multiple_choice', 38, '2025-07-15 22:33:00', '2025-07-15 22:33:00'),
+(237, 18, 'Pernyataan manakah yang valid untuk membuat list?', 'multiple_choice', 38, '2025-07-15 22:33:42', '2025-07-15 22:33:42'),
+(238, 18, 'Tipe data bool di Python hanya memiliki dua nilai, yaitu...?', 'multiple_choice', 38, '2025-07-15 22:34:20', '2025-07-15 22:34:20'),
+(239, 18, 'Fungsi int() digunakan untuk...?', 'multiple_choice', 38, '2025-07-15 22:34:57', '2025-07-15 22:34:57'),
+(240, 18, 'Apa hasil dari kode berikut?\r\nx = input(\"Masukkan angka: \")\r\nprint(x)\r\n', 'multiple_choice', 38, '2025-07-15 22:35:36', '2025-07-15 22:35:36'),
+(241, 18, 'Bagaimana cara menampilkan teks dengan baris baru di Python?\r\n', 'multiple_choice', 38, '2025-07-15 22:36:10', '2025-07-15 22:36:10'),
+(242, 18, 'Manakah dari berikut ini merupakan nama variabel yang valid di Python?', 'multiple_choice', 38, '2025-07-15 22:36:53', '2025-07-15 22:36:53'),
+(243, 14, 'Output dari kode berikut adalah?\r\nx = 10\r\nx = x + 5\r\nprint(x)\r\n', 'multiple_choice', 38, '2025-07-15 22:37:41', '2025-07-15 22:37:41'),
+(244, 18, 'Fungsi len() digunakan untuk...?\r\n', 'multiple_choice', 38, '2025-07-15 22:38:15', '2025-07-15 22:38:15'),
+(245, 18, 'Kode berikut menghasilkan error karena...?\r\nprint(\"Hello)\r\n', 'multiple_choice', 38, '2025-07-15 22:38:45', '2025-07-15 22:38:45');
 
 -- --------------------------------------------------------
 
@@ -2616,9 +2729,10 @@ INSERT INTO `quizzes` (`quiz_id`, `language`, `topic`, `is_premium`, `admin_id`,
 (11, 'MySQL', 'SQL Basics', 0, 38, '2025-07-07 16:32:55', '2025-07-13 21:29:45', 20),
 (12, 'HTML', 'Links & Navigation', 1, 38, '2025-07-13 18:46:52', '2025-07-13 19:00:34', 20),
 (13, 'CSS', 'Typography & Text', 1, 38, '2025-07-13 19:04:00', '2025-07-13 19:23:19', 20),
-(14, 'CSS', 'Colors & Backgrounds', 1, 38, '2025-07-13 19:36:14', '2025-07-13 20:02:03', 20),
+(14, 'CSS', 'Colors & Backgrounds', 1, 38, '2025-07-13 19:36:14', '2025-07-15 22:37:41', 21),
 (15, 'JavaScript', 'Control Flow', 1, 38, '2025-07-13 20:25:20', '2025-07-13 20:52:01', 20),
-(16, 'JavaScript', 'Functions', 1, 38, '2025-07-13 20:52:30', '2025-07-13 21:18:15', 20);
+(16, 'JavaScript', 'Functions', 1, 38, '2025-07-13 20:52:30', '2025-07-13 21:18:15', 20),
+(18, 'Python', 'Python Basics', 0, 38, '2025-07-15 22:21:32', '2025-07-15 22:38:45', 19);
 
 -- --------------------------------------------------------
 
@@ -2686,7 +2800,10 @@ INSERT INTO `quiz_attempts` (`attempt_id`, `user_id`, `quiz_id`, `score`, `attem
 (43, 33, 13, 0, '2025-07-13 15:02:47', 20, 0),
 (44, 33, 13, 0, '2025-07-13 15:04:52', 20, 0),
 (45, 33, 13, 0, '2025-07-13 15:05:06', 20, 0),
-(46, 3498, 6, 10, '2025-07-14 18:45:28', 20, 1);
+(46, 3498, 6, 10, '2025-07-14 18:45:28', 20, 1),
+(47, 3498, 6, 20, '2025-07-15 13:52:55', 20, 2),
+(48, 3498, 9, 60, '2025-07-15 14:09:56', 20, 6),
+(49, 3498, 18, 10, '2025-07-15 15:27:04', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -6219,7 +6336,7 @@ INSERT INTO `user` (`user_id`, `username`, `email`, `password`, `is_premium`, `x
 (3495, 'galih.hidayat99', 'galih.hidayat99@gmail.com', '$2y$10$.eFsWfIS8lcq.9tx1v7MeeVsVXocQjItwBihGNn0C5X.WxiCyae1K', 1, 2262, 'User', '2024-12-31 00:00:00', 1),
 (3496, 'anton.cahyani7', 'anton.cahyani7@gmail.com', '$2y$10$.eFsWfIS8lcq.9tx1v7MeeVsVXocQjItwBihGNn0C5X.WxiCyae1K', 1, 1407, 'User', '2024-12-31 00:00:00', 1),
 (3497, 'riki1', 'riki1@gmail.com', '$2y$10$OO2X0/PgrHc.JPW04cUVu.aLs5nAO4qaXMd/pBtkxwxJ8n11pPpom', 0, 0, 'user', '2025-07-13 14:49:13', 1),
-(3498, 'Naylannajwa', 'nayla@gmail.com', '$2y$10$.OcHzY8CCXcBpVTJk4EzBOA7jRS0ZvW5IppuiWT/XY/OxqJCFcdLW', 1, 10, 'user', '2025-07-14 20:18:33', 1),
+(3498, 'Naylannajwa', 'nayla@gmail.com', '$2y$10$.OcHzY8CCXcBpVTJk4EzBOA7jRS0ZvW5IppuiWT/XY/OxqJCFcdLW', 1, 100, 'user', '2025-07-14 20:18:33', 1),
 (3499, 'nay', 'nay@gmail.com', '$2y$10$Fim6.cMoWK/3OzxQt2JGdOwPpFnguAB4IAqPcHxmqSFMDGH0YzN5W', 0, 0, 'user', '2025-07-15 11:00:10', 1);
 
 -- --------------------------------------------------------
@@ -6248,7 +6365,9 @@ INSERT INTO `user_quiz_scores` (`user_id`, `quiz_id`, `score`, `completed_at`) V
 (41, 7, 90, '2025-07-07 16:26:40'),
 (41, 8, 70, '2025-07-07 16:29:05'),
 (42, 6, 80, '2025-07-04 19:39:00'),
-(3498, 6, 10, '2025-07-15 01:45:28');
+(3498, 6, 20, '2025-07-15 20:52:55'),
+(3498, 9, 60, '2025-07-15 21:09:56'),
+(3498, 18, 10, '2025-07-15 22:27:04');
 
 --
 -- Indexes for dumped tables
@@ -6350,7 +6469,7 @@ ALTER TABLE `user_quiz_scores`
 -- AUTO_INCREMENT for table `answers`
 --
 ALTER TABLE `answers`
-  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=895;
+  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=979;
 
 --
 -- AUTO_INCREMENT for table `chat_messages`
@@ -6362,7 +6481,7 @@ ALTER TABLE `chat_messages`
 -- AUTO_INCREMENT for table `explanation_cache`
 --
 ALTER TABLE `explanation_cache`
-  MODIFY `cache_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=161;
+  MODIFY `cache_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=174;
 
 --
 -- AUTO_INCREMENT for table `llm_model`
@@ -6374,7 +6493,7 @@ ALTER TABLE `llm_model`
 -- AUTO_INCREMENT for table `materi_bank`
 --
 ALTER TABLE `materi_bank`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -6386,19 +6505,19 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=225;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=246;
 
 --
 -- AUTO_INCREMENT for table `quizzes`
 --
 ALTER TABLE `quizzes`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `quiz_attempts`
 --
 ALTER TABLE `quiz_attempts`
-  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT for table `user`
