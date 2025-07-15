@@ -639,9 +639,10 @@ $user = htmlspecialchars($_SESSION['username']);
         <nav>
             <ul>
                 <li><a href="../homepage/index.php">Beranda</a></li>
-                <li><a href="belajar.php">Belajar</a></li>
+                <li><a href="../bank_materi/belajar.php">Belajar</a></li>
+                <li><a href="../homepage/kuis.php">Kuis</a></li>
                 <li><a href="ranking.php">Ranking</a></li>
-                <li><a href="dashboard.php">Dashboard</a></li>
+                <li><a href="premium.php">Dashboard</a></li>
             </ul>
         </nav>
 
@@ -657,7 +658,7 @@ $user = htmlspecialchars($_SESSION['username']);
                     <i class="fas fa-user avatar"></i>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="profile.php" class="dropdown-item">
+                    <a href="../homepage/profile.php" class="dropdown-item">
                         <i class="fas fa-user-circle"></i>
                         <span>Profil</span>
                     </a>
@@ -808,18 +809,18 @@ $user = htmlspecialchars($_SESSION['username']);
             <div class="footer-col">
                 <h3>LANGUAGE</h3>
                 <ul>
-                    <li><a href="#">HTML</a></li>
-                    <li><a href="#">CSS</a></li>
-                    <li><a href="#">JavaScript</a></li>
-                    <li><a href="#">Python</a></li>
-                    <li><a href="#">PHP</a></li>
-                    <li><a href="#">MySQL</a></li>
+                    <li><a href="../bank_materi/belajar.php">HTML</a></li>
+                    <li><a href="../bank_materi/belajar.php">CSS</a></li>
+                    <li><a href="../bank_materi/belajar.php">JavaScript</a></li>
+                    <li><a href="../bank_materi/belajar.php">Python</a></li>
+                    <li><a href="../bank_materi/belajar.php">PHP</a></li>
+                    <li><a href="../bank_materi/belajar.php">MySQL</a></li>
                 </ul>
             </div>
 
             <div class="footer-col pintar">
                 <h3>PINTAR</h3>
-                <div class="pintar-badge">Gabung di sini</div>
+                <div> <a class="pintar-badge" href="premium.php">Gabung di sini</a></div>
             </div>
         </div>
 

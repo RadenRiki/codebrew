@@ -548,6 +548,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(163, 103, 220, 0.3);
         }
+
+        .back-btn {
+            @apply bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded;
+        }
     </style>
 </head>
 <body>
@@ -565,8 +569,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_quiz'])) {
 
 
     <main class="quiz-container">
+        <a href="#" onclick="history.back()" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Kembali
+        </a>
         <div class="quiz-header">
-            <h1>Kuis: <?php echo htmlspecialchars($quiz_details['topic']); ?></h1>
+            <h1><b><?php echo htmlspecialchars($quiz_details['topic']); ?></b></h1>
             <p>Bahasa: <?php echo htmlspecialchars($quiz_details['language']); ?> 
             <?php if ($quiz_details['is_premium']): ?>
                 <span class="badge-premium-quiz">PREMIUM</span>

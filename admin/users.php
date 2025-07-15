@@ -253,10 +253,17 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user $where_sql LIMIT $limit OF
         }
 
         /* Badge Styles */
-        .badge {
+        .badge{
             padding: 6px 10px;
             border-radius: 5px;
             font-weight: 500;
+        }
+
+        .badge-admin {
+            background-color: var(--primary);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 5px;
         }
 
         .badge-html {
@@ -299,10 +306,32 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user $where_sql LIMIT $limit OF
             color: white;
         }
 
-        .pagination-container {
+        .pagination-container{
             margin-top: 30px;
             padding-top: 15px;
             border-top: 1px solid #ddd;
+        }
+
+        .pagination .page-link {
+        color: #5D2E8E;
+        }
+
+        .pagination .page-link:hover {
+        color: #5D2E8E;
+        }
+
+        .pagination .page-item.active .page-link {
+        color: #ffff;
+        background-color: #5D2E8E;
+        border-color: #5D2E8E;
+        }
+
+        .pagination .page-link.prev, .pagination .page-link.next {
+        color: #5D2E8E;
+        }
+
+        .pagination .page-link.prev:hover, .pagination .page-link.next:hover {
+        color: #5D2E8E;
         }
 
         .angka-rapih {
@@ -385,7 +414,7 @@ $daftaruser = mysqli_query($conn, "SELECT * FROM user $where_sql LIMIT $limit OF
                     </nav>
                 </div>
                 <div>
-                    <span class="badge bg-primary">
+                    <span class="badge-admin">
                         <i class="fas fa-user"></i> <?php echo htmlspecialchars($_SESSION['username']); ?>
                     </span>
                 </div>

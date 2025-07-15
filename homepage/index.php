@@ -346,7 +346,11 @@ $stmt_user->close();
                 <li><a href="../bank_materi/belajar.php">Belajar</a></li>
                 <li><a href="kuis.php">Kuis</a></li>
                 <li><a href="ranking.php">Ranking</a></li>
-                <li><a href="dashboard.php">Dashboard</a></li>
+                <?php if ($is_premium_user): ?>
+                    <li><a href="dashboard.php">Dashboard</a></li>
+                <?php else: ?>
+                    <li><a href="../payment/premium.php">Dashboard</a></li>
+                <?php endif; ?>
                 <?php if ($is_premium_user): ?>
                     <li><span class="premium-badge-nav">PREMIUM</span></li>
                 <?php endif; ?>
