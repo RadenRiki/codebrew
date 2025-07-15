@@ -47,6 +47,34 @@ $isEditingQuestion = false;
 $alert = '';
 $alertType = '';
 
+// --- PAGINATION SETTINGS ---
+$kuis_per_page = 5;
+$pertanyaan_per_page = 5;
+
+// Ambil halaman aktif dari parameter GET (default 1)
+$kuis_page = isset($_GET['kuis_page']) ? max(1, intval($_GET['kuis_page'])) : 1;
+$pertanyaan_page = isset($_GET['pertanyaan_page']) ? max(1, intval($_GET['pertanyaan_page'])) : 1;
+
+// Hitung total kuis
+$total_kuis = 0;
+$res = $conn->query("SELECT COUNT(*) as total FROM quizzes");
+if ($res) {
+    $row = $res->fetch_assoc();
+    $total_kuis = $row['total'];
+}
+$total_kuis_pages = ceil($total_kuis / $kuis_per_page);
+$kuis_offset = ($kuis_page - 1) * $kuis_per_page;
+
+// Hitung total pertanyaan
+$total_pertanyaan = 0;
+$res = $conn->query("SELECT COUNT(*) as total FROM questions");
+if ($res) {
+    $row = $res->fetch_assoc();
+    $total_pertanyaan = $row['total'];
+}
+$total_pertanyaan_pages = ceil($total_pertanyaan / $pertanyaan_per_page);
+$pertanyaan_offset = ($pertanyaan_page - 1) * $pertanyaan_per_page;
+
 // --- Proses CRUD untuk Kuis (quizzes) ---
 
 // Proses hapus kuis
@@ -278,16 +306,16 @@ if (isset($_POST['submit_question'])) {
     }
 }
 
-// Fetch all quizzes for dropdowns and display
+// Fetch all quizzes for dropdowns and display (PAKAI LIMIT & OFFSET untuk tabel)
 $quizzes_data = [];
-$quizResult = $conn->query("SELECT quiz_id, language, topic, is_premium, total_questions FROM quizzes ORDER BY language, topic");
+$quizResult = $conn->query("SELECT quiz_id, language, topic, is_premium, total_questions FROM quizzes ORDER BY language, topic LIMIT $kuis_per_page OFFSET $kuis_offset");
 if ($quizResult) {
     while ($row = $quizResult->fetch_assoc()) {
         $quizzes_data[] = $row;
     }
 }
 
-// Fetch all questions for display (with associated quiz info)
+// Fetch all questions for display (with associated quiz info) (PAKAI LIMIT & OFFSET untuk tabel)
 $questions_data = [];
 $questionResult = $conn->query("
     SELECT 
@@ -302,6 +330,7 @@ $questionResult = $conn->query("
     LEFT JOIN answers a ON q.question_id = a.question_id
     GROUP BY q.question_id
     ORDER BY qz.language, qz.topic, q.question_id
+    LIMIT $pertanyaan_per_page OFFSET $pertanyaan_offset
 ");
 if ($questionResult) {
     while ($row = $questionResult->fetch_assoc()) {
@@ -640,6 +669,21 @@ if ($questionResult) {
                 margin-left: 70px;
             }
         }
+        /* Tambahkan CSS untuk pagination ungu */
+        .pagination-purple .page-link {
+            color: #5D2E8E;
+            background-color: #fff;
+            border: 1px solid #A367DC;
+        }
+        .pagination-purple .page-item.active .page-link {
+            background-color: #A367DC;
+            border-color: #5D2E8E;
+            color: #fff;
+        }
+        .pagination-purple .page-link:hover {
+            background-color: #f3e8ff;
+            color: #5D2E8E;
+        }
     </style>
 </head>
 
@@ -777,7 +821,7 @@ if ($questionResult) {
                             </thead>
                             <tbody>
                                 <?php
-                                $no = 1;
+                                $no = 1 + $kuis_offset;
                                 foreach ($quizzes_data as $quiz_row):
                                     $badgeClass = 'badge-';
                                     switch ($quiz_row['language']) {
@@ -828,6 +872,33 @@ if ($questionResult) {
                             </tbody>
                         </table>
                     </div>
+                    <!-- PAGINATION KUIS -->
+                    <?php if ($total_kuis_pages > 1): ?>
+                    <nav aria-label="Pagination Kuis">
+                        <ul class="pagination pagination-purple justify-content-center">
+                            <?php
+                            $range = 2; // jumlah halaman sebelum/sesudah halaman aktif
+                            $show_ellipsis = false;
+                            for ($i = 1; $i <= $total_kuis_pages; $i++) {
+                                if (
+                                    $i == 1 || $i == $total_kuis_pages ||
+                                    ($i >= $kuis_page - $range && $i <= $kuis_page + $range)
+                                ) {
+                                    if ($show_ellipsis) {
+                                        echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                        $show_ellipsis = false;
+                                    }
+                                    echo '<li class="page-item ' . ($i == $kuis_page ? 'active' : '') . '"><a class="page-link" href="?kuis_page=' . $i;
+                                    if(isset($_GET['pertanyaan_page'])) echo '&pertanyaan_page=' . intval($_GET['pertanyaan_page']);
+                                    echo '">' . $i . '</a></li>';
+                                } else {
+                                    $show_ellipsis = true;
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </nav>
+                    <?php endif; ?>
                 <?php else: ?>
                     <div class="alert alert-info mb-0">
                         <i class="fas fa-info-circle"></i> Belum ada kuis yang ditambahkan.
@@ -929,7 +1000,7 @@ if ($questionResult) {
                             </thead>
                             <tbody>
                                 <?php
-                                $no = 1;
+                                $no = 1 + $pertanyaan_offset;
                                 foreach ($questions_data as $q_row):
                                 ?>
                                     <tr>
@@ -953,6 +1024,33 @@ if ($questionResult) {
                             </tbody>
                         </table>
                     </div>
+                    <!-- PAGINATION PERTANYAAN -->
+                    <?php if ($total_pertanyaan_pages > 1): ?>
+                    <nav aria-label="Pagination Pertanyaan">
+                        <ul class="pagination pagination-purple justify-content-center">
+                            <?php
+                            $range = 2;
+                            $show_ellipsis = false;
+                            for ($i = 1; $i <= $total_pertanyaan_pages; $i++) {
+                                if (
+                                    $i == 1 || $i == $total_pertanyaan_pages ||
+                                    ($i >= $pertanyaan_page - $range && $i <= $pertanyaan_page + $range)
+                                ) {
+                                    if ($show_ellipsis) {
+                                        echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                        $show_ellipsis = false;
+                                    }
+                                    echo '<li class="page-item ' . ($i == $pertanyaan_page ? 'active' : '') . '"><a class="page-link" href="?pertanyaan_page=' . $i;
+                                    if(isset($_GET['kuis_page'])) echo '&kuis_page=' . intval($_GET['kuis_page']);
+                                    echo '">' . $i . '</a></li>';
+                                } else {
+                                    $show_ellipsis = true;
+                                }
+                            }
+                            ?>
+                        </ul>
+                    </nav>
+                    <?php endif; ?>
                 <?php else: ?>
                     <div class="alert alert-info mb-0">
                         <i class="fas fa-info-circle"></i> Belum ada pertanyaan yang ditambahkan.

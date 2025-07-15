@@ -43,7 +43,7 @@ if (isset($_GET['delete']) && !empty($_GET['delete'])) {
     $deleteQuery = "DELETE FROM materi_bank WHERE id = ?";
     $stmt = $conn->prepare($deleteQuery);
     $stmt->bind_param("i", $deleteId);
-    
+
     if ($stmt->execute()) {
         $alert = "Materi berhasil dihapus!";
         $alertType = "success";
@@ -62,7 +62,7 @@ if (isset($_GET['edit']) && !empty($_GET['edit'])) {
     $stmt->bind_param("i", $editId);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $id = $row['id'];
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $judul = $_POST['judul'];
     $url = $_POST['url'];
     $admin_id = $_SESSION['user_id'];
-    
+
     // Validasi input
     if (empty($kategori) || empty($judul) || empty($url)) {
         $alert = "Semua field harus diisi!";
@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $updateQuery = "UPDATE materi_bank SET kategori = ?, judul = ?, url = ?, admin_id = ? WHERE id = ?";
                 $stmt = $conn->prepare($updateQuery);
                 $stmt->bind_param("sssii", $kategori, $judul, $url, $admin_id, $id);
-                
+
                 if ($stmt->execute()) {
                     $alert = "Materi berhasil diupdate!";
                     $alertType = "success";
@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $insertQuery = "INSERT INTO materi_bank (kategori, judul, url, admin_id) VALUES (?, ?, ?, ?)";
                 $stmt = $conn->prepare($insertQuery);
                 $stmt->bind_param("sssi", $kategori, $judul, $url, $admin_id);
-                
+
                 if ($stmt->execute()) {
                     $alert = "Materi berhasil ditambahkan!";
                     $alertType = "success";
@@ -128,10 +128,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
+// --- PAGINATION SETTINGS ---
+$materi_per_page = 5;
+$materi_page = isset($_GET['materi_page']) ? max(1, intval($_GET['materi_page'])) : 1;
+// Hitung total data
+$total_materi = 0;
+$res = $conn->query("SELECT COUNT(*) as total FROM materi_bank");
+if ($res) {
+    $row = $res->fetch_assoc();
+    $total_materi = $row['total'];
+}
+$total_materi_pages = ceil($total_materi / $materi_per_page);
+$materi_offset = ($materi_page - 1) * $materi_per_page;
+
+// Query data materi dengan LIMIT & OFFSET
+$query = "SELECT * FROM materi_bank ORDER BY kategori, judul LIMIT $materi_per_page OFFSET $materi_offset";
+$result = $conn->query($query);
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -155,21 +173,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             --light-purple: #D1C4E9;
             --gradient: linear-gradient(135deg, #5D2E8E 0%, #A367DC 100%);
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Poppins', sans-serif;
         }
-        
+
         body {
             background-color: #f8f9fa;
             color: #333;
             min-height: 100vh;
             display: flex;
         }
-        
+
         /* Sidebar Styles */
         .sidebar {
             width: 250px;
@@ -180,26 +198,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             transition: all 0.3s;
             z-index: 1000;
         }
-        
+
         .sidebar-header {
             padding: 20px;
             background: var(--dark);
             text-align: center;
         }
-        
+
         .sidebar-header img {
             max-width: 150px;
         }
-        
+
         .sidebar-menu {
             padding: 20px 0;
             list-style: none;
         }
-        
+
         .sidebar-menu li {
             margin-bottom: 5px;
         }
-        
+
         .sidebar-menu a {
             display: block;
             padding: 12px 20px;
@@ -208,20 +226,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             transition: all 0.3s;
             font-size: 0.95rem;
         }
-        
-        .sidebar-menu a:hover, 
+
+        .sidebar-menu a:hover,
         .sidebar-menu a.active {
             background: var(--primary);
             color: var(--light);
             border-left: 4px solid var(--accent);
         }
-        
+
         .sidebar-menu a i {
             margin-right: 10px;
             width: 20px;
             text-align: center;
         }
-        
+
         /* Main Content Styles */
         .main-content {
             flex: 1;
@@ -229,23 +247,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             padding: 20px;
             transition: all 0.3s;
         }
-        
+
         .content-header {
             margin-bottom: 30px;
             border-bottom: 1px solid #e0e0e0;
             padding-bottom: 15px;
         }
-        
+
         .content-header h1 {
             font-size: 1.8rem;
             color: var(--primary);
             font-weight: 600;
         }
-        
+
         .content-header .breadcrumb {
             font-size: 0.85rem;
         }
-        
+
         /* Card Styles */
         .card {
             border-radius: 10px;
@@ -253,7 +271,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: none;
             margin-bottom: 20px;
         }
-        
+
         .card-header {
             background-color: #fff;
             border-bottom: 1px solid #f0f0f0;
@@ -261,28 +279,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-weight: 600;
             color: var(--primary);
         }
-        
+
         .card-body {
             padding: 20px;
         }
-        
+
         /* Form Styles */
         .form-label {
             font-weight: 500;
             color: #555;
         }
-        
+
         .form-control {
             border-radius: 8px;
             padding: 10px 15px;
             border: 1px solid #e0e0e0;
         }
-        
+
         .form-control:focus {
             border-color: var(--secondary);
             box-shadow: 0 0 0 0.2rem rgba(163, 103, 220, 0.25);
         }
-        
+
         .btn-primary {
             background: var(--gradient);
             border: none;
@@ -291,45 +309,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             font-weight: 500;
             transition: all 0.3s;
         }
-        
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(93, 46, 142, 0.3);
         }
-        
+
         /* Table Styles */
         .table {
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
         }
-        
+
         .table thead th {
             background-color: #f8f9fa;
             color: var(--primary);
             font-weight: 600;
             border-bottom: 2px solid #e0e0e0;
         }
-        
+
         .table-action-btn {
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 0.85rem;
         }
-        
+
         /* Alert Styles */
         .alert {
             border-radius: 8px;
             padding: 15px 20px;
         }
-        
+
         /* Badge Styles */
         .badge {
             padding: 6px 10px;
             border-radius: 5px;
             font-weight: 500;
         }
-        
+
         .badge-admin {
             background-color: var(--primary);
             color: white;
@@ -341,58 +359,76 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             background-color: #E44D26;
             color: white;
         }
-        
+
         .badge-css {
             background-color: #2965f1;
             color: white;
         }
-        
+
         .badge-js {
             background-color: #F7DF1E;
             color: #333;
         }
-        
+
         .badge-python {
             background-color: #306998;
             color: white;
         }
-        
+
         .badge-php {
             background-color: #777BB3;
             color: white;
         }
-        
+
         .badge-mysql {
             background-color: #00758F;
             color: white;
         }
-        
+
         /* Responsive */
         @media (max-width: 768px) {
             .sidebar {
                 width: 70px;
                 text-align: center;
             }
-            
+
             .sidebar-header img {
                 max-width: 40px;
             }
-            
+
             .sidebar-menu a span {
                 display: none;
             }
-            
+
             .sidebar-menu a i {
                 margin-right: 0;
                 font-size: 1.2rem;
             }
-            
+
             .main-content {
                 margin-left: 70px;
             }
         }
+
+        .pagination-purple .page-link {
+            color: #5D2E8E;
+            background-color: #fff;
+            border: 1px solid #A367DC;
+        }
+
+        .pagination-purple .page-item.active .page-link {
+            background-color: #A367DC;
+            border-color: #5D2E8E;
+            color: #fff;
+        }
+
+        .pagination-purple .page-link:hover {
+            background-color: #f3e8ff;
+            color: #5D2E8E;
+        }
     </style>
 </head>
+
 <body>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -416,8 +452,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </a>
             </li>
             <li>
-            <a href="../register-login/logout.php" id="logout-link">
-            <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
+                <a href="../register-login/logout.php" id="logout-link">
+                    <i class="fas fa-sign-out-alt"></i> <span>Keluar</span>
                 </a>
             </li>
         </ul>
@@ -443,15 +479,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
         </div>
-        
+
         <!-- Alert Message -->
         <?php if (!empty($alert)): ?>
-        <div class="alert alert-<?php echo $alertType; ?> alert-dismissible fade show" role="alert">
-            <?php echo $alert; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+            <div class="alert alert-<?php echo $alertType; ?> alert-dismissible fade show" role="alert">
+                <?php echo $alert; ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         <?php endif; ?>
-        
+
         <!-- Form Card -->
         <div class="card">
             <div class="card-header">
@@ -462,7 +498,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <?php if ($isEditing): ?>
                         <input type="hidden" name="id" value="<?php echo $id; ?>">
                     <?php endif; ?>
-                    
+
                     <div class="row mb-3">
                         <div class="col-md-4">
                             <label for="kategori" class="form-label">Kategori</label>
@@ -481,13 +517,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             <input type="text" class="form-control" id="judul" name="judul" placeholder="Masukkan judul materi" value="<?php echo htmlspecialchars($judul); ?>" required>
                         </div>
                     </div>
-                    
+
                     <div class="mb-3">
                         <label for="url" class="form-label">URL Materi</label>
                         <input type="url" class="form-control" id="url" name="url" placeholder="https://www.w3schools.com/..." value="<?php echo htmlspecialchars($url); ?>" required>
                         <div class="form-text">Masukkan URL valid ke materi dari W3Schools atau sumber lainnya.</div>
                     </div>
-                    
+
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-save"></i> <?php echo $isEditing ? 'Update Materi' : 'Simpan Materi'; ?>
@@ -501,18 +537,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </form>
             </div>
         </div>
-        
+
         <!-- Data Table Card -->
         <div class="card">
             <div class="card-header">
                 Daftar Materi
             </div>
             <div class="card-body">
-                <?php
-                $query = "SELECT * FROM materi_bank ORDER BY kategori, judul";
-                $result = $conn->query($query);
-                ?>
-                
                 <?php if ($result && $result->num_rows > 0): ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
@@ -527,9 +558,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php 
-                                $no = 1;
-                                while ($row = $result->fetch_assoc()): 
+                                <?php
+                                $no = 1 + $materi_offset;
+                                while ($row = $result->fetch_assoc()):
                                     // Menentukan badge style berdasarkan kategori
                                     $badgeClass = 'badge-';
                                     switch ($row['kategori']) {
@@ -555,36 +586,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                             $badgeClass .= 'primary';
                                     }
                                 ?>
-                                <tr>
-                                    <td><?php echo $no++; ?></td>
-                                    <td><span class="badge <?php echo $badgeClass; ?>"><?php echo htmlspecialchars($row['kategori']); ?></span></td>
-                                    <td><?php echo htmlspecialchars($row['judul']); ?></td>
-                                    <td>
-                                        <a href="<?php echo htmlspecialchars($row['url']); ?>" target="_blank" title="<?php echo htmlspecialchars($row['url']); ?>">
-                                            <?php 
-                                            // Menampilkan URL yang diperpendek jika terlalu panjang
-                                            $displayUrl = strlen($row['url']) > 40 ? substr($row['url'], 0, 40) . '...' : $row['url'];
-                                            echo htmlspecialchars($displayUrl); 
-                                            ?>
-                                            <i class="fas fa-external-link-alt ms-1"></i>
-                                        </a>
-                                    </td>
-                                    <td><?php echo date('d/m/Y H:i', strtotime($row['created_at'])); ?></td>
-                                    <td>
-                                        <div class="d-flex gap-1">
-                                            <a href="materi_bank.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning table-action-btn">
-                                                <i class="fas fa-edit"></i> Edit
+                                    <tr>
+                                        <td><?php echo $no++; ?></td>
+                                        <td><span class="badge <?php echo $badgeClass; ?>"><?php echo htmlspecialchars($row['kategori']); ?></span></td>
+                                        <td><?php echo htmlspecialchars($row['judul']); ?></td>
+                                        <td>
+                                            <a href="<?php echo htmlspecialchars($row['url']); ?>" target="_blank" title="<?php echo htmlspecialchars($row['url']); ?>">
+                                                <?php
+                                                $displayUrl = strlen($row['url']) > 40 ? substr($row['url'], 0, 40) . '...' : $row['url'];
+                                                echo htmlspecialchars($displayUrl);
+                                                ?>
+                                                <i class="fas fa-external-link-alt ms-1"></i>
                                             </a>
-                                            <button type="button" onclick="confirmDelete(<?php echo $row['id']; ?>)" class="btn btn-sm btn-danger table-action-btn">
-                                                <i class="fas fa-trash"></i> Hapus
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </td>
+                                        <td><?php echo date('d/m/Y H:i', strtotime($row['created_at'])); ?></td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <a href="materi_bank.php?edit=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning table-action-btn">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <button type="button" onclick="confirmDelete(<?php echo $row['id']; ?>)" class="btn btn-sm btn-danger table-action-btn">
+                                                    <i class="fas fa-trash"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 <?php endwhile; ?>
                             </tbody>
                         </table>
                     </div>
+                    <!-- PAGINATION MATERI -->
+                    <?php if ($total_materi_pages > 1): ?>
+                        <nav aria-label="Pagination Materi">
+                            <ul class="pagination pagination-purple justify-content-center">
+                                <?php
+                                $range = 2;
+                                $show_ellipsis = false;
+                                for ($i = 1; $i <= $total_materi_pages; $i++) {
+                                    if (
+                                        $i == 1 || $i == $total_materi_pages ||
+                                        ($i >= $materi_page - $range && $i <= $materi_page + $range)
+                                    ) {
+                                        if ($show_ellipsis) {
+                                            echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                            $show_ellipsis = false;
+                                        }
+                                        echo '<li class="page-item ' . ($i == $materi_page ? 'active' : '') . '"><a class="page-link" href="?materi_page=' . $i . '">' . $i . '</a></li>';
+                                    } else {
+                                        $show_ellipsis = true;
+                                    }
+                                }
+                                ?>
+                            </ul>
+                        </nav>
+                    <?php endif; ?>
                 <?php else: ?>
                     <div class="alert alert-info mb-0">
                         <i class="fas fa-info-circle"></i> Belum ada data materi. Silakan tambahkan materi baru.
@@ -620,4 +675,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
     </script>
 </body>
+
 </html>
