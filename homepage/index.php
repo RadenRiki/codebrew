@@ -648,7 +648,8 @@ $stmt_user->close();
                 <div class="close-btn" id="closeChat"><i class="fas fa-times"></i></div>
             </div>
             <div class="messages-container" id="messagesContainer">
-                <div class="message bot-message">Halo! Saya CodeBrew Assistant. Apa yang bisa saya bantu?</div>
+                <div class="message bot-message">🚀 Halo! Saya CodeBrew Assistant.
+                Siap membantu apa pun tentang dunia coding. Mau tanya apa dulu?</div>
                 <div class="typing-indicator" id="typingIndicator">
                     <span></span><span></span><span></span>
                 </div>
